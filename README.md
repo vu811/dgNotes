@@ -1,6 +1,12 @@
-# MERN TypeScript Starter
+# digiNOTES
 
-# Run local
+> A simple web app to note everything for my need such us: projects, goals, todos...
 
-npm build
-npm run dev
+# Tech
+
+- React
+- Redux
+- Material UI
+- MongoDB
+- Express
+- TypeScript

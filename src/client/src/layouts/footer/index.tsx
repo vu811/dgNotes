@@ -1,7 +1,17 @@
-import React from 'react'
+import { Box, Typography } from '@material-ui/core'
 
 const Footer = () => {
-  return <footer>Footer</footer>
+  return (
+    <Box pt={4}>
+      <Typography variant='body2' color='textSecondary' align='center'>
+        Made with{' '}
+        <span role='img' aria-label='heart' aria-hidden='false'>
+          ❤️
+        </span>{' '}
+        by VU811
+      </Typography>
+    </Box>
+  )
 }
 
 export default Footer

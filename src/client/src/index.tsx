@@ -1,11 +1,30 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import reportWebVitals from './reportWebVitals'
-import App from './app'
+import App from './app/app'
+import { Provider } from 'react-redux'
+import { store } from './app/store'
+import { createTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles'
+
+let theme = createTheme({
+  palette: {
+    primary: {
+      main: '#e62739'
+    },
+    secondary: {
+      main: '#1976d2'
+    }
+  }
+})
+theme = responsiveFontSizes(theme)
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

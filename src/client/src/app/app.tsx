@@ -1,15 +1,11 @@
 import React from 'react'
-import { withLayout } from './layouts/container'
+import { withLayout } from '../layouts/container'
 import { BrowserRouter as Router, Switch, Route, RouteProps } from 'react-router-dom'
-import Home from './pages'
-import Page1 from './pages/page1'
+import DashBoard from '../features/dashboard'
 
 const App = () => {
   const buildPages = () => {
-    const pages: RouteProps[] = [
-      { exact: true, path: '/', render: () => withLayout(<Home />) },
-      { path: '/page1', render: () => withLayout(<Page1 />) }
-    ]
+    const pages: RouteProps[] = [{ exact: true, path: '/', render: () => withLayout(<DashBoard />) }]
     return pages
   }
 
