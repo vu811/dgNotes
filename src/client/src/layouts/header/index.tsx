@@ -12,6 +12,8 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
 import { selectIsOpenSideBar, updateSidebar } from '../layoutSlice'
 
+import { useHistory } from 'react-router-dom'
+
 const drawerWidth = 240
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -47,6 +49,11 @@ const Header = () => {
   const classes = useStyles()
   const isOpenSidebar = useAppSelector(selectIsOpenSideBar)
   const dispatch = useAppDispatch()
+  const history = useHistory()
+
+  const goToHome = () => {
+    history.push('/')
+  }
 
   return (
     <AppBar position='absolute' className={clsx(classes.appBar, isOpenSidebar && classes.appBarShift)}>
@@ -61,7 +68,9 @@ const Header = () => {
           <MenuIcon />
         </IconButton>
         <Typography component='h1' variant='h6' color='inherit' noWrap className={classes.title}>
-          digiNOTES
+          <span style={{ cursor: 'pointer' }} onClick={goToHome}>
+            dgNOTES
+          </span>
         </Typography>
         <IconButton color='inherit'>
           <Badge badgeContent={4} color='secondary'>

@@ -6,6 +6,7 @@ import CodeRoundedIcon from '@material-ui/icons/CodeRounded'
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded'
 import TrackChangesRoundedIcon from '@material-ui/icons/TrackChangesRounded'
 import { styled, withStyles } from '@material-ui/core/styles'
+import { useHistory, useLocation } from 'react-router-dom'
 
 const ListItem = withStyles({
   root: {
@@ -51,31 +52,36 @@ const ListItemStyle = styled(ListItem)(({ theme }) => ({
   }
 }))
 
-export const ListItems = (
-  <div>
-    <ListItemStyle button selected>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary='Dashboard' />
-    </ListItemStyle>
-    <ListItemStyle button>
-      <ListItemIcon>
-        <CodeRoundedIcon />
-      </ListItemIcon>
-      <ListItemText primary='Project management' />
-    </ListItemStyle>
-    <ListItemStyle button>
-      <ListItemIcon>
-        <TrackChangesRoundedIcon />
-      </ListItemIcon>
-      <ListItemText primary='Goal management' />
-    </ListItemStyle>
-    <ListItemStyle button>
-      <ListItemIcon>
-        <SettingsRoundedIcon />
-      </ListItemIcon>
-      <ListItemText primary='Setting' />
-    </ListItemStyle>
-  </div>
-)
+const ListItems = () => {
+  const history = useHistory()
+  const location = useLocation()
+  return (
+    <div>
+      <ListItemStyle button selected={location.pathname === '/'} onClick={() => history.push('/')}>
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary='Dashboard' />
+      </ListItemStyle>
+      <ListItemStyle button selected={location.pathname === '/projects'} onClick={() => history.push('/projects')}>
+        <ListItemIcon>
+          <CodeRoundedIcon />
+        </ListItemIcon>
+        <ListItemText primary='Project management' />
+      </ListItemStyle>
+      <ListItemStyle button>
+        <ListItemIcon>
+          <TrackChangesRoundedIcon />
+        </ListItemIcon>
+        <ListItemText primary='Goal management' />
+      </ListItemStyle>
+      <ListItemStyle button>
+        <ListItemIcon>
+          <SettingsRoundedIcon />
+        </ListItemIcon>
+        <ListItemText primary='Setting' />
+      </ListItemStyle>
+    </div>
+  )
+}
+export default ListItems

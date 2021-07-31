@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { Drawer, IconButton, Divider, makeStyles, List } from '@material-ui/core'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import { ListItems } from '../../common/constants/listItems'
+import ListItems from '../../common/constants/listItems'
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar
+  },
+  sidebarList: {
+    paddingTop: '0'
   }
 }))
 
@@ -57,7 +60,9 @@ const SideBar = () => {
         </IconButton>
       </div>
       <Divider />
-      <List>{ListItems}</List>
+      <List className={classes.sidebarList}>
+        <ListItems />
+      </List>
     </Drawer>
   )
 }

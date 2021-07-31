@@ -1,8 +1,8 @@
-# digiNOTES
+# dgNOTES
 
 > A simple web app to note everything for my need such us: projects, goals, todos...
 
-# Tech
+# Languages & Libs
 
 - React
 - Redux
@@ -10,3 +10,4 @@
 - MongoDB
 - Express
 - TypeScript
+- Formik

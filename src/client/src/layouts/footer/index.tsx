@@ -8,7 +8,7 @@ const Footer = () => {
         <span role='img' aria-label='heart' aria-hidden='false'>
           ❤️
         </span>{' '}
-        by VU811
+        by Vu811
       </Typography>
     </Box>
   )
