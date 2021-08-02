@@ -2,9 +2,10 @@ import { Request, Response } from 'express'
 import Project from '../models/project'
 
 export const addProject = async (req: Request, res: Response) => {
-  const { name } = req.body
+  const { name, startDate } = req.body
   const newProject = new Project({
-    name
+    name,
+    startDate
   })
   try {
     await newProject.save()

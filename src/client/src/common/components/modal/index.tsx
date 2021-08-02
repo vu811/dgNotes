@@ -1,5 +1,10 @@
 import React, { FC } from 'react'
-import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles'
+import {
+  createStyles,
+  Theme,
+  withStyles,
+  WithStyles
+} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import MuiDialogTitle from '@material-ui/core/DialogTitle'
@@ -36,7 +41,11 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant='h6'>{children}</Typography>
       {onClose ? (
-        <IconButton aria-label='close' className={classes.closeButton} onClick={onClose}>
+        <IconButton
+          aria-label='close'
+          className={classes.closeButton}
+          onClick={onClose}
+        >
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -60,18 +69,31 @@ const DialogActions = withStyles((theme: Theme) => ({
 interface ModalProps {
   open: boolean
   onClose: () => void
+  onSubmit: () => void
 }
 
-const Modal: FC<ModalProps> = ({ children, open, onClose }) => {
+const Modal: FC<ModalProps> = ({ children, open, onClose, onSubmit }) => {
   return (
     <div>
-      <Dialog maxWidth='sm' fullWidth={true} onClose={onClose} aria-labelledby='customized-dialog-title' open={open}>
+      <Dialog
+        maxWidth='sm'
+        fullWidth={true}
+        onClose={onClose}
+        aria-labelledby='customized-dialog-title'
+        open={open}
+      >
         <DialogTitle id='customized-dialog-title' onClose={onClose}>
           Modal title
         </DialogTitle>
         <DialogContent dividers>{children}</DialogContent>
         <DialogActions>
-          <Button variant='contained' color='primary' size='small' startIcon={<SaveIcon />}>
+          <Button
+            variant='contained'
+            color='primary'
+            size='small'
+            startIcon={<SaveIcon />}
+            onClick={onSubmit}
+          >
             Lưu
           </Button>
         </DialogActions>

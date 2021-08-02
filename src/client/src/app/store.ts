@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import layoutReducer from '../layouts/layoutSlice'
+import projectSlice from '../features/projectManagement/projectSlice'
 
 export const store = configureStore({
   reducer: {
-    layout: layoutReducer
+    layout: layoutReducer,
+    project: projectSlice
   }
 })
 

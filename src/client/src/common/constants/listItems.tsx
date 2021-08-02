@@ -5,6 +5,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard'
 import CodeRoundedIcon from '@material-ui/icons/CodeRounded'
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded'
 import TrackChangesRoundedIcon from '@material-ui/icons/TrackChangesRounded'
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
 import { styled, withStyles } from '@material-ui/core/styles'
 import { useHistory, useLocation } from 'react-router-dom'
 
@@ -57,29 +58,47 @@ const ListItems = () => {
   const location = useLocation()
   return (
     <div>
-      <ListItemStyle button selected={location.pathname === '/'} onClick={() => history.push('/')}>
+      <ListItemStyle
+        button
+        selected={location.pathname === '/'}
+        onClick={() => history.push('/')}
+      >
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        <ListItemText primary='Dashboard' />
+        <ListItemText primary='Bảng điều khiển' />
       </ListItemStyle>
-      <ListItemStyle button selected={location.pathname === '/projects'} onClick={() => history.push('/projects')}>
+      <ListItemStyle
+        button
+        selected={location.pathname === '/todos'}
+        onClick={() => history.push('/todos')}
+      >
+        <ListItemIcon>
+          <FormatListNumberedIcon />
+        </ListItemIcon>
+        <ListItemText primary='Danh sách todo' />
+      </ListItemStyle>
+      <ListItemStyle
+        button
+        selected={location.pathname === '/projects'}
+        onClick={() => history.push('/projects')}
+      >
         <ListItemIcon>
           <CodeRoundedIcon />
         </ListItemIcon>
-        <ListItemText primary='Project management' />
+        <ListItemText primary='Quản lí dự án' />
       </ListItemStyle>
       <ListItemStyle button>
         <ListItemIcon>
           <TrackChangesRoundedIcon />
         </ListItemIcon>
-        <ListItemText primary='Goal management' />
+        <ListItemText primary='Thiết lập mục tiêu' />
       </ListItemStyle>
       <ListItemStyle button>
         <ListItemIcon>
           <SettingsRoundedIcon />
         </ListItemIcon>
-        <ListItemText primary='Setting' />
+        <ListItemText primary='Cài đặt' />
       </ListItemStyle>
     </div>
   )
