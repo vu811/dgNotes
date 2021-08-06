@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: red[500]
+  },
+  projectName: {
+    fontWeight: theme.typography.fontWeightBold
   }
 }))
 
@@ -55,16 +58,18 @@ const ProjectItem: FC<ProjectItemProps> = ({ item }) => {
             </Avatar>
           }
           title={
-            <Typography variant='h5' component='h2'>
+            <Typography
+              variant='h5'
+              component='h2'
+              className={classes.projectName}
+            >
               {item.name}
             </Typography>
           }
         />
         <CardContent>
           <Typography variant='body2' color='textSecondary' component='p'>
-            This impressive paella is a perfect party dish and a fun meal to
-            cook together with your guests. Add 1 cup of frozen peas along with
-            the mussels, if you like.
+            {item.description}
           </Typography>
         </CardContent>
         <CardActions>

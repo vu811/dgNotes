@@ -3,7 +3,7 @@ import Header from './header'
 import Footer from './footer'
 import SideBar from './sidebar'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, styled, withStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +22,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+const ContainerStyled = withStyles({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: 'calc(100vh - 64px)'
+  }
+})(Container)
+
 const DefaultLayout: FC = (props) => {
   const classes = useStyles()
 
@@ -33,10 +41,10 @@ const DefaultLayout: FC = (props) => {
         <SideBar />
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-          <Container maxWidth='lg' className={classes.container}>
+          <ContainerStyled maxWidth='lg' className={classes.container}>
             {props.children}
             <Footer />
-          </Container>
+          </ContainerStyled>
         </main>
       </div>
     </>

@@ -10,6 +10,7 @@ export interface ProjectState {
 export interface ProjectProps {
   name: String
   startDate: Date
+  description: String
 }
 
 const initialState: ProjectState = {

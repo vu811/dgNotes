@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import layoutReducer from '../layouts/layoutSlice'
 import projectSlice from '../features/projectManagement/projectSlice'
+import todoSlice from '../features/todoList/todoSlice'
 
 export const store = configureStore({
   reducer: {
     layout: layoutReducer,
-    project: projectSlice
+    project: projectSlice,
+    todo: todoSlice
   }
 })
 

@@ -41,7 +41,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'none'
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center'
+    }
+  },
+  logoText: {
+    cursor: 'pointer',
+    fontWeight: theme.typography.fontWeightBold
   }
 }))
 
@@ -56,19 +63,31 @@ const Header = () => {
   }
 
   return (
-    <AppBar position='absolute' className={clsx(classes.appBar, isOpenSidebar && classes.appBarShift)}>
+    <AppBar
+      position='absolute'
+      className={clsx(classes.appBar, isOpenSidebar && classes.appBarShift)}
+    >
       <Toolbar className={classes.toolbar}>
         <IconButton
           edge='start'
           color='inherit'
           aria-label='open drawer'
           onClick={() => dispatch(updateSidebar(true))}
-          className={clsx(classes.menuButton, isOpenSidebar && classes.menuButtonHidden)}
+          className={clsx(
+            classes.menuButton,
+            isOpenSidebar && classes.menuButtonHidden
+          )}
         >
           <MenuIcon />
         </IconButton>
-        <Typography component='h1' variant='h6' color='inherit' noWrap className={classes.title}>
-          <span style={{ cursor: 'pointer' }} onClick={goToHome}>
+        <Typography
+          component='h1'
+          variant='h6'
+          color='inherit'
+          noWrap
+          className={classes.title}
+        >
+          <span className={classes.logoText} onClick={goToHome}>
             dgNOTES
           </span>
         </Typography>

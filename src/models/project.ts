@@ -13,6 +13,9 @@ export const projectSchema = new Schema(
       type: Date,
       required: [true, 'startDate is required']
     },
+    description: {
+      type: String
+    },
     versions: {
       type: [versionSchema]
     }

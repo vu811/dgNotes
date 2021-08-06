@@ -4,15 +4,53 @@ import reportWebVitals from './reportWebVitals'
 import App from './app/app'
 import { Provider } from 'react-redux'
 import { store } from './app/store'
-import { createTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles'
+import {
+  createTheme,
+  responsiveFontSizes,
+  ThemeProvider
+} from '@material-ui/core/styles'
 
 let theme = createTheme({
+  typography: {
+    fontSize: 14,
+    fontFamily: [
+      'Roboto',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"'
+    ].join(','),
+    fontWeightLight: 400,
+    fontWeightBold: 700
+  },
   palette: {
     primary: {
       main: '#e62739'
     },
     secondary: {
       main: '#2972E7'
+    },
+    background: {
+      default: 'rgb(246, 248, 251)'
+    },
+    text: {
+      primary: 'rgb(34, 51, 84)'
+    }
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: 20
+      },
+      label: {
+        fontWeight: 700
+      }
     }
   }
 })

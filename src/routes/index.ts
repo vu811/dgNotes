@@ -1,12 +1,21 @@
 import express, { Express } from 'express'
 import { addProject, getProjects } from '../controllers/project.controller'
+import { addTodo, getTodos } from '../controllers/todo.controller'
 
 const routes = (app: Express) => {
   const router = express.Router()
 
-  const projectRoute = '/api/projects'
-  router.get(projectRoute, getProjects)
-  router.post(projectRoute, addProject)
+  /* Project API */
+  const projectBaseRoute = '/api/projects'
+  router.get(projectBaseRoute, getProjects)
+  router.post(projectBaseRoute, addProject)
+  /* End Project API */
+
+  /* Project API */
+  const todoBaseRoute = '/api/todos'
+  router.get(todoBaseRoute, getTodos)
+  router.post(todoBaseRoute, addTodo)
+  /* End Project API */
 
   app.use(router)
 }

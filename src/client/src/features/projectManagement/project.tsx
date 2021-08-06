@@ -26,11 +26,12 @@ import {
 import ProjectItem from '../../common/components/projects/projectItem'
 
 const validationProjectSchema = yup.object({
-  projectName: yup
+  name: yup
     .string()
     .min(6, 'Tối thiểu 6 kí tự')
     .required('Vui lòng nhập tên dự án'),
-  startDate: yup.date().required('Vui lòng nhập ngày bắt đầu')
+  startDate: yup.date().required('Vui lòng nhập ngày bắt đầu'),
+  description: yup.string().max(500, 'Tối đa 500 kí tự')
 })
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -74,14 +75,16 @@ const Project = () => {
 
   const formik = useFormik({
     initialValues: {
-      projectName: '',
-      startDate: new Date()
+      name: '',
+      startDate: new Date(),
+      description: ''
     },
     validationSchema: validationProjectSchema,
     onSubmit: (values) => {
       const payload: ProjectProps = {
-        name: values.projectName,
-        startDate: values.startDate
+        name: values.name,
+        startDate: values.startDate,
+        description: values.description
       }
       dispatch(addProjectAsync(payload))
     }
@@ -116,13 +119,13 @@ const Project = () => {
           onSubmit={formik.handleSubmit}
         >
           <TextField
-            id='projectName'
-            name='projectName'
+            id='name'
+            name='name'
             label='Tên dự án'
-            value={formik.values.projectName}
+            value={formik.values.name}
             onChange={formik.handleChange}
-            error={Boolean(formik.errors.projectName)}
-            helperText={formik.errors.projectName}
+            error={Boolean(formik.errors.name)}
+            helperText={formik.errors.name}
             placeholder='Tên dự án'
             fullWidth
             color='secondary'
@@ -148,6 +151,24 @@ const Project = () => {
               }}
             />
           </MuiPickersUtilsProvider>
+          <TextField
+            id='description'
+            name='description'
+            label='Mô tả'
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            error={Boolean(formik.errors.description)}
+            helperText={formik.errors.description}
+            placeholder='Mô tả dự án'
+            fullWidth
+            multiline
+            rows={4}
+            color='secondary'
+            margin='normal'
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
         </form>
       </Modal>
     </div>
