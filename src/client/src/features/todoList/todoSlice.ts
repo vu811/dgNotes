@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getTodos, addTodo } from './todoApi'
+import { getTodos, addTodo, deleteTodo } from './todoApi'
 
 export interface TodoState {
   isOpenTodoModal: boolean
@@ -7,13 +7,13 @@ export interface TodoState {
 }
 
 export interface TodoProps {
-  date: String
-  time: String
-  description: String
+  date: string
+  time: string
+  description: string
 }
 
 export interface TodoResponse extends TodoProps {
-  _id: String
+  _id: string
 }
 
 const initialState: TodoState = {
@@ -23,7 +23,7 @@ const initialState: TodoState = {
 
 export const getTodosAsync = createAsyncThunk(
   'todo/get',
-  async (date: String) => {
+  async (date: string) => {
     const response = await getTodos(date)
     return response.data
   }
@@ -33,6 +33,14 @@ export const addTodoAsync = createAsyncThunk(
   'todo/add',
   async (payload: TodoProps) => {
     const response = await addTodo(payload)
+    return response.data
+  }
+)
+
+export const deleteTodoAsync = createAsyncThunk(
+  'todo/delete',
+  async (id: string) => {
+    const response = await deleteTodo(id)
     return response.data
   }
 )
@@ -56,6 +64,9 @@ export const projectSlice = createSlice({
       .addCase(addTodoAsync.fulfilled, (state, action) => {
         state.todos.push(action.payload)
         state.isOpenTodoModal = false
+      })
+      .addCase(deleteTodoAsync.fulfilled, (state, action) => {
+        state.todos = state.todos.filter((t) => t._id !== action.payload._id)
       })
   }
 })

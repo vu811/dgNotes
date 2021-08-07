@@ -14,7 +14,8 @@ import {
   makeStyles,
   Theme,
   TextField,
-  withStyles
+  withStyles,
+  Container
 } from '@material-ui/core'
 import Modal from '../../common/components/modal'
 import { useFormik } from 'formik'
@@ -107,7 +108,7 @@ const Todo = () => {
     }
   })
   return (
-    <div>
+    <Container maxWidth='sm'>
       <Grid>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <DatePickerStyled
@@ -186,7 +187,7 @@ const Todo = () => {
           </Modal>
         </div>
       </Grid>
-    </div>
+    </Container>
   )
 }
 

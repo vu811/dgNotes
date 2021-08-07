@@ -3,8 +3,9 @@ import Header from './header'
 import Footer from './footer'
 import SideBar from './sidebar'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import { makeStyles, styled, withStyles } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
+import FlashAlert from '../common/components/flashAlert'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +37,7 @@ const DefaultLayout: FC = (props) => {
   return (
     <>
       <CssBaseline />
+      <FlashAlert />
       <Header />
       <div className={classes.root}>
         <SideBar />

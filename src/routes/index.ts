@@ -1,6 +1,6 @@
 import express, { Express } from 'express'
 import { addProject, getProjects } from '../controllers/project.controller'
-import { addTodo, getTodos } from '../controllers/todo.controller'
+import { addTodo, getTodos, deleteTodo } from '../controllers/todo.controller'
 
 const routes = (app: Express) => {
   const router = express.Router()
@@ -15,6 +15,7 @@ const routes = (app: Express) => {
   const todoBaseRoute = '/api/todos'
   router.get(todoBaseRoute, getTodos)
   router.post(todoBaseRoute, addTodo)
+  router.delete(`${todoBaseRoute}/:id`, deleteTodo)
   /* End Project API */
 
   app.use(router)

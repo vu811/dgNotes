@@ -8,6 +8,10 @@ import { makeStyles } from '@material-ui/core/styles'
 import { TodoResponse } from '../../todoSlice'
 import { Checkbox, withStyles } from '@material-ui/core'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import { useAppDispatch } from '../../../../app/hooks'
+import { deleteTodoAsync } from '../../todoSlice'
+import { flashAlert } from '../../../../app/appSlice'
+import { FlashType } from '../../../../enums'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     height: '30px',
     textAlign: 'center',
     fontSize: '20px',
-    fontWeight: 'bold'
+    fontWeight: theme.typography.fontWeightBold
   },
   todoTime: {
     fontWeight: theme.typography.fontWeightBold
@@ -66,7 +70,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    color: theme.palette.primary.main
+    color: theme.palette.primary.main,
+    cursor: 'pointer'
   }
 }))
 
@@ -86,8 +91,23 @@ export interface TodoItemProps {
 
 const TodoItem: FC<TodoItemProps> = ({ index, item }) => {
   const classes = useStyles()
+  const dispatch = useAppDispatch()
+
+  const handleDeleteTodo = async (id: string) => {
+    try {
+      const result = await dispatch(deleteTodoAsync(id)).unwrap()
+      if (result) {
+        dispatch(
+          flashAlert({ message: 'Xóa thành công!', type: FlashType.Success })
+        )
+      }
+    } catch (err) {
+      dispatch(flashAlert({ message: err, type: FlashType.Error }))
+    }
+  }
+
   return (
-    <Grid item md={6} xs={12}>
+    <Grid item md={12} xs={12}>
       <Card>
         <CardContentStyled>
           <Grid container>
@@ -106,7 +126,11 @@ const TodoItem: FC<TodoItemProps> = ({ index, item }) => {
               </Typography>
               <Typography component='p'>{item.description}</Typography>
             </Grid>
-            <Grid md={1} className={classes.deleteTodo}>
+            <Grid
+              md={1}
+              className={classes.deleteTodo}
+              onClick={() => handleDeleteTodo(item._id)}
+            >
               <DeleteForeverIcon />
             </Grid>
           </Grid>

@@ -24,3 +24,12 @@ export const getTodos = async (req: Request, res: Response) => {
     res.status(404).json({ message: ex.message })
   }
 }
+
+export const deleteTodo = async (req: Request, res: Response) => {
+  try {
+    const todo = await Todo.findByIdAndDelete(req.params.id)
+    res.status(200).json(todo)
+  } catch (ex) {
+    res.status(404).json({ message: ex.message })
+  }
+}
