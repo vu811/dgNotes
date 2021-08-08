@@ -23,7 +23,7 @@ import {
   ProjectProps,
   selectProjects
 } from './projectSlice'
-import ProjectItem from '../../common/components/projects/projectItem'
+import ProjectItem from './components/projectItem'
 
 const validationProjectSchema = yup.object({
   name: yup
@@ -57,6 +57,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     newProjectBtn: {
       marginBottom: '10px'
+    },
+    projectWrapper: {
+      [theme.breakpoints.up('md')]: {
+        maxHeight: 'calc(100vh - 202px)',
+        overflowY: 'auto'
+      }
     }
   })
 )
@@ -101,7 +107,7 @@ const Project = () => {
       >
         thêm dự án
       </Button>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} className={classes.projectWrapper}>
         {projects &&
           projects.map((project: ProjectProps) => (
             <ProjectItem item={project} />

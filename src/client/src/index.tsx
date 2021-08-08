@@ -51,6 +51,22 @@ let theme = createTheme({
       label: {
         fontWeight: 700
       }
+    },
+    MuiCssBaseline: {
+      '@global': {
+        '*::-webkit-scrollbar': {
+          width: '8px'
+        },
+        '*::-webkit-scrollbar-track': {
+          '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.3)',
+          borderRadius: '20px',
+          backgroundColor: '#F5F5F5'
+        },
+        '*::-webkit-scrollbar-thumb': {
+          borderRadius: '20px',
+          '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.5)'
+        }
+      }
     }
   }
 })

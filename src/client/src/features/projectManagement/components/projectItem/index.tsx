@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -6,10 +6,13 @@ import Avatar from '@material-ui/core/Avatar'
 import { red } from '@material-ui/core/colors'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { ProjectProps } from '../../../features/projectManagement/projectSlice'
+import { ProjectProps } from '../../projectSlice'
+import IconButton from '@material-ui/core/IconButton'
+import FavoriteIcon from '@material-ui/icons/Favorite'
+import ShareIcon from '@material-ui/icons/Share'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
   },
   projectName: {
     fontWeight: theme.typography.fontWeightBold
+  },
+  cardAction: {
+    justifyContent: 'flex-end'
   }
 }))
 
@@ -72,8 +78,10 @@ const ProjectItem: FC<ProjectItemProps> = ({ item }) => {
             {item.description}
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button size='small'>Learn More</Button>
+        <CardActions className={classes.cardAction}>
+          <IconButton aria-label='delete'>
+            <DeleteForeverIcon />
+          </IconButton>
         </CardActions>
       </Card>
     </Grid>

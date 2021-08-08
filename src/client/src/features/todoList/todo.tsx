@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import {
   MuiPickersUtilsProvider,
   DatePicker,
-  TimePicker
+  KeyboardTimePicker
 } from '@material-ui/pickers'
 // @ts-ignore
 import DateFnsUtils from '@date-io/date-fns'
@@ -31,7 +31,7 @@ import {
 } from './todoSlice'
 
 import { getTime, getDate } from '../../utils/dateTimeHelper'
-import TodoItem from './components/todoItem/todoItem'
+import TodoItem from './components/todoItem'
 
 const validationTodoSchema = yup.object({
   startTime: yup.date(),
@@ -48,7 +48,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   addTodoBtnWrapper: {
     display: 'inline-flex',
-    marginLeft: '30px'
+    marginLeft: '30px',
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 0
+    }
   },
   addTodoBtn: {
     [theme.breakpoints.down('xs')]: {
@@ -70,7 +73,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: theme.typography.fontWeightBold
   },
   todoList: {
-    marginTop: '20px'
+    marginTop: '5px',
+    [theme.breakpoints.up('md')]: {
+      maxHeight: 'calc(100vh - 225px)',
+      overflowY: 'auto'
+    }
+  },
+  navigator: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 }))
 
@@ -98,42 +111,47 @@ const Todo = () => {
       description: ''
     },
     validationSchema: validationTodoSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values, { resetForm }) => {
       const payload: TodoProps = {
         date: getDate(todoDate),
         time: getTime(values.time),
         description: values.description
       }
-      dispatch(addTodoAsync(payload))
+      const saved = await dispatch(addTodoAsync(payload)).unwrap()
+      if (saved) resetForm()
     }
   })
+
+  console.log(formik)
   return (
     <Container maxWidth='sm'>
       <Grid>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DatePickerStyled
-            id='startDate'
-            name='startDate'
-            label='Ngày'
-            value={todoDate}
-            color='secondary'
-            format='dd/MM/yyyy'
-            className={classes.todoDate}
-            onChange={(val) => setTodoDate(val ?? new Date())}
-            inputProps={{ className: classes.todoDateInput }}
-            InputLabelProps={{ className: classes.todoDateInput }}
-          />
-        </MuiPickersUtilsProvider>
-        <div className={classes.addTodoBtnWrapper}>
-          <Button
-            variant='contained'
-            color='secondary'
-            startIcon={<AddCircleOutlineIcon />}
-            className={classes.addTodoBtn}
-            onClick={() => dispatch(openTodoModal())}
-          >
-            <span className={classes.addTodoBtnText}>thêm todo</span>
-          </Button>
+        <div className={classes.navigator}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DatePickerStyled
+              id='startDate'
+              name='startDate'
+              label='Ngày'
+              value={todoDate}
+              color='secondary'
+              format='dd/MM/yyyy'
+              className={classes.todoDate}
+              onChange={(val) => setTodoDate(val ?? new Date())}
+              inputProps={{ className: classes.todoDateInput }}
+              InputLabelProps={{ className: classes.todoDateInput }}
+            />
+          </MuiPickersUtilsProvider>
+          <div className={classes.addTodoBtnWrapper}>
+            <Button
+              variant='contained'
+              color='secondary'
+              startIcon={<AddCircleOutlineIcon />}
+              className={classes.addTodoBtn}
+              onClick={() => dispatch(openTodoModal())}
+            >
+              <span className={classes.addTodoBtnText}>thêm todo</span>
+            </Button>
+          </div>
         </div>
         <Grid container spacing={2} className={classes.todoList}>
           {todos &&
@@ -147,16 +165,13 @@ const Todo = () => {
             onClose={() => dispatch(closeTodoModal())}
             onSubmit={formik.handleSubmit}
           >
-            <form
-              //className={classes.root}
-              noValidate
-              autoComplete='off'
-            >
+            <form noValidate autoComplete='off'>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <TimePicker
+                <KeyboardTimePicker
                   id='time'
                   name='time'
                   label='Thời gian'
+                  mask='__:__ _M'
                   value={formik.values.time}
                   onChange={(val) => {
                     console.log('start')

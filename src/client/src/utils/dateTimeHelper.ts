@@ -1,7 +1,9 @@
+import moment from 'moment'
+
 export const getTime = (date: Date) => {
-  return date.toISOString().split('T')[1].substr(0, 5)
+  return moment(date).format('LT')
 }
 
 export const getDate = (date: Date) => {
-  return date.toISOString().split('T')[0]
+  return moment(date).format('YYYY-MM-DD')
 }
