@@ -174,7 +174,6 @@ const Todo = () => {
                   mask='__:__ _M'
                   value={formik.values.time}
                   onChange={(val) => {
-                    console.log('start')
                     formik.setFieldValue('time', val)
                   }}
                   color='secondary'

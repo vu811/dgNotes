@@ -9,13 +9,18 @@ import {
 import DashBoard from '../features/dashboard'
 import Project from '../features/projectManagement/project'
 import Todo from '../features/todoList/todo'
+import ProjectDetail from '../features/projectManagement/components/projectDetail'
 
 const App = () => {
   const buildPages = () => {
     const pages: RouteProps[] = [
       { exact: true, path: '/', render: () => withLayout(<DashBoard />) },
       { path: '/todos', render: () => withLayout(<Todo />) },
-      { path: '/projects', render: () => withLayout(<Project />) }
+      { exact: true, path: '/projects', render: () => withLayout(<Project />) },
+      {
+        path: '/projects/:id',
+        render: () => withLayout(<ProjectDetail />)
+      }
     ]
     return pages
   }

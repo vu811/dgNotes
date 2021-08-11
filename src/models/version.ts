@@ -18,9 +18,8 @@ export const versionSchema = new Schema(
     status: {
       type: String
     },
-    releaseDate: {
-      type: Date,
-      required: [true, 'releaseDate is required']
+    startDate: {
+      type: Date
     }
   },
   {

@@ -10,9 +10,8 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import { ProjectProps } from '../../projectSlice'
 import IconButton from '@material-ui/core/IconButton'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import ShareIcon from '@material-ui/icons/Share'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +53,12 @@ export interface ProjectItemProps {
 
 const ProjectItem: FC<ProjectItemProps> = ({ item }) => {
   const classes = useStyles()
+  const history = useHistory()
+
+  const goToDetail = (id: any) => {
+    history.push(`projects/${id}`)
+  }
+
   return (
     <Grid item md={4} xs={12}>
       <Card className={classes.root}>
@@ -72,6 +77,7 @@ const ProjectItem: FC<ProjectItemProps> = ({ item }) => {
               {item.name}
             </Typography>
           }
+          onClick={() => goToDetail(item._id)}
         />
         <CardContent>
           <Typography variant='body2' color='textSecondary' component='p'>

@@ -9,7 +9,9 @@ import {
   responsiveFontSizes,
   ThemeProvider
 } from '@material-ui/core/styles'
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints'
 
+const breakpoints = createBreakpoints({})
 let theme = createTheme({
   typography: {
     fontSize: 14,
@@ -27,7 +29,10 @@ let theme = createTheme({
       '"Segoe UI Symbol"'
     ].join(','),
     fontWeightLight: 400,
-    fontWeightBold: 700
+    fontWeightBold: 700,
+    subtitle1: {
+      fontWeight: 700
+    }
   },
   palette: {
     primary: {
@@ -37,21 +42,14 @@ let theme = createTheme({
       main: '#2972E7'
     },
     background: {
-      default: 'rgb(246, 248, 251)'
+      default: 'rgb(246, 248, 251)',
+      paper: 'rgb(255, 255, 255)'
     },
     text: {
       primary: 'rgb(34, 51, 84)'
     }
   },
   overrides: {
-    MuiButton: {
-      root: {
-        borderRadius: 20
-      },
-      label: {
-        fontWeight: 700
-      }
-    },
     MuiCssBaseline: {
       '@global': {
         '*::-webkit-scrollbar': {
@@ -65,6 +63,31 @@ let theme = createTheme({
         '*::-webkit-scrollbar-thumb': {
           borderRadius: '20px',
           '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.5)'
+        }
+      }
+    },
+    MuiButton: {
+      root: {
+        borderRadius: 20
+      },
+      label: {
+        fontWeight: 700
+      }
+    },
+    MuiPaper: {
+      elevation0: {
+        boxShadow:
+          'rgb(159 162 191 / 18%) 0px 9px 16px, rgb(159 162 191 / 32%) 0px 2px 2px'
+      },
+      elevation1: {
+        boxShadow:
+          'rgb(159 162 191 / 18%) 0px 9px 16px, rgb(159 162 191 / 32%) 0px 2px 2px'
+      }
+    },
+    MuiTab: {
+      root: {
+        [breakpoints.up('xs')]: {
+          minWidth: '50px'
         }
       }
     }
