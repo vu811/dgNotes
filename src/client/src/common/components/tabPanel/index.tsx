@@ -9,7 +9,7 @@ interface TabPanelProps {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    padding: '20px'
+    padding: '0.75em'
   }
 }))
 

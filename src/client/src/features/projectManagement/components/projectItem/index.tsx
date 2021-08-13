@@ -8,10 +8,13 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { ProjectProps } from '../../projectSlice'
+import { deleteProjectAsync, ProjectProps } from '../../projectSlice'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import { useHistory } from 'react-router-dom'
+import { useAppDispatch } from '../../../../app/hooks'
+import { FlashType } from '../../../../enums'
+import { flashAlert } from '../../../../app/appSlice'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,9 +57,23 @@ export interface ProjectItemProps {
 const ProjectItem: FC<ProjectItemProps> = ({ item }) => {
   const classes = useStyles()
   const history = useHistory()
+  const dispatch = useAppDispatch()
 
-  const goToDetail = (id: any) => {
+  const goToDetail = (id?: any) => {
     history.push(`projects/${id}`)
+  }
+
+  const handleDeleteProject = async (id?: String) => {
+    try {
+      const result = await dispatch(deleteProjectAsync(id)).unwrap()
+      if (result) {
+        dispatch(
+          flashAlert({ message: 'Xóa thành công!', type: FlashType.Success })
+        )
+      }
+    } catch (err) {
+      dispatch(flashAlert({ message: err, type: FlashType.Error }))
+    }
   }
 
   return (
@@ -85,7 +102,10 @@ const ProjectItem: FC<ProjectItemProps> = ({ item }) => {
           </Typography>
         </CardContent>
         <CardActions className={classes.cardAction}>
-          <IconButton aria-label='delete'>
+          <IconButton
+            aria-label='delete'
+            onClick={() => handleDeleteProject(item._id)}
+          >
             <DeleteForeverIcon />
           </IconButton>
         </CardActions>

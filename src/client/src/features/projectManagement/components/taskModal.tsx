@@ -10,14 +10,9 @@ import {
 // @ts-ignore
 import DateFnsUtils from '@date-io/date-fns'
 import { useAppDispatch } from '../../../app/hooks'
-import { addVersionAsync } from '../projectSlice'
+import { addTaskAsync, TaskPayload } from '../projectSlice'
 
 const validationSchema = yup.object({
-  name: yup
-    .string()
-    .min(3, 'Tối thiểu 3 kí tự')
-    .required('Vui lòng nhập version'),
-  //startDate: yup.date(),
   description: yup.string().max(500, 'Tối đa 500 kí tự')
 })
 
@@ -52,58 +47,28 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const VersionModal = ({ id, open, close }: any) => {
+const TaskModal = ({ projectId, versionId, open, close }: any) => {
   const dispatch = useAppDispatch()
   const formik = useFormik({
     initialValues: {
-      name: '',
-      startDate: null,
-      description: ''
+      description: '',
+      dueDate: null
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
+      console.log(values)
       const payload = {
-        id,
-        version: values
+        projectId,
+        versionId,
+        task: values
       }
-      dispatch(addVersionAsync(payload))
+      dispatch(addTaskAsync(payload))
       resetForm()
     }
   })
   return (
     <Modal open={open} onClose={close} onSubmit={formik.handleSubmit}>
       <form noValidate autoComplete='off'>
-        <TextField
-          id='name'
-          name='name'
-          label='Phiên bản'
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          error={Boolean(formik.errors.name)}
-          helperText={formik.errors.name}
-          placeholder='Phiên bản'
-          fullWidth
-          color='secondary'
-          margin='normal'
-          InputLabelProps={{
-            shrink: true
-          }}
-        />
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            id='startDate'
-            name='startDate'
-            label='Ngày bắt đầu'
-            value={formik.values.startDate}
-            color='secondary'
-            format='dd/MM/yyyy'
-            onChange={(val) => {
-              formik.setFieldValue('startDate', val)
-            }}
-            minDate={new Date()}
-            defaultValue={null}
-          />
-        </MuiPickersUtilsProvider>
         <TextField
           id='description'
           name='description'
@@ -122,9 +87,23 @@ const VersionModal = ({ id, open, close }: any) => {
             shrink: true
           }}
         />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            id='dueDate'
+            name='dueDate'
+            label='Ngày đến hạn'
+            value={formik.values.dueDate}
+            color='secondary'
+            format='dd/MM/yyyy'
+            onChange={(val) => {
+              formik.setFieldValue('dueDate', val)
+            }}
+            minDate={new Date()}
+          />
+        </MuiPickersUtilsProvider>
       </form>
     </Modal>
   )
 }
 
-export default VersionModal
+export default TaskModal

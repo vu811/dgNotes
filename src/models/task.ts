@@ -7,16 +7,15 @@ export const taskSchema = new Schema(
       type: String,
       required: [true, 'description is required']
     },
-    status: {
-      type: String,
-      enum: {
-        values: ['New', 'In-Progress', 'Done'],
-        required: [true, 'status is required']
-      }
-    },
     dueDate: {
-      type: String,
+      type: Date,
       required: [true, 'dueDate is required']
+    },
+    startDate: {
+      type: Date
+    },
+    completedDate: {
+      type: Date
     }
   },
   {

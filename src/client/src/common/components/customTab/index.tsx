@@ -8,7 +8,7 @@ function a11yProps(index: any) {
 }
 
 interface CustomTabProps {
-  index: number
+  index: string
   label: string
 }
 

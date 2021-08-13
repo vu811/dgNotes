@@ -88,8 +88,14 @@ let theme = createTheme({
       root: {
         [breakpoints.up('xs')]: {
           minWidth: '50px'
-        }
+        },
+        fontWeight: 700
       }
+    }
+  },
+  props: {
+    MuiButton: {
+      size: 'small'
     }
   }
 })
