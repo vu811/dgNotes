@@ -7,7 +7,8 @@ import {
   addTask,
   deleteTask,
   deleteVersion,
-  deleteProject
+  deleteProject,
+  updateTask
 } from '../controllers/project.controller'
 import { addTodo, getTodos, deleteTodo } from '../controllers/todo.controller'
 
@@ -27,6 +28,10 @@ const routes = (app: Express) => {
   )
   router.delete(`${projectBaseRoute}/:id/versions/:versionId`, deleteVersion)
   router.delete(`${projectBaseRoute}/:id`, deleteProject)
+  router.put(
+    `${projectBaseRoute}/:id/versions/:versionId/tasks/:taskId`,
+    updateTask
+  )
 
   /* Todo API */
   const todoBaseRoute = '/api/todos'

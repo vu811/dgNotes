@@ -31,12 +31,15 @@ export const getProjects = async (req: Request, res: Response) => {
 
 export const getProject = async (req: Request, res: Response) => {
   try {
-    const project = await Project.aggregate([
-      { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
-      { $unwind: '$versions' },
-      { $sort: { 'versions.name': -1 } },
-      { $group: { _id: '$name', versions: { $push: '$versions' } } }
-    ])
+    // const project = await Project.aggregate([
+    //   { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
+    //   { $unwind: '$versions' },
+    //   { $sort: { 'versions.name': -1 } },
+    //   { $group: { _id: '$name', versions: { $push: '$versions' } } }
+    // ])
+    const project = await Project.find({ _id: req.params.id }).sort({
+      'versions.name': -1
+    })
     res.status(200).json(project[0])
   } catch (ex) {
     res.status(404).json({ message: ex.message })
@@ -106,6 +109,33 @@ export const deleteTask = async (req: Request, res: Response) => {
           (t: any) => String(t._id) !== req.params.taskId
         )
         version.tasks = remainTasks
+      }
+    }
+    await project.save()
+    res.status(201).json(project)
+  } catch (ex) {
+    res.status(409).json({ message: ex.message })
+  }
+}
+
+export const updateTask = async (req: Request, res: Response) => {
+  const { isStarted, isCompleted } = req.body
+  try {
+    const project = await Project.findById(req.params.id)
+    if (project && project.versions) {
+      const version = project.versions.find(
+        (x: any) => String(x._id) === req.params.versionId
+      )
+      if (version) {
+        const task = version.tasks.find(
+          (t: any) => String(t._id) === req.params.taskId
+        )
+        if (isStarted) {
+          task.startDate = new Date()
+        }
+        if (isCompleted) {
+          task.completedDate = new Date()
+        }
       }
     }
     await project.save()

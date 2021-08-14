@@ -27,6 +27,18 @@ export const deleteTask = (id: String, versionId: String, taskId: String) => {
   )
 }
 
+export const updateTask = (
+  id: String,
+  versionId: String,
+  taskId: String,
+  payload: any
+) => {
+  return axios.put(
+    `/api/projects/${id}/versions/${versionId}/tasks/${taskId}`,
+    payload
+  )
+}
+
 export const deleteVersion = (id: String, versionId: String) => {
   return axios.delete(`/api/projects/${id}/versions/${versionId}`)
 }

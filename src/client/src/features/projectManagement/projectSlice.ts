@@ -8,7 +8,8 @@ import {
   addTask,
   deleteTask,
   deleteVersion,
-  deleteProject
+  deleteProject,
+  updateTask
 } from './projectApi'
 
 export interface ProjectDetailProps extends ProjectProps {
@@ -19,6 +20,8 @@ export interface TaskProps {
   _id?: String
   description: String
   dueDate: Date
+  startDate: Date
+  completedDate: Date
 }
 
 export interface VersionProps {
@@ -48,6 +51,11 @@ export interface TaskPayload extends ProjectBasePayload {
 
 export interface DeleteTaskPayload extends ProjectBasePayload {
   taskId: any
+}
+
+export interface UpdateTaskPayload extends DeleteTaskPayload {
+  isStarted: boolean
+  isCompleted: boolean
 }
 
 export interface ProjectProps {
@@ -121,6 +129,22 @@ export const deleteTaskAsync = createAsyncThunk(
       payload.projectId,
       payload.versionId,
       payload.taskId
+    )
+    return response.data
+  }
+)
+
+export const updateTaskAsync = createAsyncThunk(
+  'project/updateTask',
+  async (payload: UpdateTaskPayload) => {
+    const response = await updateTask(
+      payload.projectId,
+      payload.versionId,
+      payload.taskId,
+      {
+        isStarted: payload.isStarted || false,
+        isCompleted: payload.isCompleted || false
+      }
     )
     return response.data
   }

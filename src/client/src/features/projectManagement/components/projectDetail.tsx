@@ -3,12 +3,12 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Typography from '@material-ui/core/Typography'
 import { Button, Container, Divider, Paper } from '@material-ui/core'
-import CustomTab from '../../../../common/components/customTab'
-import TabPanel from '../../../../common/components/tabPanel'
+import CustomTab from '../../../common/components/customTab'
+import TabPanel from '../../../common/components/tabPanel'
 import NewReleasesIcon from '@material-ui/icons/NewReleases'
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd'
-import VersionModal from '../versionModal'
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks'
+import VersionModal from './versionModal'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { useParams } from 'react-router-dom'
 import {
   closeTaskModal,
@@ -20,12 +20,12 @@ import {
   ProjectBasePayload,
   ProjectDetailProps,
   TaskProps
-} from '../../projectSlice'
-import TaskModal from '../taskModal'
+} from '../projectSlice'
+import TaskModal from './taskModal'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import Task from '../task'
-import { flashAlert } from '../../../../app/appSlice'
-import { FlashType } from '../../../../enums'
+import Task from './task'
+import { flashAlert } from '../../../app/appSlice'
+import { FlashType } from '../../../enums'
 
 const useStyles = makeStyles((theme: Theme) => ({
   versionList: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     marginTop: '5px',
     [theme.breakpoints.up('md')]: {
-      height: 'calc(100vh - 231px)',
+      maxHeight: 'calc(100vh - 231px)',
       overflowY: 'auto'
     }
   },

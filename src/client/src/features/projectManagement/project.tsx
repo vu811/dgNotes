@@ -26,10 +26,7 @@ import {
 import ProjectItem from './components/projectItem'
 
 const validationProjectSchema = yup.object({
-  name: yup
-    .string()
-    .min(6, 'Tối thiểu 6 kí tự')
-    .required('Vui lòng nhập tên dự án'),
+  name: yup.string().required('Vui lòng nhập tên dự án'),
   startDate: yup.date().required('Vui lòng nhập ngày bắt đầu'),
   description: yup.string().max(500, 'Tối đa 500 kí tự')
 })
