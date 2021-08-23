@@ -20,7 +20,7 @@ import {
 import { getDate } from '../../../utils/dateTimeHelper'
 
 export interface StyleProps {
-  isTaskCompleted: boolean
+  taskStatus: number
 }
 
 const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
@@ -101,8 +101,13 @@ const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
     fontWeight: theme.typography.fontWeightBold
   },
   taskBackground: {
-    backgroundColor: ({ isTaskCompleted }) =>
-      isTaskCompleted ? 'rgba(76, 175, 80, 0.1)' : 'white'
+    backgroundColor: ({ taskStatus }) => {
+      if (taskStatus === 0) return 'white'
+      //else if (taskStatus === 1) return 'rgba(255, 163, 25, 0.1)'
+      //else return 'rgba(76, 175, 80, 0.1)'
+      else if (taskStatus === 1) return '#fae2a0'
+      else return '#c9f8de'
+    }
   }
 }))
 
@@ -124,7 +129,7 @@ export interface TaskPropReponse {
 
 const Task: FC<TaskPropReponse> = ({ index, projectId, versionId, task }) => {
   const styleProps: StyleProps = {
-    isTaskCompleted: task.completedDate ? true : false
+    taskStatus: task.completedDate ? 2 : task.startDate ? 1 : 0
   }
   const classes = useStyles(styleProps)
   const dispatch = useAppDispatch()

@@ -210,6 +210,7 @@ export const projectSlice = createSlice({
         state.isOpenTaskModal = false
       })
       .addCase(deleteTaskAsync.fulfilled, (state, action) => {
+        console.log('action.payload', action.payload)
         state.projectDetail = action.payload
       })
       .addCase(deleteVersionAsync.fulfilled, (state, action) => {
@@ -219,6 +220,9 @@ export const projectSlice = createSlice({
         state.projects = state.projects.filter(
           (x: any) => x._id !== action.payload._id
         )
+      })
+      .addCase(updateTaskAsync.fulfilled, (state, action) => {
+        state.projectDetail = action.payload
       })
   }
 })

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Typography from '@material-ui/core/Typography'
@@ -26,6 +26,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import Task from './task'
 import { flashAlert } from '../../../app/appSlice'
 import { FlashType } from '../../../enums'
+import NoItemPage from '../../../common/components/noItemPage'
 
 const useStyles = makeStyles((theme: Theme) => ({
   versionList: {
@@ -61,6 +62,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: '0.75em'
   }
 }))
+
 const ProjectDetail = () => {
   const classes = useStyles()
   const isOpenVersionModal = useAppSelector(
@@ -69,11 +71,15 @@ const ProjectDetail = () => {
   const isOpenTaskModal = useAppSelector(
     (state) => state.project.isOpenTaskModal
   )
-
   const projectDetail = useAppSelector((state) => state.project.projectDetail)
-  const [currentTab, setCurrentTab] = useState<any>('')
+  console.log('projectDetail', projectDetail?.versions[0]?._id)
+  const [currentTab, setCurrentTab] = useState<any>(null)
   const dispatch = useAppDispatch()
-  let { id }: any = useParams()
+  let { id }: { id: string } = useParams()
+  const ref = useRef<String | undefined>('')
+  console.log('rd')
+  console.log(ref)
+  const [isDeletedVersion, setIsDeletedVersion] = useState(0)
 
   useEffect(() => {
     dispatch(getProjectAsync(id))
@@ -81,7 +87,8 @@ const ProjectDetail = () => {
       .then((projectDetail: ProjectDetailProps) => {
         setCurrentTab(projectDetail?.versions[0]?._id)
       })
-  }, [id])
+    console.log('useEffect')
+  }, [id, isDeletedVersion])
 
   const handleChange = (event: React.ChangeEvent<any>, versionId: String) => {
     setCurrentTab(versionId)
@@ -98,6 +105,7 @@ const ProjectDetail = () => {
         dispatch(
           flashAlert({ message: 'Xóa thành công!', type: FlashType.Success })
         )
+        setIsDeletedVersion(Math.random())
       }
     } catch (err) {
       dispatch(flashAlert({ message: err, type: FlashType.Error }))
@@ -118,66 +126,73 @@ const ProjectDetail = () => {
         </Button>
       </div>
       <Paper elevation={0} className={classes.versionList}>
-        <Tabs
-          orientation='vertical'
-          variant='scrollable'
-          value={currentTab}
-          onChange={handleChange}
-          aria-label='Vertical tabs example'
-          className={classes.tabs}
-        >
-          {projectDetail?.versions &&
-            projectDetail?.versions.map((version, index) => (
-              <CustomTab
-                id={version._id}
-                label={version.name}
-                index={index}
-                value={version._id}
-              />
-            ))}
-        </Tabs>
-        {projectDetail?.versions &&
-          projectDetail?.versions.map((version, index) => {
-            return (
-              <TabPanel value={currentTab} index={version._id}>
-                <div className={classes.versionBtnGroup}>
-                  <Button
-                    variant='contained'
-                    color='secondary'
-                    className={classes.addTaskBtn}
-                    startIcon={<PlaylistAddIcon />}
-                    onClick={() => dispatch(openTaskModal())}
-                  >
-                    thêm công việc
-                  </Button>
-                  <Button
-                    variant='contained'
-                    color='primary'
-                    size='small'
-                    className={classes.addTaskBtn}
-                    startIcon={<DeleteForeverIcon />}
-                    onClick={handleDeleteVersion}
-                  >
-                    xóa phiên bản
-                  </Button>
-                </div>
-                <Divider className={classes.divideer} />
-                {version?.tasks &&
-                  version?.tasks.map((task: TaskProps, index) => {
-                    return (
-                      <div className={classes.task}>
-                        <Task
-                          projectId={id}
-                          versionId={currentTab}
-                          index={index}
-                          task={task}
-                        />
-                      </div>
-                    )
-                  })}
-              </TabPanel>
-            )
-          })}
+        {projectDetail?.versions && projectDetail?.versions.length > 0 ? (
+          <>
+            <Tabs
+              orientation='vertical'
+              variant='scrollable'
+              scrollButtons='off'
+              value={currentTab}
+              onChange={handleChange}
+              aria-label='Vertical tabs example'
+              className={classes.tabs}
+            >
+              {projectDetail?.versions &&
+                projectDetail?.versions.map((version, index) => (
+                  <CustomTab
+                    id={version._id}
+                    label={version.name}
+                    index={index}
+                    value={version._id}
+                  />
+                ))}
+            </Tabs>
+            {projectDetail?.versions &&
+              projectDetail?.versions.map((version, index) => {
+                return (
+                  <TabPanel value={currentTab} index={version._id}>
+                    <div className={classes.versionBtnGroup}>
+                      <Button
+                        variant='contained'
+                        color='secondary'
+                        className={classes.addTaskBtn}
+                        startIcon={<PlaylistAddIcon />}
+                        onClick={() => dispatch(openTaskModal())}
+                      >
+                        thêm công việc
+                      </Button>
+                      <Button
+                        variant='contained'
+                        color='primary'
+                        size='small'
+                        className={classes.addTaskBtn}
+                        startIcon={<DeleteForeverIcon />}
+                        onClick={handleDeleteVersion}
+                      >
+                        xóa phiên bản
+                      </Button>
+                    </div>
+                    <Divider className={classes.divideer} />
+                    {version?.tasks &&
+                      version?.tasks.map((task: TaskProps, index) => {
+                        return (
+                          <div className={classes.task}>
+                            <Task
+                              projectId={id}
+                              versionId={currentTab}
+                              index={index}
+                              task={task}
+                            />
+                          </div>
+                        )
+                      })}
+                  </TabPanel>
+                )
+              })}
+          </>
+        ) : (
+          <NoItemPage text='Chưa có phiên bản nào!' />
+        )}
       </Paper>
       <VersionModal
         id={id}

@@ -55,8 +55,9 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer'
   },
   startDate: {
-    color: 'rgb(244, 67, 54)',
-    backgroundColor: 'rgba(244, 67, 54, 0.1)',
+    //color: 'rgb(244, 67, 54)',
+    //backgroundColor: 'rgba(244, 67, 54, 0.1)',
+    backgroundColor: theme.palette.info.light,
     fontWeight: 700,
     padding: '4px',
     borderRadius: '3px'

@@ -1,17 +1,15 @@
 import { FC } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
-import { red } from '@material-ui/core/colors'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { TodoResponse } from '../../todoSlice'
+import { deleteTodoAsync, TodoResponse } from '../todoSlice'
 import { Checkbox, withStyles } from '@material-ui/core'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import { useAppDispatch } from '../../../../app/hooks'
-import { deleteTodoAsync } from '../../todoSlice'
-import { flashAlert } from '../../../../app/appSlice'
-import { FlashType } from '../../../../enums'
+import { useAppDispatch } from '../../../app/hooks'
+import { flashAlert } from '../../../app/appSlice'
+import { FlashType } from '../../../enums'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,9 +33,6 @@ const useStyles = makeStyles((theme) => ({
   },
   newProjectBtn: {
     marginBottom: '10px'
-  },
-  avatar: {
-    backgroundColor: red[500]
   },
   boderCheckBox: {
     borderRight: `solid 2px ${theme.palette.primary.main}`

@@ -12,6 +12,7 @@ import {
 import createBreakpoints from '@material-ui/core/styles/createBreakpoints'
 
 const breakpoints = createBreakpoints({})
+
 let theme = createTheme({
   typography: {
     fontSize: 14,
@@ -47,6 +48,10 @@ let theme = createTheme({
     },
     text: {
       primary: 'rgb(34, 51, 84)'
+    },
+    warning: {
+      light: '#fff5c7',
+      main: '#fae2a0'
     }
   },
   overrides: {

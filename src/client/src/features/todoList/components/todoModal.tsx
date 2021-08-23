@@ -5,19 +5,22 @@ import Modal from '../../../common/components/modal'
 import * as yup from 'yup'
 import {
   KeyboardDatePicker,
+  KeyboardTimePicker,
   MuiPickersUtilsProvider
 } from '@material-ui/pickers'
 // @ts-ignore
 import DateFnsUtils from '@date-io/date-fns'
 import { useAppDispatch } from '../../../app/hooks'
-import { addTaskAsync } from '../projectSlice'
+import { getDate, getTime } from '../../../utils/dateTimeHelper'
+import { addTodoAsync, TodoProps } from '../todoSlice'
 
 const validationSchema = yup.object({
+  startTime: yup.date(),
+  endTime: yup.date(),
   description: yup
     .string()
-    .required('Vui lòng nhập Mô tả')
-    .max(500, 'Tối đa 500 kí tự'),
-  dueDate: yup.string().nullable().required('Vui lòng nhập Ngày đến hạn')
+    .required('Vui lòng nhập ngày bắt đầu')
+    .max(100, 'Tối đa 100 kí tự')
 })
 
 const useStyles = makeStyles((theme) => ({
@@ -51,65 +54,61 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const TaskModal = ({ projectId, versionId, open, close }: any) => {
+const TodoModal = ({ date, open, close }: any) => {
   const dispatch = useAppDispatch()
   const formik = useFormik({
     initialValues: {
-      description: '',
-      dueDate: null
+      time: new Date(),
+      description: ''
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log(values)
-      const payload = {
-        projectId,
-        versionId,
-        task: values
+      const payload: TodoProps = {
+        date: getDate(date),
+        time: getTime(values.time),
+        description: values.description
       }
-      dispatch(addTaskAsync(payload))
-      resetForm()
+      const saved = await dispatch(addTodoAsync(payload)).unwrap()
+      if (saved) resetForm()
     }
   })
   return (
     <Modal open={open} onClose={close} onSubmit={formik.handleSubmit}>
       <form noValidate autoComplete='off'>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardTimePicker
+            id='time'
+            name='time'
+            label='Thời gian'
+            mask='__:__ _M'
+            value={formik.values.time}
+            onChange={(val) => {
+              formik.setFieldValue('time', val)
+            }}
+            color='secondary'
+            okLabel='Chọn'
+            cancelLabel='Hủy'
+          />
+        </MuiPickersUtilsProvider>
         <TextField
           id='description'
           name='description'
-          label='Mô tả'
+          label='Nội dung'
           value={formik.values.description}
           onChange={formik.handleChange}
           error={Boolean(formik.errors.description)}
           helperText={formik.errors.description}
-          placeholder='Mô tả'
+          placeholder='Nội dung'
           fullWidth
-          multiline
-          rows={4}
           color='secondary'
           margin='normal'
           InputLabelProps={{
             shrink: true
           }}
         />
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            id='dueDate'
-            name='dueDate'
-            label='Ngày đến hạn'
-            value={formik.values.dueDate}
-            color='secondary'
-            format='dd/MM/yyyy'
-            onChange={(val) => {
-              formik.setFieldValue('dueDate', val)
-            }}
-            error={Boolean(formik.errors.dueDate)}
-            helperText={formik.errors.dueDate}
-            minDate={new Date()}
-          />
-        </MuiPickersUtilsProvider>
       </form>
     </Modal>
   )
 }
 
-export default TaskModal
+export default TodoModal

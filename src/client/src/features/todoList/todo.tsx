@@ -1,10 +1,6 @@
 import 'date-fns'
 import { useEffect, useState } from 'react'
-import {
-  MuiPickersUtilsProvider,
-  DatePicker,
-  KeyboardTimePicker
-} from '@material-ui/pickers'
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 // @ts-ignore
 import DateFnsUtils from '@date-io/date-fns'
 import Button from '@material-ui/core/Button'
@@ -13,34 +9,21 @@ import {
   Grid,
   makeStyles,
   Theme,
-  TextField,
   withStyles,
   Container
 } from '@material-ui/core'
-import Modal from '../../common/components/modal'
-import { useFormik } from 'formik'
-import * as yup from 'yup'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
   closeTodoModal,
   openTodoModal,
-  TodoProps,
   getTodosAsync,
-  addTodoAsync,
   TodoResponse
 } from './todoSlice'
 
-import { getTime, getDate } from '../../utils/dateTimeHelper'
+import { getDate } from '../../utils/dateTimeHelper'
 import TodoItem from './components/todoItem'
-
-const validationTodoSchema = yup.object({
-  startTime: yup.date(),
-  endTime: yup.date(),
-  description: yup
-    .string()
-    .required('Vui lòng nhập ngày bắt đầu')
-    .max(100, 'Tối đa 100 kí tự')
-})
+import TodoModal from './components/todoModal'
+import NoItemPage from '../../common/components/noItemPage'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -105,24 +88,6 @@ const Todo = () => {
     dispatch(getTodosAsync(getDate(todoDate)))
   }, [todoDate])
 
-  const formik = useFormik({
-    initialValues: {
-      time: new Date(),
-      description: ''
-    },
-    validationSchema: validationTodoSchema,
-    onSubmit: async (values, { resetForm }) => {
-      const payload: TodoProps = {
-        date: getDate(todoDate),
-        time: getTime(values.time),
-        description: values.description
-      }
-      const saved = await dispatch(addTodoAsync(payload)).unwrap()
-      if (saved) resetForm()
-    }
-  })
-
-  console.log(formik)
   return (
     <Container maxWidth='sm'>
       <Grid>
@@ -154,53 +119,20 @@ const Todo = () => {
           </div>
         </div>
         <Grid container spacing={2} className={classes.todoList}>
-          {todos &&
+          {todos && todos.length > 0 ? (
             todos.map((todo: TodoResponse, index: number) => (
               <TodoItem index={index} item={todo} />
-            ))}
+            ))
+          ) : (
+            <NoItemPage text='Chưa có todo nào!' />
+          )}
         </Grid>
-        <div>
-          <Modal
-            open={isOpenTodoModal}
-            onClose={() => dispatch(closeTodoModal())}
-            onSubmit={formik.handleSubmit}
-          >
-            <form noValidate autoComplete='off'>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardTimePicker
-                  id='time'
-                  name='time'
-                  label='Thời gian'
-                  mask='__:__ _M'
-                  value={formik.values.time}
-                  onChange={(val) => {
-                    formik.setFieldValue('time', val)
-                  }}
-                  color='secondary'
-                  okLabel='Chọn'
-                  cancelLabel='Hủy'
-                />
-              </MuiPickersUtilsProvider>
-              <TextField
-                id='description'
-                name='description'
-                label='Nội dung'
-                value={formik.values.description}
-                onChange={formik.handleChange}
-                error={Boolean(formik.errors.description)}
-                helperText={formik.errors.description}
-                placeholder='Nội dung'
-                fullWidth
-                color='secondary'
-                margin='normal'
-                InputLabelProps={{
-                  shrink: true
-                }}
-              />
-            </form>
-          </Modal>
-        </div>
       </Grid>
+      <TodoModal
+        date={todoDate}
+        open={isOpenTodoModal}
+        close={() => dispatch(closeTodoModal())}
+      />
     </Container>
   )
 }
