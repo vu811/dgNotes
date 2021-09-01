@@ -89,7 +89,7 @@ const Todo = () => {
   }, [todoDate])
 
   return (
-    <Container maxWidth='sm'>
+    <Container maxWidth='md'>
       <Grid>
         <div className={classes.navigator}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>

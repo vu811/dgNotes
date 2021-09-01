@@ -72,22 +72,21 @@ const ProjectDetail = () => {
     (state) => state.project.isOpenTaskModal
   )
   const projectDetail = useAppSelector((state) => state.project.projectDetail)
-  console.log('projectDetail', projectDetail?.versions[0]?._id)
   const [currentTab, setCurrentTab] = useState<any>(null)
   const dispatch = useAppDispatch()
   let { id }: { id: string } = useParams()
-  const ref = useRef<String | undefined>('')
-  console.log('rd')
-  console.log(ref)
   const [isDeletedVersion, setIsDeletedVersion] = useState(0)
+  const [noItem, setNoItem] = useState(false)
 
   useEffect(() => {
     dispatch(getProjectAsync(id))
       .unwrap()
       .then((projectDetail: ProjectDetailProps) => {
+        setNoItem(
+          !projectDetail?.versions || projectDetail?.versions.length === 0
+        )
         setCurrentTab(projectDetail?.versions[0]?._id)
       })
-    console.log('useEffect')
   }, [id, isDeletedVersion])
 
   const handleChange = (event: React.ChangeEvent<any>, versionId: String) => {
@@ -126,7 +125,7 @@ const ProjectDetail = () => {
         </Button>
       </div>
       <Paper elevation={0} className={classes.versionList}>
-        {projectDetail?.versions && projectDetail?.versions.length > 0 ? (
+        {projectDetail?.versions && projectDetail?.versions.length > 0 && (
           <>
             <Tabs
               orientation='vertical'
@@ -190,9 +189,8 @@ const ProjectDetail = () => {
                 )
               })}
           </>
-        ) : (
-          <NoItemPage text='Chưa có phiên bản nào!' />
         )}
+        {noItem && <NoItemPage text='Chưa có phiên bản nào!' />}
       </Paper>
       <VersionModal
         id={id}

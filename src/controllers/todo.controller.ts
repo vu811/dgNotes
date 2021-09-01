@@ -25,6 +25,17 @@ export const getTodos = async (req: Request, res: Response) => {
   }
 }
 
+export const completeTodo = async (req: Request, res: Response) => {
+  try {
+    const todo = await Todo.findByIdAndUpdate(req.params.id, {
+      isCompleted: true
+    })
+    res.status(200).json(todo)
+  } catch (ex) {
+    res.status(404).json({ message: ex.message })
+  }
+}
+
 export const deleteTodo = async (req: Request, res: Response) => {
   try {
     const todo = await Todo.findByIdAndDelete(req.params.id)

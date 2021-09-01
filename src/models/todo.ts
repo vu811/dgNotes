@@ -13,6 +13,10 @@ export const todoSchema = new Schema(
     },
     description: {
       type: String
+    },
+    isCompleted: {
+      type: Boolean,
+      default: false
     }
   },
   {

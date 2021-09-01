@@ -10,7 +10,12 @@ import {
   deleteProject,
   updateTask
 } from '../controllers/project.controller'
-import { addTodo, getTodos, deleteTodo } from '../controllers/todo.controller'
+import {
+  addTodo,
+  getTodos,
+  deleteTodo,
+  completeTodo
+} from '../controllers/todo.controller'
 
 const routes = (app: Express) => {
   const router = express.Router()
@@ -38,6 +43,7 @@ const routes = (app: Express) => {
   router.get(todoBaseRoute, getTodos)
   router.post(todoBaseRoute, addTodo)
   router.delete(`${todoBaseRoute}/:id`, deleteTodo)
+  router.put(`${todoBaseRoute}/:id/complete`, completeTodo)
 
   app.use(router)
 }

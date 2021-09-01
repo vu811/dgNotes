@@ -3,6 +3,7 @@ import { FlashType } from '../enums'
 
 export interface AppState {
   flashAlert: FlashAlertType
+  loading: boolean
 }
 
 interface FlashAlertType {
@@ -16,7 +17,8 @@ const initialState: AppState = {
     isOpenFlashAlert: false,
     message: '',
     type: FlashType.Info
-  }
+  },
+  loading: true
 }
 
 export const appSlice = createSlice({

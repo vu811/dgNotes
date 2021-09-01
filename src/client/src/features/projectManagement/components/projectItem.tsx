@@ -1,8 +1,7 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
-import Avatar from '@material-ui/core/Avatar'
 import { red } from '@material-ui/core/colors'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -17,7 +16,7 @@ import { useHistory } from 'react-router-dom'
 import { useAppDispatch } from '../../../app/hooks'
 import { FlashType } from '../../../enums'
 import { flashAlert } from '../../../app/appSlice'
-import { Chip } from '@material-ui/core'
+import { Chip, Menu, MenuItem } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,8 +54,6 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer'
   },
   startDate: {
-    //color: 'rgb(244, 67, 54)',
-    //backgroundColor: 'rgba(244, 67, 54, 0.1)',
     backgroundColor: theme.palette.info.light,
     fontWeight: 700,
     padding: '4px',
@@ -83,6 +80,16 @@ const ProjectItem: FC<ProjectItemProps> = ({ item }) => {
     history.push(`projects/${id}`)
   }
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
   const handleDeleteProject = async (id?: String) => {
     try {
       const result = await dispatch(deleteProjectAsync(id)).unwrap()
@@ -101,7 +108,7 @@ const ProjectItem: FC<ProjectItemProps> = ({ item }) => {
       <Card className={classes.root}>
         <CardHeader
           action={
-            <IconButton aria-label='settings'>
+            <IconButton aria-label='settings' onClick={handleClick}>
               <MoreVertIcon />
             </IconButton>
           }
@@ -127,22 +134,34 @@ const ProjectItem: FC<ProjectItemProps> = ({ item }) => {
         </CardContent>
         <CardActions className={classes.cardAction}>
           <span className={classes.startDate}> Start date: 12/12/2021</span>
-          <div>
-            <IconButtonStyled
-              color='secondary'
-              onClick={() => handleDeleteProject(item._id)}
-            >
-              <EditIcon />
-            </IconButtonStyled>
-            <IconButtonStyled
-              color='primary'
-              onClick={() => handleDeleteProject(item._id)}
-            >
-              <DeleteForeverIcon />
-            </IconButtonStyled>
-          </div>
         </CardActions>
       </Card>
+      <Menu
+        id='simple-menu'
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>
+          <IconButtonStyled
+            color='secondary'
+            onClick={() => handleDeleteProject(item._id)}
+          >
+            <EditIcon />
+            <Typography>Chỉnh sửa</Typography>
+          </IconButtonStyled>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <IconButtonStyled
+            color='primary'
+            onClick={() => handleDeleteProject(item._id)}
+          >
+            <DeleteForeverIcon />
+            <Typography>Xóa</Typography>
+          </IconButtonStyled>
+        </MenuItem>
+      </Menu>
     </Grid>
   )
 }

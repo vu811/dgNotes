@@ -71,6 +71,7 @@ export interface ProjectState {
   isOpenTaskModal: boolean
   projects: ProjectProps[]
   projectDetail: ProjectDetailProps | null
+  loading?: boolean
 }
 
 const initialState: ProjectState = {
@@ -78,7 +79,8 @@ const initialState: ProjectState = {
   isOpenVersionModal: false,
   isOpenTaskModal: false,
   projects: [],
-  projectDetail: null
+  projectDetail: null,
+  loading: undefined
 }
 
 export const getProjectsAsync = createAsyncThunk('project/get', async () => {
@@ -210,7 +212,6 @@ export const projectSlice = createSlice({
         state.isOpenTaskModal = false
       })
       .addCase(deleteTaskAsync.fulfilled, (state, action) => {
-        console.log('action.payload', action.payload)
         state.projectDetail = action.payload
       })
       .addCase(deleteVersionAsync.fulfilled, (state, action) => {
