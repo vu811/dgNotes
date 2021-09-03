@@ -77,7 +77,7 @@ export const projectSlice = createSlice({
       .addCase(completeTodoAsync.fulfilled, (state, action) => {
         state.todos = state.todos.map((todo) => {
           if (todo._id === action.payload._id) {
-            todo.isCompleted = true
+            todo.isCompleted = !todo.isCompleted
           }
           return todo
         })

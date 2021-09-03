@@ -1,4 +1,3 @@
-import mongoose from 'mongoose'
 import { Request, Response } from 'express'
 import Project from '../models/project'
 import Task from '../models/task'
@@ -31,27 +30,25 @@ export const getProjects = async (req: Request, res: Response) => {
 
 export const getProject = async (req: Request, res: Response) => {
   try {
-    const project = await Project.aggregate([
-      { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
-      { $unwind: { path: '$versions', preserveNullAndEmptyArrays: true } },
-      { $sort: { 'versions.name': -1, 'versions.tasks.createdAt': -1 } },
-      {
-        $group: {
-          _id: '$_id',
-          name: { $first: '$name' },
-          startDate: { $first: '$startDate' },
-          description: { $first: '$description' },
-          versions: { $push: '$versions' }
-        }
-      }
-      // {
-      //   $unwind: { path: '$versions.tasks', preserveNullAndEmptyArrays: true }
-      // }
-    ])
-    // const project = await Project.find({ _id: req.params.id }).sort({
-    //   'versions.name': -1
-    // })
-    res.status(200).json(project[0])
+    // const project = await Project.aggregate([
+    //   { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
+    //   { $unwind: { path: '$versions', preserveNullAndEmptyArrays: true } },
+    //   { $sort: { 'versions.name': -1, 'versions.tasks.createdAt': -1 } },
+    //   {
+    //     $group: {
+    //       _id: '$_id',
+    //       name: { $first: '$name' },
+    //       startDate: { $first: '$startDate' },
+    //       description: { $first: '$description' },
+    //       versions: { $push: '$versions' }
+    //     }
+    //   }
+    //   // {
+    //   //   $unwind: { path: '$versions.tasks', preserveNullAndEmptyArrays: true }
+    //   // }
+    // ])
+    const project = await Project.findById(req.params.id)
+    res.status(200).json(project)
   } catch (ex) {
     res.status(404).json({ message: ex.message })
   }

@@ -4,7 +4,6 @@ import { useFormik } from 'formik'
 import Modal from '../../../common/components/modal'
 import * as yup from 'yup'
 import {
-  KeyboardDatePicker,
   KeyboardTimePicker,
   MuiPickersUtilsProvider
 } from '@material-ui/pickers'
@@ -58,14 +57,14 @@ const TodoModal = ({ date, open, close }: any) => {
   const dispatch = useAppDispatch()
   const formik = useFormik({
     initialValues: {
-      time: new Date(),
+      time: null,
       description: ''
     },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
       const payload: TodoProps = {
         date: getDate(date),
-        time: getTime(values.time),
+        time: getTime(values.time ?? undefined),
         description: values.description
       }
       const saved = await dispatch(addTodoAsync(payload)).unwrap()

@@ -8,6 +8,10 @@ import TrackChangesRoundedIcon from '@material-ui/icons/TrackChangesRounded'
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
 import { styled, withStyles } from '@material-ui/core/styles'
 import { useHistory, useLocation } from 'react-router-dom'
+import { Collapse } from '@material-ui/core'
+import { ExpandLess, ExpandMore, StarBorder } from '@material-ui/icons'
+import List from '@material-ui/core/List'
+import { useState } from 'react'
 
 const ListItem = withStyles({
   root: {
@@ -56,6 +60,13 @@ const ListItemStyle = styled(ListItem)(({ theme }) => ({
 const ListItems = () => {
   const history = useHistory()
   const location = useLocation()
+
+  const [open, setOpen] = useState(true)
+
+  const handleClick = () => {
+    setOpen(!open)
+  }
+
   return (
     <div>
       <ListItemStyle
@@ -88,12 +99,23 @@ const ListItems = () => {
         </ListItemIcon>
         <ListItemText primary='Quản lí dự án' />
       </ListItemStyle>
-      <ListItemStyle button>
+      <ListItemStyle button onClick={handleClick}>
         <ListItemIcon>
           <TrackChangesRoundedIcon />
         </ListItemIcon>
         <ListItemText primary='Thiết lập mục tiêu' />
+        {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemStyle>
+      <Collapse in={open} timeout='auto' unmountOnExit>
+        <List component='div' disablePadding>
+          <ListItemStyle button>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary='Starred' />
+          </ListItemStyle>
+        </List>
+      </Collapse>
       <ListItemStyle button>
         <ListItemIcon>
           <SettingsRoundedIcon />

@@ -13,6 +13,7 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { selectIsOpenSideBar, updateSidebar } from '../layoutSlice'
 
 import { useHistory } from 'react-router-dom'
+import { LinearProgress } from '@material-ui/core'
 
 const drawerWidth = 240
 const useStyles = makeStyles((theme) => ({
@@ -63,41 +64,44 @@ const Header = () => {
   }
 
   return (
-    <AppBar
-      position='absolute'
-      className={clsx(classes.appBar, isOpenSidebar && classes.appBarShift)}
-    >
-      <Toolbar className={classes.toolbar}>
-        <IconButton
-          edge='start'
-          color='inherit'
-          aria-label='open drawer'
-          onClick={() => dispatch(updateSidebar(true))}
-          className={clsx(
-            classes.menuButton,
-            isOpenSidebar && classes.menuButtonHidden
-          )}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography
-          component='h1'
-          variant='h6'
-          color='inherit'
-          noWrap
-          className={classes.title}
-        >
-          <span className={classes.logoText} onClick={goToHome}>
-            dgNOTES
-          </span>
-        </Typography>
-        <IconButton color='inherit'>
-          <Badge badgeContent={4} color='secondary'>
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-      </Toolbar>
-    </AppBar>
+    <>
+      <AppBar
+        position='absolute'
+        className={clsx(classes.appBar, isOpenSidebar && classes.appBarShift)}
+      >
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge='start'
+            color='inherit'
+            aria-label='open drawer'
+            onClick={() => dispatch(updateSidebar(true))}
+            className={clsx(
+              classes.menuButton,
+              isOpenSidebar && classes.menuButtonHidden
+            )}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            component='h1'
+            variant='h6'
+            color='inherit'
+            noWrap
+            className={classes.title}
+          >
+            <span className={classes.logoText} onClick={goToHome}>
+              dgNOTES
+            </span>
+          </Typography>
+          <IconButton color='inherit'>
+            <Badge badgeContent={4} color='secondary'>
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+        </Toolbar>
+        {/* <LinearProgress variant='determinate' value={67} color='secondary' /> */}
+      </AppBar>
+    </>
   )
 }
 

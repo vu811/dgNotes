@@ -49,7 +49,10 @@ const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
     borderRight: `solid 2px ${theme.palette.primary.main}`
   },
   todoContent: {
-    textAlign: 'center'
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   todoNumber: {
     display: 'inline-block',
@@ -63,6 +66,10 @@ const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
     fontWeight: theme.typography.fontWeightBold
   },
   todoTime: {
+    color: 'lightslategrey',
+    fontWeight: theme.typography.fontWeightBold
+  },
+  todoDescr: {
     fontWeight: theme.typography.fontWeightBold
   },
   todoNumberGrid: {
@@ -137,12 +144,13 @@ const TodoItem: FC<TodoItemProps> = ({ index, item }) => {
   }
 
   const handleCompleteTodo = async (id: string) => {
+    handleClose()
     try {
       const result = await dispatch(completeTodoAsync(id)).unwrap()
       if (result) {
         dispatch(
           flashAlert({
-            message: 'Đã đánh dấu hoàn thành!',
+            message: 'Đã cập nhật thành công!',
             type: FlashType.Success
           })
         )
@@ -153,6 +161,7 @@ const TodoItem: FC<TodoItemProps> = ({ index, item }) => {
   }
 
   const handleDeleteTodo = async (id: string) => {
+    handleClose()
     try {
       const result = await dispatch(deleteTodoAsync(id)).unwrap()
       if (result) {
@@ -177,7 +186,7 @@ const TodoItem: FC<TodoItemProps> = ({ index, item }) => {
               <Typography component='p' className={classes.todoTime}>
                 {item.time}
               </Typography>
-              <Typography component='p' className={classes.todoTime}>
+              <Typography component='p' className={classes.todoDescr}>
                 {item.description}
               </Typography>
             </Grid>
@@ -192,14 +201,13 @@ const TodoItem: FC<TodoItemProps> = ({ index, item }) => {
                 className={classes.test}
                 onClose={handleClose}
               >
-                <MenuItem
-                  disabled={item.isCompleted}
-                  onClick={() => handleCompleteTodo(item._id)}
-                >
+                <MenuItem onClick={() => handleCompleteTodo(item._id)}>
                   <ListItemIconStyled>
                     <CheckCircleOutlineIcon style={{ color: green[500] }} />
                   </ListItemIconStyled>
-                  <Typography>Hoàn thành</Typography>
+                  <Typography>
+                    {item.isCompleted ? 'Chưa hoàn thành' : 'Hoàn thành'}
+                  </Typography>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                   <ListItemIconStyled>

@@ -101,7 +101,6 @@ const VersionModal = ({ id, open, close }: any) => {
               formik.setFieldValue('startDate', val)
             }}
             minDate={new Date()}
-            defaultValue={null}
           />
         </MuiPickersUtilsProvider>
         <TextField

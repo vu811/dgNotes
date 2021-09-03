@@ -27,9 +27,9 @@ export const getTodos = async (req: Request, res: Response) => {
 
 export const completeTodo = async (req: Request, res: Response) => {
   try {
-    const todo = await Todo.findByIdAndUpdate(req.params.id, {
-      isCompleted: true
-    })
+    const todo = await Todo.findById(req.params.id)
+    todo.isCompleted = !todo.isCompleted
+    await todo.save()
     res.status(200).json(todo)
   } catch (ex) {
     res.status(404).json({ message: ex.message })
