@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Card, CardContent, Grid, makeStyles } from '@material-ui/core'
-import notFound from '../../assets/images/not-found.png'
+import notFound from '../../../assets/images/not-found.png'
 
 const useStyles = makeStyles((theme) => ({
   card: {

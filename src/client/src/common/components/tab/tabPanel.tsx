@@ -20,8 +20,8 @@ const TabPanel = ({ children, value, index, ...other }: TabPanelProps) => {
       role='tabpanel'
       className={classes.root}
       hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
+      id={`tabpanel-${index}`}
+      aria-labelledby={`tab-${index}`}
       {...other}
     >
       {value === index && children}

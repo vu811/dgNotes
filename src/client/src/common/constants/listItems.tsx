@@ -99,23 +99,16 @@ const ListItems = () => {
         </ListItemIcon>
         <ListItemText primary='Quản lí dự án' />
       </ListItemStyle>
-      <ListItemStyle button onClick={handleClick}>
+      <ListItemStyle
+        button
+        selected={location.pathname === '/goals'}
+        onClick={() => history.push('/goals')}
+      >
         <ListItemIcon>
           <TrackChangesRoundedIcon />
         </ListItemIcon>
         <ListItemText primary='Thiết lập mục tiêu' />
-        {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemStyle>
-      <Collapse in={open} timeout='auto' unmountOnExit>
-        <List component='div' disablePadding>
-          <ListItemStyle button>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary='Starred' />
-          </ListItemStyle>
-        </List>
-      </Collapse>
       <ListItemStyle button>
         <ListItemIcon>
           <SettingsRoundedIcon />

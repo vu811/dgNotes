@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import layoutReducer from '../layouts/layoutSlice'
-import projectReducer from '../features/projectManagement/projectSlice'
-import todoReducer from '../features/todoList/todoSlice'
+import projectReducer from '../features/project/projectSlice'
+import todoReducer from '../features/todo/todoSlice'
 import appReducer from './appSlice'
 
 export const store = configureStore({
