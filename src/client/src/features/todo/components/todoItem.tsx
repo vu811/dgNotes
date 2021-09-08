@@ -66,7 +66,7 @@ const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
     fontWeight: theme.typography.fontWeightBold
   },
   todoTime: {
-    color: 'lightslategrey',
+    color: ({ isCompleted }) => (isCompleted ? '#66bb6a' : 'lightslategrey'),
     fontWeight: theme.typography.fontWeightBold
   },
   todoDescr: {
@@ -87,6 +87,7 @@ const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
     cursor: 'pointer'
   },
   cardContent: {
+    color: ({ isCompleted }) => (isCompleted ? '#66bb6a' : 'rgb(34, 51, 84)'),
     backgroundColor: ({ isCompleted }) => (isCompleted ? '#c9f8de' : 'white')
   },
   test: {

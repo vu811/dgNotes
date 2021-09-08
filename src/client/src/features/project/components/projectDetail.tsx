@@ -154,7 +154,7 @@ const ProjectDetail = () => {
                   <TabPanel value={currentTab} index={version._id}>
                     <div className={classes.versionBtnGroup}>
                       <Button
-                        variant='contained'
+                        variant='outlined'
                         color='secondary'
                         className={classes.addTaskBtn}
                         startIcon={<PlaylistAddIcon />}
@@ -163,7 +163,7 @@ const ProjectDetail = () => {
                         thêm công việc
                       </Button>
                       <Button
-                        variant='contained'
+                        variant='outlined'
                         color='primary'
                         size='small'
                         className={classes.addTaskBtn}

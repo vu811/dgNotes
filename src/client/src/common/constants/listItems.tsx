@@ -6,12 +6,9 @@ import CodeRoundedIcon from '@material-ui/icons/CodeRounded'
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded'
 import TrackChangesRoundedIcon from '@material-ui/icons/TrackChangesRounded'
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
+import PlaylistAddCheckTwoToneIcon from '@material-ui/icons/PlaylistAddCheckTwoTone'
 import { styled, withStyles } from '@material-ui/core/styles'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Collapse } from '@material-ui/core'
-import { ExpandLess, ExpandMore, StarBorder } from '@material-ui/icons'
-import List from '@material-ui/core/List'
-import { useState } from 'react'
 
 const ListItem = withStyles({
   root: {
@@ -61,12 +58,6 @@ const ListItems = () => {
   const history = useHistory()
   const location = useLocation()
 
-  const [open, setOpen] = useState(true)
-
-  const handleClick = () => {
-    setOpen(!open)
-  }
-
   return (
     <div>
       <ListItemStyle
@@ -85,9 +76,9 @@ const ListItems = () => {
         onClick={() => history.push('/todos')}
       >
         <ListItemIcon>
-          <FormatListNumberedIcon />
+          <PlaylistAddCheckTwoToneIcon />
         </ListItemIcon>
-        <ListItemText primary='Danh sách todo' />
+        <ListItemText primary='Danh sách to-do' />
       </ListItemStyle>
       <ListItemStyle
         button
@@ -108,6 +99,16 @@ const ListItems = () => {
           <TrackChangesRoundedIcon />
         </ListItemIcon>
         <ListItemText primary='Thiết lập mục tiêu' />
+      </ListItemStyle>
+      <ListItemStyle
+        button
+        selected={location.pathname === '/bucket-list'}
+        onClick={() => history.push('/goals')}
+      >
+        <ListItemIcon>
+          <FormatListNumberedIcon />
+        </ListItemIcon>
+        <ListItemText primary='Bucket list' />
       </ListItemStyle>
       <ListItemStyle button>
         <ListItemIcon>

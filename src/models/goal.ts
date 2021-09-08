@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { GoalEnum } from '../enums/goalEnum'
+import { GoalType, ObjectiveType } from '../enums/goalEnum'
 
 const Schema = mongoose.Schema
 
@@ -7,8 +7,13 @@ export const goalSchema = new Schema(
   {
     type: {
       type: Number,
-      enum: GoalEnum,
-      default: 1
+      enum: GoalType,
+      default: 0
+    },
+    objectiveType: {
+      type: Number,
+      enum: ObjectiveType,
+      default: 0
     },
     revision: {
       type: Number,
