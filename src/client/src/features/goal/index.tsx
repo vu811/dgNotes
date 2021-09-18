@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Typography from '@material-ui/core/Typography'
-import { Button, Container, Paper } from '@material-ui/core'
+import { Container, Paper } from '@material-ui/core'
 import CustomTab from '../../common/components/tab'
 import AppBar from '@material-ui/core/AppBar'
 import TabPanel from '../../common/components/tab/tabPanel'
 import { goalTypes } from '../../data'
 import Objective from './components/objective'
 import GoalModal from './components/goalModal'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { closeGoalModal, getGoalsAsync } from './goalSlice'
 
 const useStyles = makeStyles((theme: Theme) => ({
   versionList: {
@@ -60,10 +62,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Goal = () => {
   const classes = useStyles()
-  const [value, setValue] = useState(0)
+  const dispatch = useAppDispatch()
+  const isOpenGoalModal = useAppSelector((state) => state.goal.isOpenGoalModal)
+  const goals = useAppSelector((state) => state.goal.goals)
+  const [goalType, setGoalType] = useState(0)
+
+  useEffect(() => {
+    dispatch(getGoalsAsync(goalType))
+  }, [goalType])
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue)
+    setGoalType(newValue)
   }
 
   return (
@@ -74,7 +83,7 @@ const Goal = () => {
       <Paper elevation={0}>
         <AppBar position='static' color='transparent'>
           <Tabs
-            value={value}
+            value={goalType}
             onChange={handleChange}
             variant='scrollable'
             scrollButtons='on'
@@ -93,18 +102,22 @@ const Goal = () => {
           </Tabs>
         </AppBar>
         <div className={classes.mainGoal}>
-          <TabPanel value={value} index={0}>
-            <Objective />
+          <TabPanel value={goalType} index={0}>
+            <Objective goals={goals} />
           </TabPanel>
-          <TabPanel value={value} index={1}>
-            sfdsfdfd
+          <TabPanel value={goalType} index={1}>
+            <Objective goals={goals} />
           </TabPanel>
-          <TabPanel value={value} index={2}>
-            <Objective />
+          <TabPanel value={goalType} index={2}>
+            <Objective goals={goals} />
           </TabPanel>
         </div>
       </Paper>
-      <GoalModal open={true} close={() => {}} />
+      <GoalModal
+        goalType={goalType}
+        open={isOpenGoalModal}
+        close={() => dispatch(closeGoalModal())}
+      />
     </Container>
   )
 }

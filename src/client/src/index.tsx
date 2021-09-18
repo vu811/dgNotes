@@ -73,7 +73,7 @@ let theme = createTheme({
     },
     MuiButton: {
       root: {
-        borderRadius: 20
+        borderRadius: 5
       },
       label: {
         fontWeight: 700

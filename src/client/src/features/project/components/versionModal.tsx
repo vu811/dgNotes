@@ -71,7 +71,12 @@ const VersionModal = ({ id, open, close }: any) => {
     }
   })
   return (
-    <Modal open={open} onClose={close} onSubmit={formik.handleSubmit}>
+    <Modal
+      title='Thêm phiên bản'
+      open={open}
+      onClose={close}
+      onSubmit={formik.handleSubmit}
+    >
       <form noValidate autoComplete='off'>
         <TextField
           id='name'

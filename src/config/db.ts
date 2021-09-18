@@ -8,7 +8,7 @@ const connectDb = async () => {
       useCreateIndex: true
     })
     console.log(`Database connected : ${con.connection.host}`)
-  } catch (ex) {
+  } catch (ex: any) {
     console.error(`Error: ${ex.message}`)
     process.exit(1)
   }

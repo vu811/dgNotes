@@ -78,7 +78,7 @@ const ListItems = () => {
         <ListItemIcon>
           <PlaylistAddCheckTwoToneIcon />
         </ListItemIcon>
-        <ListItemText primary='Danh sách to-do' />
+        <ListItemText primary='Danh sách tu-đu' />
       </ListItemStyle>
       <ListItemStyle
         button
@@ -108,7 +108,7 @@ const ListItems = () => {
         <ListItemIcon>
           <FormatListNumberedIcon />
         </ListItemIcon>
-        <ListItemText primary='Bucket list' />
+        <ListItemText primary='Danh sách 100' />
       </ListItemStyle>
       <ListItemStyle button>
         <ListItemIcon>

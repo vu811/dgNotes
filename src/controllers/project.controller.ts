@@ -14,7 +14,7 @@ export const addProject = async (req: Request, res: Response) => {
     await newProject.save()
     const projects = await Project.find({}).sort({ name: 1 })
     res.status(200).json(projects)
-  } catch (ex) {
+  } catch (ex: any) {
     res.status(409).json({ message: ex.message })
   }
 }
@@ -23,7 +23,7 @@ export const getProjects = async (req: Request, res: Response) => {
   try {
     const projects = await Project.find({}).sort({ name: 1 })
     res.status(200).json(projects)
-  } catch (ex) {
+  } catch (ex: any) {
     res.status(404).json({ message: ex.message })
   }
 }
@@ -49,7 +49,7 @@ export const getProject = async (req: Request, res: Response) => {
     // ])
     const project = await Project.findById(req.params.id)
     res.status(200).json(project)
-  } catch (ex) {
+  } catch (ex: any) {
     res.status(404).json({ message: ex.message })
   }
 }
@@ -58,7 +58,7 @@ export const deleteProject = async (req: Request, res: Response) => {
   try {
     const project = await Project.findByIdAndDelete(req.params.id)
     res.status(200).json(project)
-  } catch (ex) {
+  } catch (ex: any) {
     res.status(404).json({ message: ex.message })
   }
 }
@@ -77,7 +77,7 @@ export const addVersion = async (req: Request, res: Response) => {
     }
     await project.save()
     res.status(201).json(project)
-  } catch (ex) {
+  } catch (ex: any) {
     res.status(409).json({ message: ex.message })
   }
 }
@@ -100,7 +100,7 @@ export const addTask = async (req: Request, res: Response) => {
     }
     await project.save()
     res.status(201).json(project)
-  } catch (ex) {
+  } catch (ex: any) {
     res.status(409).json({ message: ex.message })
   }
 }
@@ -121,7 +121,7 @@ export const deleteTask = async (req: Request, res: Response) => {
     }
     await project.save()
     res.status(201).json(project)
-  } catch (ex) {
+  } catch (ex: any) {
     res.status(409).json({ message: ex.message })
   }
 }
@@ -148,7 +148,7 @@ export const updateTask = async (req: Request, res: Response) => {
     }
     await project.save()
     res.status(201).json(project)
-  } catch (ex) {
+  } catch (ex: any) {
     res.status(409).json({ message: ex.message })
   }
 }
@@ -164,7 +164,7 @@ export const deleteVersion = async (req: Request, res: Response) => {
     }
     await project.save()
     res.status(201).json(project)
-  } catch (ex) {
+  } catch (ex: any) {
     res.status(409).json({ message: ex.message })
   }
 }

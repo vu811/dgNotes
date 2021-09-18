@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 
 export const goalSchema = new Schema(
   {
-    type: {
+    goalType: {
       type: Number,
       enum: GoalType,
       default: 0

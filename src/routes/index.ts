@@ -1,4 +1,5 @@
 import express, { Express } from 'express'
+import { addGoal, deleteGoal, getGoals } from '../controllers/goal.controller'
 import {
   addProject,
   getProjects,
@@ -44,6 +45,12 @@ const routes = (app: Express) => {
   router.post(todoBaseRoute, addTodo)
   router.delete(`${todoBaseRoute}/:id`, deleteTodo)
   router.put(`${todoBaseRoute}/:id/complete`, completeTodo)
+
+  /* Goal API */
+  const goalBaseRoute = '/api/goals'
+  router.get(goalBaseRoute, getGoals)
+  router.post(goalBaseRoute, addGoal)
+  router.delete(`${goalBaseRoute}/:id`, deleteGoal)
 
   app.use(router)
 }

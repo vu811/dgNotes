@@ -111,6 +111,7 @@ const Project = () => {
           ))}
       </Grid>
       <Modal
+        title='Thêm dự án'
         open={isOpenProjectModal}
         onClose={() => dispatch(closeProjectModal())}
         onSubmit={formik.handleSubmit}

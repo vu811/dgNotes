@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     height: 'calc(100vh - 300px)'
   },
   content: {
-    height: 'calc(100vh - 300px)',
+    //height: 'calc(100vh - 300px)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',

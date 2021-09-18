@@ -1,5 +1,5 @@
 import 'date-fns'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 // @ts-ignore
@@ -58,11 +58,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: theme.typography.fontWeightBold
   },
   todoList: {
-    marginTop: '5px',
-    [theme.breakpoints.up('md')]: {
-      maxHeight: 'calc(100vh - 225px)',
-      overflowY: 'auto'
-    }
+    marginTop: '5px'
+    // [theme.breakpoints.up('md')]: {
+    //   maxHeight: 'calc(100vh - 225px)',
+    //   overflowY: 'auto'
+    // }
   },
   navigator: {
     display: 'flex',
@@ -125,7 +125,7 @@ const Todo = () => {
               className={classes.addTodoBtn}
               onClick={() => dispatch(openTodoModal())}
             >
-              <span className={classes.addTodoBtnText}>thêm todo</span>
+              <span className={classes.addTodoBtnText}>thêm tu-đu</span>
             </Button>
           </div>
         </div>
@@ -135,7 +135,7 @@ const Todo = () => {
               <TodoItem index={index} item={todo} />
             ))
           ) : (
-            <NoItemPage text='Chưa có todo nào!' />
+            <NoItemPage text='Chưa có tu-đu nào!' />
           )}
         </Grid>
       </Grid>

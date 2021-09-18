@@ -67,12 +67,19 @@ const DialogActions = withStyles((theme: Theme) => ({
 }))(MuiDialogActions)
 
 interface ModalProps {
+  title: string
   open: boolean
   onClose: () => void
   onSubmit: () => void
 }
 
-const Modal: FC<ModalProps> = ({ children, open, onClose, onSubmit }) => {
+const Modal: FC<ModalProps> = ({
+  title,
+  open,
+  onClose,
+  onSubmit,
+  children
+}) => {
   return (
     <div>
       <Dialog
@@ -83,13 +90,13 @@ const Modal: FC<ModalProps> = ({ children, open, onClose, onSubmit }) => {
         open={open}
       >
         <DialogTitle id='customized-dialog-title' onClose={onClose}>
-          Modal title
+          {title}
         </DialogTitle>
         <DialogContent dividers>{children}</DialogContent>
         <DialogActions>
           <Button
             variant='contained'
-            color='primary'
+            color='secondary'
             size='small'
             startIcon={<SaveIcon />}
             onClick={onSubmit}

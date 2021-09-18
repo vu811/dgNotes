@@ -3,13 +3,15 @@ import layoutReducer from '../layouts/layoutSlice'
 import projectReducer from '../features/project/projectSlice'
 import todoReducer from '../features/todo/todoSlice'
 import appReducer from './appSlice'
+import goalReducer from '../features/goal/goalSlice'
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
     layout: layoutReducer,
     project: projectReducer,
-    todo: todoReducer
+    todo: todoReducer,
+    goal: goalReducer
   }
 })
 

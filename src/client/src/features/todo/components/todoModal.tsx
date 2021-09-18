@@ -72,7 +72,12 @@ const TodoModal = ({ date, open, close }: any) => {
     }
   })
   return (
-    <Modal open={open} onClose={close} onSubmit={formik.handleSubmit}>
+    <Modal
+      title='Thêm tu-đu'
+      open={open}
+      onClose={close}
+      onSubmit={formik.handleSubmit}
+    >
       <form noValidate autoComplete='off'>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardTimePicker

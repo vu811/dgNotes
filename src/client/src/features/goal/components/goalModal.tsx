@@ -1,4 +1,3 @@
-import 'date-fns'
 import {
   InputLabel,
   makeStyles,
@@ -9,22 +8,15 @@ import {
 import { useFormik } from 'formik'
 import Modal from '../../../common/components/modal'
 import * as yup from 'yup'
-import {
-  KeyboardTimePicker,
-  MuiPickersUtilsProvider
-} from '@material-ui/pickers'
-// @ts-ignore
-import DateFnsUtils from '@date-io/date-fns'
 import { useAppDispatch } from '../../../app/hooks'
-import { getDate, getTime } from '../../../utils/dateTimeHelper'
+import { objectiveTypes } from '../../../data'
+import { addGoalAsync, GoalProps } from '../goalSlice'
 
 const validationSchema = yup.object({
-  startTime: yup.date(),
-  endTime: yup.date(),
-  description: yup
+  goal: yup
     .string()
-    .required('Vui lòng nhập ngày bắt đầu')
-    .max(100, 'Tối đa 100 kí tự')
+    .required('Vui lòng nhập mục tiêu')
+    .max(500, 'Tối đa 500 kí tự')
 })
 
 const useStyles = makeStyles((theme) => ({
@@ -58,37 +50,87 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const GoalModal = ({ open, close }: any) => {
+const GoalModal = ({ goalType, open, close }: any) => {
   const dispatch = useAppDispatch()
   const formik = useFormik({
     initialValues: {
-      time: null,
-      description: ''
+      objectiveType: 0,
+      goal: '',
+      plan: ''
     },
     validationSchema: validationSchema,
-    onSubmit: async (values, { resetForm }) => {}
+    onSubmit: async (values, { resetForm }) => {
+      const { objectiveType, goal, plan } = values
+      const payload: GoalProps = {
+        goalType: goalType,
+        objectiveType,
+        goal,
+        plan
+      }
+      const saved = await dispatch(addGoalAsync(payload)).unwrap()
+      if (saved) resetForm()
+    }
   })
   return (
-    <Modal open={open} onClose={close} onSubmit={formik.handleSubmit}>
+    <Modal
+      title='Thêm mục tiêu'
+      open={open}
+      onClose={close}
+      onSubmit={formik.handleSubmit}
+    >
       <form noValidate autoComplete='off'>
-        <InputLabel id='demo-simple-select-label'>Age</InputLabel>
-        <Select labelId='demo-simple-select-label' id='demo-simple-select'>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+        <InputLabel required shrink id='goalTypeLabel'>
+          Phân loại
+        </InputLabel>
+        <Select
+          labelId='goalTypeLabel'
+          id='goalType'
+          fullWidth
+          value={formik.values.objectiveType}
+          error={Boolean(formik.errors.objectiveType)}
+          onChange={formik.handleChange('objectiveType')}
+          onBlur={formik.handleBlur}
+          color='secondary'
+        >
+          {objectiveTypes.map((item) => (
+            <MenuItem key={item.type} value={item.type}>
+              {item.name}
+            </MenuItem>
+          ))}
         </Select>
         <TextField
-          id='description'
-          name='description'
-          label='Nội dung'
-          value={formik.values.description}
+          id='goal'
+          name='goal'
+          label='Mục tiêu'
+          value={formik.values.goal}
           onChange={formik.handleChange}
-          error={Boolean(formik.errors.description)}
-          helperText={formik.errors.description}
-          placeholder='Nội dung'
+          error={Boolean(formik.errors.goal)}
+          helperText={formik.errors.goal}
+          placeholder='Mục tiêu'
           fullWidth
           color='secondary'
           margin='normal'
+          multiline
+          rows={5}
+          required
+          InputLabelProps={{
+            shrink: true
+          }}
+        />
+        <TextField
+          id='plan'
+          name='plan'
+          label='Kế hoạch'
+          value={formik.values.plan}
+          onChange={formik.handleChange}
+          error={Boolean(formik.errors.plan)}
+          helperText={formik.errors.plan}
+          placeholder='Kế hoạch'
+          fullWidth
+          color='secondary'
+          margin='normal'
+          multiline
+          rows={5}
           InputLabelProps={{
             shrink: true
           }}

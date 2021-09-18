@@ -55,7 +55,7 @@ export const deleteTodoAsync = createAsyncThunk(
 )
 
 export const projectSlice = createSlice({
-  name: 'project',
+  name: 'todo',
   initialState,
   reducers: {
     openTodoModal: (state) => {

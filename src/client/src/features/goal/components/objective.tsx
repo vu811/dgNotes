@@ -10,6 +10,8 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 import { objectiveTypes } from '../../../data'
 import ObjectiveItem from './objectiveItem'
 import { withStyles } from '@material-ui/styles'
+import { useAppDispatch } from '../../../app/hooks'
+import { GoalProps, GoalResProps, openGoalModal } from '../goalSlice'
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -30,12 +32,21 @@ const ButtonStyled = withStyles({
   }
 })(Button)
 
-const Objective = () => {
+interface ObjectiveProps {
+  goals: GoalResProps[]
+}
+
+const Objective = ({ goals }: ObjectiveProps) => {
   const classes = useStyles()
+  const dispatch = useAppDispatch()
   return (
     <Timeline align='alternate'>
       <div className={classes.groupBtn}>
-        <ButtonStyled color='secondary' variant='contained'>
+        <ButtonStyled
+          color='secondary'
+          variant='contained'
+          onClick={() => dispatch(openGoalModal())}
+        >
           Thêm mục tiêu
         </ButtonStyled>
         <ButtonStyled color='secondary' variant='outlined'>
@@ -45,26 +56,32 @@ const Objective = () => {
           Lịch sử
         </ButtonStyled>
       </div>
-      {objectiveTypes.map((objective) => (
-        <TimelineItem>
-          <TimelineOppositeContent>
-            <Typography variant='subtitle1' color='textPrimary'>
-              {objective.name}
-            </Typography>
-          </TimelineOppositeContent>
-          <TimelineSeparator>
-            <TimelineDot color={objective.color} variant={objective.variant}>
-              {objective.icon}
-            </TimelineDot>
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>
-            {[0, 1, 2, 3, 4, 5].map((item) => (
-              <ObjectiveItem index={item} />
-            ))}
-          </TimelineContent>
-        </TimelineItem>
-      ))}
+      {objectiveTypes.map((objective) => {
+        const goalsByObjective = goals.filter(
+          (x) => x.objectiveType === objective.type
+        )
+        return (
+          <TimelineItem>
+            <TimelineOppositeContent>
+              <Typography variant='subtitle1' color='textPrimary'>
+                {objective.name}
+              </Typography>
+            </TimelineOppositeContent>
+            <TimelineSeparator>
+              <TimelineDot color={objective.color} variant={objective.variant}>
+                {objective.icon}
+              </TimelineDot>
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>
+              {goalsByObjective &&
+                goalsByObjective.map((item, index) => (
+                  <ObjectiveItem index={index} data={item} />
+                ))}
+            </TimelineContent>
+          </TimelineItem>
+        )
+      })}
     </Timeline>
   )
 }
