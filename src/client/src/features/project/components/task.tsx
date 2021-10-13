@@ -1,12 +1,20 @@
 import { FC } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
-import { red } from '@material-ui/core/colors'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { Button, Theme, withStyles } from '@material-ui/core'
+import {
+  Button,
+  ListItemIcon,
+  MenuItem,
+  Theme,
+  withStyles
+} from '@material-ui/core'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import EditIcon from '@material-ui/icons/Edit'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
+import { green, grey, red } from '@material-ui/core/colors'
 import { useAppDispatch } from '../../../app/hooks'
 import { flashAlert } from '../../../app/appSlice'
 import { FlashType } from '../../../enums'
@@ -18,6 +26,7 @@ import {
   UpdateTaskPayload
 } from '../projectSlice'
 import { getDate } from '../../../utils/dateTimeHelper'
+import MoreButton from '../../../common/components/moreButton'
 
 export interface StyleProps {
   taskStatus: number
@@ -120,6 +129,12 @@ const CardContentStyled = withStyles({
   }
 })(CardContent)
 
+const ListItemIconStyled = withStyles((theme) => ({
+  root: {
+    minWidth: '30px'
+  }
+}))(ListItemIcon)
+
 export interface TaskPropReponse {
   index: number
   projectId: string
@@ -208,12 +223,27 @@ const Task: FC<TaskPropReponse> = ({ index, projectId, versionId, task }) => {
                 </>
               )}
             </Grid>
-            <Grid
-              md={1}
-              className={classes.deleteTodo}
-              onClick={() => handleDelete(task._id)}
-            >
-              <DeleteForeverIcon />
+            <Grid md={1} className={classes.deleteTodo}>
+              <MoreButton>
+                <MenuItem onClick={() => {}}>
+                  <ListItemIconStyled>
+                    <CheckCircleOutlineIcon style={{ color: green[500] }} />
+                  </ListItemIconStyled>
+                  <Typography>Hoàn thành</Typography>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIconStyled>
+                    <EditIcon style={{ color: grey[500] }} />
+                  </ListItemIconStyled>
+                  <Typography>Chỉnh sửa</Typography>
+                </MenuItem>
+                <MenuItem onClick={() => handleDelete(task._id)}>
+                  <ListItemIconStyled>
+                    <DeleteForeverIcon style={{ color: red[500] }} />
+                  </ListItemIconStyled>
+                  <Typography>Xóa</Typography>
+                </MenuItem>
+              </MoreButton>
             </Grid>
           </Grid>
         </CardContentStyled>

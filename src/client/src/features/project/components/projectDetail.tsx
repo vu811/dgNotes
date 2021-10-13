@@ -194,17 +194,21 @@ const ProjectDetail = () => {
         )}
         {noItem && <NoItemPage text='Chưa có phiên bản nào!' />}
       </Paper>
-      <VersionModal
-        id={id}
-        open={isOpenVersionModal}
-        close={() => dispatch(closeVersionModal())}
-      />
-      <TaskModal
-        projectId={id}
-        versionId={currentTab}
-        open={isOpenTaskModal}
-        close={() => dispatch(closeTaskModal())}
-      />
+      {isOpenVersionModal && (
+        <VersionModal
+          id={id}
+          open={isOpenVersionModal}
+          close={() => dispatch(closeVersionModal())}
+        />
+      )}
+      {isOpenTaskModal && (
+        <TaskModal
+          projectId={id}
+          versionId={currentTab}
+          open={isOpenTaskModal}
+          close={() => dispatch(closeTaskModal())}
+        />
+      )}
     </Container>
   )
 }

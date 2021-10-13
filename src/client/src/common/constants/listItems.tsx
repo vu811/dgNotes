@@ -103,7 +103,7 @@ const ListItems = () => {
       <ListItemStyle
         button
         selected={location.pathname === '/bucket-list'}
-        onClick={() => history.push('/goals')}
+        onClick={() => history.push('/bucket-list')}
       >
         <ListItemIcon>
           <FormatListNumberedIcon />

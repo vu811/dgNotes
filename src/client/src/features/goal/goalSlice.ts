@@ -1,9 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { addGoal, deleteGoal, getGoals } from './goalApi'
+import {
+  addGoal,
+  completeGoal,
+  deleteGoal,
+  getGoal,
+  getGoals,
+  updateGoal
+} from './goalApi'
 
 export interface GoalState {
   isOpenGoalModal: boolean
   goals: GoalResProps[]
+  goal: GoalResProps | null
 }
 
 export interface GoalProps {
@@ -16,15 +24,22 @@ export interface GoalProps {
 
 export interface GoalResProps extends GoalProps {
   _id: string
+  completedDate?: Date | null
 }
 
 const initialState: GoalState = {
   isOpenGoalModal: false,
-  goals: []
+  goals: [],
+  goal: null
 }
 
+export const getGoalAsync = createAsyncThunk('getGoal', async (id: string) => {
+  const response = await getGoal(id)
+  return response.data
+})
+
 export const getGoalsAsync = createAsyncThunk(
-  'getGoal',
+  'getGoals',
   async (goalType: number) => {
     const response = await getGoals(goalType)
     return response.data
@@ -33,8 +48,16 @@ export const getGoalsAsync = createAsyncThunk(
 
 export const addGoalAsync = createAsyncThunk(
   'addGoal',
-  async (payload: GoalProps) => {
+  async (payload: GoalResProps) => {
     const response = await addGoal(payload)
+    return response.data
+  }
+)
+
+export const updateGoalAsync = createAsyncThunk(
+  'updateGoal',
+  async (payload: GoalResProps) => {
+    const response = await updateGoal(payload._id, payload)
     return response.data
   }
 )
@@ -47,12 +70,23 @@ export const deleteGoalAsync = createAsyncThunk(
   }
 )
 
+export const completeGoalAsync = createAsyncThunk(
+  'completeGoal',
+  async (id: string) => {
+    const response = await completeGoal(id)
+    return response.data
+  }
+)
+
 export const goalSlice = createSlice({
   name: 'goal',
   initialState,
   reducers: {
-    openGoalModal: (state) => {
+    openGoalModal: (state, action) => {
       state.isOpenGoalModal = true
+      if (action.payload.isAddNew) {
+        state.goal = null
+      }
     },
     closeGoalModal: (state) => {
       state.isOpenGoalModal = false
@@ -69,6 +103,33 @@ export const goalSlice = createSlice({
       })
       .addCase(deleteGoalAsync.fulfilled, (state, action) => {
         state.goals = state.goals.filter((t) => t._id !== action.payload._id)
+      })
+      .addCase(getGoalAsync.fulfilled, (state, action) => {
+        state.goal = action.payload
+      })
+      .addCase(updateGoalAsync.fulfilled, (state, action) => {
+        const { _id, goalType, objectiveType, goal, plan } = action.payload
+        const newGoals = state.goals.map((goalItem) => {
+          if (goalItem._id === _id) {
+            goalItem.goalType = goalType
+            goalItem.objectiveType = objectiveType
+            goalItem.goal = goal
+            goalItem.plan = plan
+          }
+          return goalItem
+        })
+        state.goals = newGoals
+        state.isOpenGoalModal = false
+      })
+      .addCase(completeGoalAsync.fulfilled, (state, action) => {
+        const { _id, completedDate } = action.payload
+        const newGoals = state.goals.map((goalItem) => {
+          if (goalItem._id === _id) {
+            goalItem.completedDate = completedDate
+          }
+          return goalItem
+        })
+        state.goals = newGoals
       })
   }
 })

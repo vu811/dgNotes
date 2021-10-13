@@ -113,11 +113,13 @@ const Goal = () => {
           </TabPanel>
         </div>
       </Paper>
-      <GoalModal
-        goalType={goalType}
-        open={isOpenGoalModal}
-        close={() => dispatch(closeGoalModal())}
-      />
+      {isOpenGoalModal && (
+        <GoalModal
+          goalType={goalType}
+          open={isOpenGoalModal}
+          close={() => dispatch(closeGoalModal())}
+        />
+      )}
     </Container>
   )
 }

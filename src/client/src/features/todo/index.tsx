@@ -125,7 +125,7 @@ const Todo = () => {
               className={classes.addTodoBtn}
               onClick={() => dispatch(openTodoModal())}
             >
-              <span className={classes.addTodoBtnText}>thêm tu-đu</span>
+              <span className={classes.addTodoBtnText}>thêm</span>
             </Button>
           </div>
         </div>
@@ -139,11 +139,13 @@ const Todo = () => {
           )}
         </Grid>
       </Grid>
-      <TodoModal
-        date={todoDate}
-        open={isOpenTodoModal}
-        close={() => dispatch(closeTodoModal())}
-      />
+      {isOpenTodoModal && (
+        <TodoModal
+          date={todoDate}
+          open={isOpenTodoModal}
+          close={() => dispatch(closeTodoModal())}
+        />
+      )}
     </Container>
   )
 }

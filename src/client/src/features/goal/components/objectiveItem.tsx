@@ -4,25 +4,25 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import {
-  IconButton,
-  Menu,
-  MenuItem,
-  Theme,
-  Tooltip,
-  withStyles
-} from '@material-ui/core'
+import { MenuItem, Theme, Tooltip, withStyles } from '@material-ui/core'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
 import EditIcon from '@material-ui/icons/Edit'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import BeenhereIcon from '@material-ui/icons/Beenhere'
 import { green, grey, red } from '@material-ui/core/colors'
-import { ListItemIcon } from '@material-ui/core'
-import { deleteGoalAsync, GoalProps, GoalResProps } from '../goalSlice'
+import { ListItemIcon, IconButton, Menu } from '@material-ui/core'
+import {
+  completeGoalAsync,
+  deleteGoalAsync,
+  getGoalAsync,
+  GoalResProps,
+  openGoalModal
+} from '../goalSlice'
 import { useAppDispatch } from '../../../app/hooks'
-import { flashAlert } from '../../../app/appSlice'
+import { flashAlert, setMoreButtonAnchorEl } from '../../../app/appSlice'
 import { FlashType } from '../../../enums'
+import MoreButton from '../../../common/components/moreButton'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 
 const useStyles = makeStyles<Theme>((theme) => ({
   root: {
@@ -88,6 +88,10 @@ const useStyles = makeStyles<Theme>((theme) => ({
     color: 'rgb(34, 51, 84)',
     backgroundColor: '#f5f8fc'
   },
+  cardContentCompleted: {
+    color: 'rgb(34, 51, 84)',
+    backgroundColor: 'rgb(201, 248, 222)'
+  },
   test: {
     padding: 0
   },
@@ -121,16 +125,18 @@ const ObjectiveItem: FC<ObjectiveItemProps> = ({ index, data }) => {
   const dispatch = useAppDispatch()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
-  const handleOpenActionMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClickMoreButton = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleCloseActionMenu = () => {
+  const handleCloseMorePopup = () => {
     setAnchorEl(null)
   }
 
   const handleDeleteGoal = async (id: string) => {
-    handleCloseActionMenu()
+    handleCloseMorePopup()
     try {
       const result = await dispatch(deleteGoalAsync(id)).unwrap()
       if (result) {
@@ -143,17 +149,46 @@ const ObjectiveItem: FC<ObjectiveItemProps> = ({ index, data }) => {
     }
   }
 
+  const handleEditGoal = async (id: string) => {
+    handleCloseMorePopup()
+    const result = await dispatch(getGoalAsync(id)).unwrap()
+    if (result) {
+      dispatch(openGoalModal({ isAddNew: false }))
+    }
+  }
+
+  const handleCompleteGoal = async (id: string) => {
+    handleCloseMorePopup()
+    try {
+      const result = await dispatch(completeGoalAsync(id)).unwrap()
+      if (result) {
+        dispatch(
+          flashAlert({ message: 'Xóa thành công!', type: FlashType.Success })
+        )
+      }
+    } catch (err) {
+      dispatch(flashAlert({ message: err, type: FlashType.Error }))
+    }
+  }
+
   return (
     <Card className={classes.root}>
-      <CardContentStyled className={classes.cardContent}>
+      <CardContentStyled
+        className={
+          data.completedDate
+            ? classes.cardContentCompleted
+            : classes.cardContent
+        }
+      >
         <Grid container>
           <Grid md={2} className={classes.todoNumberGrid}>
             <Tooltip
               arrow
               placement='top-start'
               title={
-                data.plan ||
-                'Có mục tiêu mà không có kế hoạch thực hiện cụ thể thì nó chỉ là một ước mơ!'
+                data.plan
+                  ? `Kế hoạch: ${data.plan}`
+                  : 'Mục tiêu không có kế hoạch thì chỉ là một ước mơ!'
               }
             >
               <BeenhereIcon
@@ -171,23 +206,42 @@ const ObjectiveItem: FC<ObjectiveItemProps> = ({ index, data }) => {
             {data.goal}
           </Grid>
           <Grid md={1} className={classes.actions}>
-            <IconButton aria-label='settings' onClick={handleOpenActionMenu}>
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              className={classes.test}
-              onClose={handleCloseActionMenu}
-            >
+            {/* <MoreButton key={data._id}>
               <MenuItem onClick={() => {}}>
                 <ListItemIconStyled>
                   <CheckCircleOutlineIcon style={{ color: green[500] }} />
                 </ListItemIconStyled>
                 <Typography>Hoàn thành</Typography>
               </MenuItem>
-              <MenuItem>
+              <MenuItem onClick={() => handleEditGoal(data._id)}>
+                <ListItemIconStyled>
+                  <EditIcon style={{ color: grey[500] }} />
+                </ListItemIconStyled>
+                <Typography>Chỉnh sửa</Typography>
+              </MenuItem>
+              <MenuItem onClick={() => handleDeleteGoal(data._id)}>
+                <ListItemIconStyled>
+                  <DeleteForeverIcon style={{ color: red[500] }} />
+                </ListItemIconStyled>
+                <Typography>Xóa</Typography>
+              </MenuItem>
+            </MoreButton> */}
+            <IconButton aria-label='more' onClick={handleClickMoreButton}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleCloseMorePopup}
+            >
+              <MenuItem onClick={() => handleCompleteGoal(data._id)}>
+                <ListItemIconStyled>
+                  <CheckCircleOutlineIcon style={{ color: green[500] }} />
+                </ListItemIconStyled>
+                <Typography>Hoàn thành</Typography>
+              </MenuItem>
+              <MenuItem onClick={() => handleEditGoal(data._id)}>
                 <ListItemIconStyled>
                   <EditIcon style={{ color: grey[500] }} />
                 </ListItemIconStyled>

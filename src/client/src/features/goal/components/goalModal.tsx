@@ -8,9 +8,14 @@ import {
 import { useFormik } from 'formik'
 import Modal from '../../../common/components/modal'
 import * as yup from 'yup'
-import { useAppDispatch } from '../../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { objectiveTypes } from '../../../data'
-import { addGoalAsync, GoalProps } from '../goalSlice'
+import {
+  addGoalAsync,
+  GoalProps,
+  GoalResProps,
+  updateGoalAsync
+} from '../goalSlice'
 
 const validationSchema = yup.object({
   goal: yup
@@ -52,28 +57,39 @@ const useStyles = makeStyles((theme) => ({
 
 const GoalModal = ({ goalType, open, close }: any) => {
   const dispatch = useAppDispatch()
+  const goalState = useAppSelector((state) => state.goal.goal)
+
   const formik = useFormik({
-    initialValues: {
-      objectiveType: 0,
-      goal: '',
-      plan: ''
-    },
+    initialValues: goalState
+      ? {
+          objectiveType: goalState.objectiveType,
+          goal: goalState.goal,
+          plan: goalState.plan
+        }
+      : {
+          objectiveType: 0,
+          goal: '',
+          plan: ''
+        },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
       const { objectiveType, goal, plan } = values
-      const payload: GoalProps = {
+      const payload: GoalResProps = {
+        _id: goalState ? goalState._id : '',
         goalType: goalType,
         objectiveType,
         goal,
         plan
       }
-      const saved = await dispatch(addGoalAsync(payload)).unwrap()
+      const saved = goalState
+        ? await dispatch(updateGoalAsync(payload)).unwrap()
+        : await dispatch(addGoalAsync(payload)).unwrap()
       if (saved) resetForm()
     }
   })
   return (
     <Modal
-      title='Thêm mục tiêu'
+      title={`${goalState ? 'Chỉnh sửa' : 'Thêm'} mục tiêu`}
       open={open}
       onClose={close}
       onSubmit={formik.handleSubmit}

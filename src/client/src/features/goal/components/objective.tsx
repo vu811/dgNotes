@@ -5,13 +5,13 @@ import TimelineConnector from '@material-ui/lab/TimelineConnector'
 import TimelineContent from '@material-ui/lab/TimelineContent'
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent'
 import TimelineDot from '@material-ui/lab/TimelineDot'
-import { Button, Paper, Typography } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import { objectiveTypes } from '../../../data'
 import ObjectiveItem from './objectiveItem'
 import { withStyles } from '@material-ui/styles'
 import { useAppDispatch } from '../../../app/hooks'
-import { GoalProps, GoalResProps, openGoalModal } from '../goalSlice'
+import { GoalResProps, openGoalModal } from '../goalSlice'
 
 const useStyles = makeStyles((theme: Theme) => ({
   paper: {
@@ -45,7 +45,7 @@ const Objective = ({ goals }: ObjectiveProps) => {
         <ButtonStyled
           color='secondary'
           variant='contained'
-          onClick={() => dispatch(openGoalModal())}
+          onClick={() => dispatch(openGoalModal({ isAddNew: true }))}
         >
           Thêm mục tiêu
         </ButtonStyled>

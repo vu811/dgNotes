@@ -26,6 +26,9 @@ export const goalSchema = new Schema(
     },
     plan: {
       type: String
+    },
+    completedDate: {
+      type: Date
     }
   },
   {

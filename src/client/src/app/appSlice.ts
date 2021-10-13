@@ -4,6 +4,7 @@ import { FlashType } from '../enums'
 export interface AppState {
   flashAlert: FlashAlertType
   loading: boolean
+  moreButtonAnchorEl: HTMLElement | null
 }
 
 interface FlashAlertType {
@@ -18,7 +19,8 @@ const initialState: AppState = {
     message: '',
     type: FlashType.Info
   },
-  loading: true
+  loading: true,
+  moreButtonAnchorEl: null
 }
 
 export const appSlice = createSlice({
@@ -37,10 +39,14 @@ export const appSlice = createSlice({
         ...state.flashAlert,
         isOpenFlashAlert: false
       }
+    },
+    setMoreButtonAnchorEl: (state, action) => {
+      state.moreButtonAnchorEl = action.payload
     }
   },
   extraReducers: (builder) => {}
 })
 
-export const { flashAlert, closeFlashAlert } = appSlice.actions
+export const { flashAlert, closeFlashAlert, setMoreButtonAnchorEl } =
+  appSlice.actions
 export default appSlice.reducer

@@ -11,6 +11,7 @@ import Project from '../features/project'
 import Todo from '../features/todo'
 import ProjectDetail from '../features/project/components/projectDetail'
 import Goal from '../features/goal'
+import BucketList from '../features/bucketList'
 
 const App = () => {
   const buildPages = () => {
@@ -22,7 +23,8 @@ const App = () => {
         path: '/projects/:id',
         render: () => withLayout(<ProjectDetail />)
       },
-      { path: '/goals', render: () => withLayout(<Goal />) }
+      { path: '/goals', render: () => withLayout(<Goal />) },
+      { path: '/bucket-list', render: () => withLayout(<BucketList />) }
     ]
     return pages
   }
