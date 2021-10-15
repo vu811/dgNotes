@@ -17,6 +17,15 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import EditIcon from '@material-ui/icons/Edit'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import { green, grey, red } from '@material-ui/core/colors'
+import { useAppDispatch } from '../../../app/hooks'
+import {
+  completeBucketAsync,
+  deleteBucketAsync,
+  getBucketAsync,
+  openBucketModal
+} from '../bucketSlice'
+import { FlashType } from '../../../enums'
+import { flashAlert } from '../../../app/appSlice'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -80,7 +89,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cardContent: {
     color: 'rgb(34, 51, 84)'
-    //backgroundColor: '#f5f8fc'
   },
   cardContentCompleted: {
     color: 'rgb(34, 51, 84)',
@@ -105,6 +113,15 @@ const ListItemIconStyled = withStyles((theme) => ({
   }
 }))(ListItemIcon)
 
+const CardContentStyled = withStyles({
+  root: {
+    padding: '0',
+    '&:last-child': {
+      paddingBottom: '0'
+    }
+  }
+})(CardContent)
+
 export interface BucketItemProps {
   index: number
   data: any
@@ -112,6 +129,7 @@ export interface BucketItemProps {
 
 const BucketItem: FC<BucketItemProps> = ({ index, data }) => {
   const classes = useStyles()
+  const dispatch = useAppDispatch()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -124,15 +142,61 @@ const BucketItem: FC<BucketItemProps> = ({ index, data }) => {
   const handleCloseMorePopup = () => {
     setAnchorEl(null)
   }
+
+  const handleCompleteBucket = async (id: string) => {
+    handleCloseMorePopup()
+    try {
+      const result = await dispatch(completeBucketAsync(id)).unwrap()
+      if (result) {
+        dispatch(
+          flashAlert({
+            message: 'Đã đánh dầu hoàn thành!',
+            type: FlashType.Success
+          })
+        )
+      }
+    } catch (err) {
+      dispatch(flashAlert({ message: err, type: FlashType.Error }))
+    }
+  }
+
+  const handleEditBucket = async (id: string) => {
+    handleCloseMorePopup()
+    const result = await dispatch(getBucketAsync(id)).unwrap()
+    if (result) {
+      dispatch(openBucketModal({ isAddNew: false }))
+    }
+  }
+
+  const handleDeleteBucket = async (id: string) => {
+    handleCloseMorePopup()
+    try {
+      const result = await dispatch(deleteBucketAsync(id)).unwrap()
+      if (result) {
+        dispatch(
+          flashAlert({ message: 'Xóa thành công!', type: FlashType.Success })
+        )
+      }
+    } catch (err) {
+      dispatch(flashAlert({ message: err, type: FlashType.Error }))
+    }
+  }
+
   return (
     <Card className={classes.root}>
-      <CardContent className={classes.cardContent}>
+      <CardContentStyled
+        className={
+          data.completedDate
+            ? classes.cardContentCompleted
+            : classes.cardContent
+        }
+      >
         <Grid container>
-          <Grid md={2} className={classes.todoNumberGrid}>
+          <Grid md={1} className={classes.todoNumberGrid}>
             <span className={classes.todoNumber}>{index + 1}</span>
           </Grid>
-          <Grid md={9} xs={8} className={classes.todoContent}>
-            {'sfsfs'}
+          <Grid md={10} xs={10} className={classes.todoContent}>
+            {data.description}
           </Grid>
           <Grid md={1} className={classes.actions}>
             <IconButton aria-label='more' onClick={handleClickMoreButton}>
@@ -144,19 +208,19 @@ const BucketItem: FC<BucketItemProps> = ({ index, data }) => {
               open={Boolean(anchorEl)}
               onClose={handleCloseMorePopup}
             >
-              <MenuItem onClick={() => {}}>
+              <MenuItem onClick={() => handleCompleteBucket(data._id)}>
                 <ListItemIconStyled>
                   <CheckCircleOutlineIcon style={{ color: green[500] }} />
                 </ListItemIconStyled>
                 <Typography>Hoàn thành</Typography>
               </MenuItem>
-              <MenuItem onClick={() => {}}>
+              <MenuItem onClick={() => handleEditBucket(data._id)}>
                 <ListItemIconStyled>
                   <EditIcon style={{ color: grey[500] }} />
                 </ListItemIconStyled>
                 <Typography>Chỉnh sửa</Typography>
               </MenuItem>
-              <MenuItem onClick={() => {}}>
+              <MenuItem onClick={() => handleDeleteBucket(data._id)}>
                 <ListItemIconStyled>
                   <DeleteForeverIcon style={{ color: red[500] }} />
                 </ListItemIconStyled>
@@ -165,7 +229,7 @@ const BucketItem: FC<BucketItemProps> = ({ index, data }) => {
             </Menu>
           </Grid>
         </Grid>
-      </CardContent>
+      </CardContentStyled>
     </Card>
   )
 }

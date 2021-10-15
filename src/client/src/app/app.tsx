@@ -17,13 +17,13 @@ const App = () => {
   const buildPages = () => {
     const pages: RouteProps[] = [
       { exact: true, path: '/', render: () => withLayout(<DashBoard />) },
-      { path: '/todos', render: () => withLayout(<Todo />) },
-      { exact: true, path: '/projects', render: () => withLayout(<Project />) },
+      { path: '/todo', render: () => withLayout(<Todo />) },
+      { exact: true, path: '/project', render: () => withLayout(<Project />) },
       {
-        path: '/projects/:id',
+        path: '/project/:id',
         render: () => withLayout(<ProjectDetail />)
       },
-      { path: '/goals', render: () => withLayout(<Goal />) },
+      { path: '/goal', render: () => withLayout(<Goal />) },
       { path: '/bucket-list', render: () => withLayout(<BucketList />) }
     ]
     return pages

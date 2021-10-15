@@ -4,6 +4,7 @@ import projectReducer from '../features/project/projectSlice'
 import todoReducer from '../features/todo/todoSlice'
 import appReducer from './appSlice'
 import goalReducer from '../features/goal/goalSlice'
+import bucketReducer from '../features/bucketList/bucketSlice'
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     layout: layoutReducer,
     project: projectReducer,
     todo: todoReducer,
-    goal: goalReducer
+    goal: goalReducer,
+    bucket: bucketReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -6,7 +6,16 @@ import {
   Button
 } from '@material-ui/core'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
+import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import NoItemPage from '../../common/components/noItemPage'
+import {
+  closeBucketModal,
+  getBucketListAsync,
+  openBucketModal
+} from './bucketSlice'
 import BucketItem from './component/bucketItem'
+import BucketModal from './component/bucketModal'
 
 const useStyles = makeStyles((theme: Theme) => ({
   navigator: {
@@ -18,6 +27,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const BucketList = () => {
   const classes = useStyles()
+  const isOpenBucketModal = useAppSelector(
+    (state) => state.bucket.isOpenBucketModal
+  )
+  const bucketList = useAppSelector((state) => state.bucket.bucketList)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(getBucketListAsync())
+  }, [])
+
   return (
     <Container maxWidth='md'>
       <div className={classes.navigator}>
@@ -27,14 +46,25 @@ const BucketList = () => {
             variant='contained'
             color='secondary'
             startIcon={<AddCircleOutlineIcon />}
+            onClick={() => dispatch(openBucketModal({ isAddNew: true }))}
           >
             <span>thêm</span>
           </Button>
         </div>
       </div>
-      {[0, 1, 16, 17, 18, 19].map((item) => (
-        <BucketItem index={item} data={item} />
-      ))}
+      {bucketList && bucketList.length > 0 ? (
+        bucketList.map((item, index) => (
+          <BucketItem index={index} data={item} />
+        ))
+      ) : (
+        <NoItemPage text='Chưa có bucket nào!' />
+      )}
+      {isOpenBucketModal && (
+        <BucketModal
+          open={isOpenBucketModal}
+          close={() => dispatch(closeBucketModal())}
+        />
+      )}
     </Container>
   )
 }

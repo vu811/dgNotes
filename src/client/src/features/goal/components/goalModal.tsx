@@ -10,12 +10,7 @@ import Modal from '../../../common/components/modal'
 import * as yup from 'yup'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { objectiveTypes } from '../../../data'
-import {
-  addGoalAsync,
-  GoalProps,
-  GoalResProps,
-  updateGoalAsync
-} from '../goalSlice'
+import { addGoalAsync, GoalResProps, updateGoalAsync } from '../goalSlice'
 
 const validationSchema = yup.object({
   goal: yup

@@ -68,22 +68,22 @@ const ListItems = () => {
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        <ListItemText primary='Bảng điều khiển' />
+        <ListItemText primary='Dashboard' />
       </ListItemStyle>
       <ListItemStyle
         button
-        selected={location.pathname === '/todos'}
-        onClick={() => history.push('/todos')}
+        selected={location.pathname === '/todo'}
+        onClick={() => history.push('/todo')}
       >
         <ListItemIcon>
           <PlaylistAddCheckTwoToneIcon />
         </ListItemIcon>
-        <ListItemText primary='Danh sách tu-đu' />
+        <ListItemText primary='Todo list' />
       </ListItemStyle>
       <ListItemStyle
         button
-        selected={location.pathname === '/projects'}
-        onClick={() => history.push('/projects')}
+        selected={location.pathname === '/project'}
+        onClick={() => history.push('/project')}
       >
         <ListItemIcon>
           <CodeRoundedIcon />
@@ -92,8 +92,8 @@ const ListItems = () => {
       </ListItemStyle>
       <ListItemStyle
         button
-        selected={location.pathname === '/goals'}
-        onClick={() => history.push('/goals')}
+        selected={location.pathname === '/goal'}
+        onClick={() => history.push('/goal')}
       >
         <ListItemIcon>
           <TrackChangesRoundedIcon />
@@ -108,7 +108,7 @@ const ListItems = () => {
         <ListItemIcon>
           <FormatListNumberedIcon />
         </ListItemIcon>
-        <ListItemText primary='Danh sách 100' />
+        <ListItemText primary='Bucket list' />
       </ListItemStyle>
       <ListItemStyle button>
         <ListItemIcon>

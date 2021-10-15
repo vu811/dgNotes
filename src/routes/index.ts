@@ -1,5 +1,13 @@
 import express, { Express } from 'express'
 import {
+  addBucket,
+  completeBucket,
+  deleteBucket,
+  getBucketById,
+  getBucketList,
+  updateBucket
+} from '../controllers/bucket.controller'
+import {
   addGoal,
   completeGoal,
   deleteGoal,
@@ -61,6 +69,15 @@ const routes = (app: Express) => {
   router.get(`${goalBaseRoute}/:id`, getGoal)
   router.put(`${goalBaseRoute}/:id`, updateGoal)
   router.put(`${goalBaseRoute}/:id/complete`, completeGoal)
+
+  /* BucketList API */
+  const bucketBaseRoute = '/api/buckets'
+  router.get(bucketBaseRoute, getBucketList)
+  router.post(bucketBaseRoute, addBucket)
+  router.delete(`${bucketBaseRoute}/:id`, deleteBucket)
+  router.get(`${bucketBaseRoute}/:id`, getBucketById)
+  router.put(`${bucketBaseRoute}/:id`, updateBucket)
+  router.put(`${bucketBaseRoute}/:id/complete`, completeBucket)
 
   app.use(router)
 }
