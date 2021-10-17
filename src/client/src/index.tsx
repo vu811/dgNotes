@@ -47,7 +47,8 @@ let theme = createTheme({
       paper: 'rgb(255, 255, 255)'
     },
     text: {
-      primary: 'rgb(34, 51, 84)'
+      primary: 'rgb(34, 51, 84)',
+      secondary: '#878C99'
     },
     warning: {
       light: '#fff5c7',

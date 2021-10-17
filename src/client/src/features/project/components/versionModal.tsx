@@ -9,8 +9,14 @@ import {
 } from '@material-ui/pickers'
 // @ts-ignore
 import DateFnsUtils from '@date-io/date-fns'
-import { useAppDispatch } from '../../../app/hooks'
-import { addVersionAsync } from '../projectSlice'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import {
+  addVersionAsync,
+  updateVersionAsync,
+  VersionPayload
+} from '../projectSlice'
+import { flashAlert } from '../../../app/appSlice'
+import { FlashType } from '../../../enums'
 
 const validationSchema = yup.object({
   name: yup
@@ -53,21 +59,48 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const VersionModal = ({ id, open, close }: any) => {
+  const version = useAppSelector((state) => state.project.version)
   const dispatch = useAppDispatch()
   const formik = useFormik({
-    initialValues: {
-      name: '',
-      startDate: null,
-      description: ''
-    },
+    initialValues: version
+      ? {
+          name: version.name,
+          startDate: version.startDate,
+          description: version.description
+        }
+      : {
+          name: '',
+          startDate: null,
+          description: ''
+        },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      const payload = {
-        id,
-        version: values
+      try {
+        const { name, description, startDate } = values
+        const payload: VersionPayload = {
+          id,
+          version: {
+            _id: version ? version._id : '',
+            name,
+            description,
+            startDate
+          }
+        }
+        const result = version
+          ? await dispatch(updateVersionAsync(payload))
+          : await dispatch(addVersionAsync(payload))
+        if (result) {
+          dispatch(
+            flashAlert({
+              message: 'Cập nhật thành công!',
+              type: FlashType.Success
+            })
+          )
+          resetForm()
+        }
+      } catch (err) {
+        dispatch(flashAlert({ message: err, type: FlashType.Error }))
       }
-      dispatch(addVersionAsync(payload))
-      resetForm()
     }
   })
   return (

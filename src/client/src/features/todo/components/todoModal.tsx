@@ -1,5 +1,5 @@
 import 'date-fns'
-import { makeStyles, TextField } from '@material-ui/core'
+import { TextField } from '@material-ui/core'
 import { useFormik } from 'formik'
 import Modal from '../../../common/components/modal'
 import * as yup from 'yup'
@@ -9,9 +9,9 @@ import {
 } from '@material-ui/pickers'
 // @ts-ignore
 import DateFnsUtils from '@date-io/date-fns'
-import { useAppDispatch } from '../../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { getDate, getTime } from '../../../utils/dateTimeHelper'
-import { addTodoAsync, TodoProps } from '../todoSlice'
+import { addTodoAsync, TodoProps, updateTodoAsync } from '../todoSlice'
 
 const validationSchema = yup.object({
   startTime: yup.date(),
@@ -22,58 +22,37 @@ const validationSchema = yup.object({
     .max(100, 'Tối đa 100 kí tự')
 })
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  },
-  newProjectBtn: {
-    marginBottom: '10px'
-  },
-  projectWrapper: {
-    [theme.breakpoints.up('md')]: {
-      maxHeight: 'calc(100vh - 202px)',
-      overflowY: 'auto'
-    }
-  }
-}))
-
 const TodoModal = ({ date, open, close }: any) => {
+  const todo = useAppSelector((state) => state.todo.todo)
   const dispatch = useAppDispatch()
   const formik = useFormik({
-    initialValues: {
-      time: null,
-      description: ''
-    },
+    initialValues: todo
+      ? {
+          time: new Date(`${todo.date} ${todo.time}`),
+          description: todo.description
+        }
+      : {
+          time: null,
+          description: ''
+        },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
+      console.log(values)
       const payload: TodoProps = {
+        _id: todo ? todo._id : '',
         date: getDate(date),
-        time: getTime(values.time ?? undefined),
+        time: getTime(values.time?.toISOString() ?? ''),
         description: values.description
       }
-      const saved = await dispatch(addTodoAsync(payload)).unwrap()
+      const saved = todo
+        ? await dispatch(updateTodoAsync(payload)).unwrap()
+        : await dispatch(addTodoAsync(payload)).unwrap()
       if (saved) resetForm()
     }
   })
   return (
     <Modal
-      title='Thêm tu-đu'
+      title={`${todo ? 'Chỉnh sửa' : 'Thêm'} todo`}
       open={open}
       onClose={close}
       onSubmit={formik.handleSubmit}

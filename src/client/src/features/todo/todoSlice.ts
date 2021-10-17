@@ -1,26 +1,46 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getTodos, addTodo, deleteTodo, completeTodo } from './todoApi'
-
+import {
+  getTodos,
+  addTodo,
+  deleteTodo,
+  completeTodo,
+  getTodoById,
+  updateTodo
+} from './todoApi'
 export interface TodoState {
   isOpenTodoModal: boolean
-  todos: Array<TodoResponse>
+  todos: Array<TodoProps>
+  todo: TodoProps | null
 }
-
 export interface TodoProps {
+  _id?: string
   date: string
   time: string
   description: string
   isCompleted?: boolean
 }
 
-export interface TodoResponse extends TodoProps {
-  _id: string
-}
-
 const initialState: TodoState = {
   isOpenTodoModal: false,
-  todos: []
+  todos: [],
+  todo: null
 }
+
+export const getTodoByIdAsync = createAsyncThunk(
+  'todo/getById',
+  async (id: string) => {
+    const response = await getTodoById(id)
+    return response.data
+  }
+)
+
+export const updateTodoAsync = createAsyncThunk(
+  'todo/update',
+  async (payload: TodoProps) => {
+    const response = await updateTodo(payload._id ?? '', payload)
+    return response.data
+  }
+)
 
 export const getTodosAsync = createAsyncThunk(
   'todo/get',
@@ -58,8 +78,11 @@ export const projectSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
-    openTodoModal: (state) => {
+    openTodoModal: (state, action) => {
       state.isOpenTodoModal = true
+      if (action.payload.isAddNew) {
+        state.todo = null
+      }
     },
     closeTodoModal: (state) => {
       state.isOpenTodoModal = false
@@ -84,6 +107,21 @@ export const projectSlice = createSlice({
       })
       .addCase(deleteTodoAsync.fulfilled, (state, action) => {
         state.todos = state.todos.filter((t) => t._id !== action.payload._id)
+      })
+      .addCase(getTodoByIdAsync.fulfilled, (state, action) => {
+        state.todo = action.payload
+      })
+      .addCase(updateTodoAsync.fulfilled, (state, action) => {
+        const { _id, time, description } = action.payload
+        const updatedTodos = state.todos.map((todo) => {
+          if (todo._id === _id) {
+            todo.time = time
+            todo.description = description
+          }
+          return todo
+        })
+        state.todos = updatedTodos
+        state.isOpenTodoModal = false
       })
   }
 })

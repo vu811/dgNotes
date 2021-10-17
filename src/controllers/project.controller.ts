@@ -3,6 +3,21 @@ import Project from '../models/project'
 import Task from '../models/task'
 import Version from '../models/version'
 
+export const updateProject = async (req: Request, res: Response) => {
+  const { name, startDate, description } = req.body
+  try {
+    await Project.findByIdAndUpdate(req.params.id, {
+      name: name,
+      startDate: startDate,
+      description: description
+    })
+    const resp = await Project.findById({ _id: req.params.id })
+    res.status(201).json(resp)
+  } catch (ex: any) {
+    res.status(409).json({ message: ex.message })
+  }
+}
+
 export const addProject = async (req: Request, res: Response) => {
   const { name, startDate, description } = req.body
   const newProject = new Project({
@@ -127,7 +142,7 @@ export const deleteTask = async (req: Request, res: Response) => {
 }
 
 export const updateTask = async (req: Request, res: Response) => {
-  const { isStarted, isCompleted } = req.body
+  const { isStarted, isCompleted, description, dueDate } = req.body
   try {
     const project = await Project.findById(req.params.id)
     if (project && project.versions) {
@@ -140,9 +155,13 @@ export const updateTask = async (req: Request, res: Response) => {
         )
         if (isStarted) {
           task.startDate = new Date()
-        }
-        if (isCompleted) {
+        } else if (isCompleted) {
           task.completedDate = new Date()
+        } else if (!isCompleted) {
+          task.completedDate = null
+        } else {
+          task.description = description
+          task.dueDate = dueDate
         }
       }
     }
@@ -161,6 +180,27 @@ export const deleteVersion = async (req: Request, res: Response) => {
         (v: any) => String(v._id) !== req.params.versionId
       )
       project.versions = remainVersions
+    }
+    await project.save()
+    res.status(201).json(project)
+  } catch (ex: any) {
+    res.status(409).json({ message: ex.message })
+  }
+}
+
+export const updateVersion = async (req: Request, res: Response) => {
+  const { name, description, startDate } = req.body
+  try {
+    const project = await Project.findById(req.params.id)
+    if (project && project.versions) {
+      const version = project.versions.find(
+        (x: any) => String(x._id) === req.params.versionId
+      )
+      if (version) {
+        version.name = name
+        version.description = description
+        version.startDate = startDate
+      }
     }
     await project.save()
     res.status(201).json(project)

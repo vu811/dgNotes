@@ -46,3 +46,11 @@ export const deleteVersion = (id: String, versionId: String) => {
 export const deleteProject = (id?: String) => {
   return axios.delete(`/api/projects/${id}`)
 }
+
+export const updateProject = (id: string, payload: ProjectProps) => {
+  return axios.put(`/api/projects/${id}`, payload)
+}
+
+export const updateVersion = (id: String, payload: VersionProps) => {
+  return axios.put(`/api/projects/${id}/versions/${payload._id}`, payload)
+}

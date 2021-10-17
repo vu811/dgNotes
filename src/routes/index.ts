@@ -24,13 +24,17 @@ import {
   deleteTask,
   deleteVersion,
   deleteProject,
-  updateTask
+  updateTask,
+  updateProject,
+  updateVersion
 } from '../controllers/project.controller'
 import {
   addTodo,
   getTodos,
   deleteTodo,
-  completeTodo
+  completeTodo,
+  getTodoById,
+  updateTodo
 } from '../controllers/todo.controller'
 
 const routes = (app: Express) => {
@@ -53,6 +57,8 @@ const routes = (app: Express) => {
     `${projectBaseRoute}/:id/versions/:versionId/tasks/:taskId`,
     updateTask
   )
+  router.put(`${projectBaseRoute}/:id`, updateProject)
+  router.put(`${projectBaseRoute}/:id/versions/:versionId`, updateVersion)
 
   /* Todo API */
   const todoBaseRoute = '/api/todos'
@@ -60,6 +66,8 @@ const routes = (app: Express) => {
   router.post(todoBaseRoute, addTodo)
   router.delete(`${todoBaseRoute}/:id`, deleteTodo)
   router.put(`${todoBaseRoute}/:id/complete`, completeTodo)
+  router.get(`${todoBaseRoute}/:id`, getTodoById)
+  router.put(`${todoBaseRoute}/:id`, updateTodo)
 
   /* Goal API */
   const goalBaseRoute = '/api/goals'

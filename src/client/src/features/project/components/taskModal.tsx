@@ -1,5 +1,5 @@
 import 'date-fns'
-import { makeStyles, TextField } from '@material-ui/core'
+import { TextField } from '@material-ui/core'
 import { useFormik } from 'formik'
 import Modal from '../../../common/components/modal'
 import * as yup from 'yup'
@@ -9,8 +9,15 @@ import {
 } from '@material-ui/pickers'
 // @ts-ignore
 import DateFnsUtils from '@date-io/date-fns'
-import { useAppDispatch } from '../../../app/hooks'
-import { addTaskAsync } from '../projectSlice'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import {
+  addTaskAsync,
+  closeTaskModal,
+  updateTaskAsync,
+  UpdateTaskPayload
+} from '../projectSlice'
+import { flashAlert } from '../../../app/appSlice'
+import { FlashType } from '../../../enums'
 
 const validationSchema = yup.object({
   description: yup
@@ -20,58 +27,67 @@ const validationSchema = yup.object({
   dueDate: yup.string().nullable().required('Vui lòng nhập Ngày đến hạn')
 })
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  },
-  newProjectBtn: {
-    marginBottom: '10px'
-  },
-  projectWrapper: {
-    [theme.breakpoints.up('md')]: {
-      maxHeight: 'calc(100vh - 202px)',
-      overflowY: 'auto'
-    }
-  }
-}))
-
 const TaskModal = ({ projectId, versionId, open, close }: any) => {
+  const task = useAppSelector((state) => state.project.task)
   const dispatch = useAppDispatch()
+
   const formik = useFormik({
-    initialValues: {
-      description: '',
-      dueDate: null
-    },
+    initialValues: task
+      ? {
+          description: task.description,
+          dueDate: task.dueDate
+        }
+      : {
+          description: '',
+          dueDate: null
+        },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      const payload = {
-        projectId,
-        versionId,
-        task: values
+      try {
+        if (task) {
+          const { description, dueDate } = values
+          const payload: UpdateTaskPayload = {
+            projectId: projectId,
+            versionId: versionId,
+            taskId: task._id,
+            description,
+            dueDate: dueDate ?? undefined
+          }
+          const result = await dispatch(updateTaskAsync(payload)).unwrap()
+          if (result) {
+            dispatch(closeTaskModal())
+            dispatch(
+              flashAlert({
+                message: 'Cập nhật thành công!',
+                type: FlashType.Success
+              })
+            )
+          }
+        } else {
+          const payload = {
+            projectId,
+            versionId,
+            task: values
+          }
+          const result = await dispatch(addTaskAsync(payload)).unwrap()
+          if (result) {
+            dispatch(
+              flashAlert({
+                message: 'Thêm công việc thành công!',
+                type: FlashType.Success
+              })
+            )
+          }
+        }
+        resetForm()
+      } catch (err) {
+        dispatch(flashAlert({ message: err, type: FlashType.Error }))
       }
-      dispatch(addTaskAsync(payload))
-      resetForm()
     }
   })
   return (
     <Modal
-      title='Thêm công việc'
+      title={`${task ? 'Chỉnh sửa' : 'Thêm'} công việc`}
       open={open}
       onClose={close}
       onSubmit={formik.handleSubmit}

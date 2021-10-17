@@ -1,4 +1,4 @@
-import { makeStyles, TextField } from '@material-ui/core'
+import { TextField } from '@material-ui/core'
 import { useFormik } from 'formik'
 import Modal from '../../../common/components/modal'
 import * as yup from 'yup'
@@ -15,37 +15,6 @@ const validationSchema = yup.object({
     .required('Vui lòng nhập mô tả')
     .max(100, 'Tối đa 100 kí tự')
 })
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  },
-  newProjectBtn: {
-    marginBottom: '10px'
-  },
-  projectWrapper: {
-    [theme.breakpoints.up('md')]: {
-      maxHeight: 'calc(100vh - 202px)',
-      overflowY: 'auto'
-    }
-  }
-}))
 
 const BucketModal = ({ open, close }: any) => {
   const bucket = useAppSelector((state) => state.bucket.bucket)

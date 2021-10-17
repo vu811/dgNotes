@@ -2,7 +2,18 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Typography from '@material-ui/core/Typography'
-import { Button, Container, Divider, Paper } from '@material-ui/core'
+import {
+  Button,
+  Container,
+  Divider,
+  Grid,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Paper,
+  withStyles
+} from '@material-ui/core'
 import CustomTab from '../../../common/components/tab'
 import TabPanel from '../../../common/components/tab/tabPanel'
 import NewReleasesIcon from '@material-ui/icons/NewReleases'
@@ -19,7 +30,8 @@ import {
   openVersionModal,
   ProjectBasePayload,
   ProjectDetailProps,
-  TaskProps
+  TaskProps,
+  VersionProps
 } from '../projectSlice'
 import TaskModal from './taskModal'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
@@ -27,6 +39,10 @@ import Task from './task'
 import { flashAlert } from '../../../app/appSlice'
 import { FlashType } from '../../../enums'
 import NoItemPage from '../../../common/components/noItemPage'
+import { grey, red } from '@material-ui/core/colors'
+import EditIcon from '@material-ui/icons/Edit'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import { getDate } from '../../../utils/dateTimeHelper'
 
 const useStyles = makeStyles((theme: Theme) => ({
   versionList: {
@@ -59,9 +75,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: '0.75em'
   },
   divideer: {
+    marginTop: '0.75em',
     marginBottom: '0.75em'
+  },
+  taskHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: '10px'
+  },
+  taskText: {
+    fontWeight: theme.typography.fontWeightBold
   }
 }))
+
+const ListItemIconStyled = withStyles((theme) => ({
+  root: {
+    minWidth: '30px'
+  }
+}))(ListItemIcon)
 
 const ProjectDetail = () => {
   const classes = useStyles()
@@ -77,6 +109,7 @@ const ProjectDetail = () => {
   let { id }: { id: string } = useParams()
   const [isDeletedVersion, setIsDeletedVersion] = useState(0)
   const [noItem, setNoItem] = useState(false)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   useEffect(() => {
     dispatch(getProjectAsync(id))
@@ -89,11 +122,27 @@ const ProjectDetail = () => {
       })
   }, [id, isDeletedVersion])
 
+  const handleClickMoreButton = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleCloseMorePopup = () => {
+    setAnchorEl(null)
+  }
+
   const handleChange = (event: React.ChangeEvent<any>, versionId: String) => {
     setCurrentTab(versionId)
   }
 
+  const hanldleEditVersion = (version: VersionProps) => {
+    handleCloseMorePopup()
+    dispatch(openVersionModal(version))
+  }
+
   const handleDeleteVersion = async () => {
+    handleCloseMorePopup()
     try {
       const payload: ProjectBasePayload = {
         projectId: id,
@@ -119,7 +168,7 @@ const ProjectDetail = () => {
           variant='contained'
           color='secondary'
           startIcon={<NewReleasesIcon />}
-          onClick={() => dispatch(openVersionModal())}
+          onClick={() => dispatch(openVersionModal(null))}
         >
           thêm phiên bản
         </Button>
@@ -149,32 +198,79 @@ const ProjectDetail = () => {
                 ))}
             </Tabs>
             {projectDetail?.versions &&
-              projectDetail?.versions.map((version, index) => {
+              projectDetail?.versions.map((version) => {
                 return (
                   <TabPanel value={currentTab} index={version._id}>
-                    <div className={classes.versionBtnGroup}>
+                    <Grid container>
+                      <Grid md={11}>
+                        <div>
+                          <Typography
+                            variant='subtitle2'
+                            color='textPrimary'
+                            component='span'
+                          >
+                            {'Start date - '}
+                          </Typography>
+                          <Typography
+                            variant='subtitle1'
+                            color='textPrimary'
+                            component='span'
+                          >
+                            {getDate(version.startDate)}
+                          </Typography>
+
+                          <Typography
+                            variant='body2'
+                            color='textSecondary'
+                            component='p'
+                          >
+                            {version.description}
+                          </Typography>
+                        </div>
+                      </Grid>
+                      <Grid md={1}>
+                        <IconButton
+                          aria-label='more'
+                          onClick={handleClickMoreButton}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                          anchorEl={anchorEl}
+                          keepMounted
+                          open={Boolean(anchorEl)}
+                          onClose={handleCloseMorePopup}
+                        >
+                          <MenuItem onClick={() => hanldleEditVersion(version)}>
+                            <ListItemIconStyled>
+                              <EditIcon style={{ color: grey[500] }} />
+                            </ListItemIconStyled>
+                            <Typography>Chỉnh sửa</Typography>
+                          </MenuItem>
+                          <MenuItem onClick={() => handleDeleteVersion()}>
+                            <ListItemIconStyled>
+                              <DeleteForeverIcon style={{ color: red[500] }} />
+                            </ListItemIconStyled>
+                            <Typography>Xóa</Typography>
+                          </MenuItem>
+                        </Menu>
+                      </Grid>
+                    </Grid>
+                    <Divider className={classes.divideer} />
+                    <div className={classes.taskHeader}>
+                      <div className={classes.taskText}>Tasks</div>
                       <Button
                         variant='outlined'
                         color='secondary'
                         className={classes.addTaskBtn}
                         startIcon={<PlaylistAddIcon />}
-                        onClick={() => dispatch(openTaskModal())}
+                        onClick={() => dispatch(openTaskModal(null))}
                       >
-                        thêm công việc
-                      </Button>
-                      <Button
-                        variant='outlined'
-                        color='primary'
-                        size='small'
-                        className={classes.addTaskBtn}
-                        startIcon={<DeleteForeverIcon />}
-                        onClick={handleDeleteVersion}
-                      >
-                        xóa phiên bản
+                        thêm
                       </Button>
                     </div>
-                    <Divider className={classes.divideer} />
-                    {version?.tasks &&
+
+                    {version?.tasks && version.tasks.length > 0 ? (
                       version?.tasks.map((task: TaskProps, index) => {
                         return (
                           <div className={classes.task}>
@@ -186,7 +282,10 @@ const ProjectDetail = () => {
                             />
                           </div>
                         )
-                      })}
+                      })
+                    ) : (
+                      <NoItemPage text='Chưa có công việc nào!' />
+                    )}
                   </TabPanel>
                 )
               })}

@@ -11,14 +11,15 @@ import {
   makeStyles,
   Theme,
   withStyles,
-  Container
+  Container,
+  Typography
 } from '@material-ui/core'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
   closeTodoModal,
   openTodoModal,
   getTodosAsync,
-  TodoResponse
+  TodoProps
 } from './todoSlice'
 
 import { getDate } from '../../utils/dateTimeHelper'
@@ -85,7 +86,7 @@ const Todo = () => {
 
   const todoDate = getUrlQuery(location.search)
     ? getUrlQuery(location.search)
-    : getDate(new Date())
+    : getDate(new Date(), true)
 
   const todos = useAppSelector((state) => state.todo.todos)
   const isOpenTodoModal = useAppSelector((state) => state.todo.isOpenTodoModal)
@@ -96,13 +97,14 @@ const Todo = () => {
   }, [todoDate])
 
   const handleChangeTodoDate = (date: any) => {
-    history.push(`/todos?date=${getDate(date)}`)
+    history.push(`/todos?date=${getDate(date, true)}`)
   }
 
   return (
     <Container maxWidth='md'>
       <Grid>
         <div className={classes.navigator}>
+          <Typography variant='subtitle1'>Todo list</Typography>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DatePickerStyled
               id='startDate'
@@ -123,7 +125,7 @@ const Todo = () => {
               color='secondary'
               startIcon={<AddCircleOutlineIcon />}
               className={classes.addTodoBtn}
-              onClick={() => dispatch(openTodoModal())}
+              onClick={() => dispatch(openTodoModal({ isAddNew: true }))}
             >
               <span className={classes.addTodoBtnText}>thêm</span>
             </Button>
@@ -131,8 +133,8 @@ const Todo = () => {
         </div>
         <Grid container spacing={2} className={classes.todoList}>
           {todos && todos.length > 0 ? (
-            todos.map((todo: TodoResponse, index: number) => (
-              <TodoItem index={index} item={todo} />
+            todos.map((todo: TodoProps, index: number) => (
+              <TodoItem index={index} data={todo} />
             ))
           ) : (
             <NoItemPage text='Chưa có tu-đu nào!' />

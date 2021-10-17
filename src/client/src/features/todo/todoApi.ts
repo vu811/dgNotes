@@ -9,6 +9,14 @@ export const addTodo = (payload: TodoProps) => {
   return axios.post('/api/todos', payload)
 }
 
+export const getTodoById = (id: string) => {
+  return axios.get(`/api/todos/${id}`)
+}
+
+export const updateTodo = (id: string, payload: TodoProps) => {
+  return axios.put(`/api/todos/${id}`, payload)
+}
+
 export const completeTodo = (id: string) => {
   return axios.put(`/api/todos/${id}/complete`)
 }

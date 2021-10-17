@@ -1,12 +1,13 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import {
-  Button,
+  IconButton,
   ListItemIcon,
+  Menu,
   MenuItem,
   Theme,
   withStyles
@@ -16,18 +17,18 @@ import EditIcon from '@material-ui/icons/Edit'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import { green, grey, red } from '@material-ui/core/colors'
 import { useAppDispatch } from '../../../app/hooks'
-import { flashAlert } from '../../../app/appSlice'
+import { flashAlert, setMoreButtonAnchorEl } from '../../../app/appSlice'
 import { FlashType } from '../../../enums'
 import {
   deleteTaskAsync,
   DeleteTaskPayload,
+  openTaskModal,
   TaskProps,
   updateTaskAsync,
   UpdateTaskPayload
 } from '../projectSlice'
 import { getDate } from '../../../utils/dateTimeHelper'
-import MoreButton from '../../../common/components/moreButton'
-
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 export interface StyleProps {
   taskStatus: number
 }
@@ -107,7 +108,8 @@ const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
     fontWeight: theme.typography.fontWeightBold
   },
   dueDate: {
-    fontWeight: theme.typography.fontWeightBold
+    //fontWeight: theme.typography.fontWeightBold,
+    color: theme.palette.text.secondary
   },
   taskBackground: {
     backgroundColor: ({ taskStatus }) => {
@@ -149,7 +151,20 @@ const Task: FC<TaskPropReponse> = ({ index, projectId, versionId, task }) => {
   const classes = useStyles(styleProps)
   const dispatch = useAppDispatch()
 
-  const handleDelete = async (id?: String) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const handleClickMoreButton = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleCloseMorePopup = () => {
+    setAnchorEl(null)
+  }
+
+  const handleDeleteTask = async (id?: String) => {
+    handleCloseMorePopup()
     try {
       const payload: DeleteTaskPayload = {
         projectId: projectId,
@@ -167,15 +182,46 @@ const Task: FC<TaskPropReponse> = ({ index, projectId, versionId, task }) => {
     }
   }
 
-  const handleUpdateTask = (id?: String, isCompleted = false) => {
-    const payload: UpdateTaskPayload = {
-      projectId: projectId,
-      versionId: versionId,
-      taskId: id,
-      isStarted: !isCompleted,
-      isCompleted: isCompleted
+  const hanldleEditTask = (task: TaskProps) => {
+    handleCloseMorePopup()
+    dispatch(openTaskModal(task))
+  }
+
+  const getTaskAction = (task: TaskProps) => {
+    if (!task.startDate) return 'Bắt đầu'
+    if (task.startDate && !task.completedDate) return 'Hoàn thành'
+    if (task.startDate && task.completedDate) return 'Chưa hoàn thành'
+  }
+
+  const handleTaskAction = async (task: TaskProps) => {
+    handleCloseMorePopup()
+    try {
+      const payload: UpdateTaskPayload = {
+        projectId: projectId,
+        versionId: versionId,
+        taskId: task._id
+      }
+      if (!task.startDate) {
+        payload.isStarted = true
+      }
+      if (task.startDate && !task.completedDate) {
+        payload.isCompleted = true
+      }
+      if (task.startDate && task.completedDate) {
+        payload.isCompleted = false
+      }
+      const result = await dispatch(updateTaskAsync(payload)).unwrap()
+      if (result) {
+        dispatch(
+          flashAlert({
+            message: 'Đã cập nhật thành công!',
+            type: FlashType.Success
+          })
+        )
+      }
+    } catch (err) {
+      dispatch(flashAlert({ message: err, type: FlashType.Error }))
     }
-    dispatch(updateTaskAsync(payload))
   }
 
   return (
@@ -185,37 +231,19 @@ const Task: FC<TaskPropReponse> = ({ index, projectId, versionId, task }) => {
           <Grid container>
             <Grid md={2} className={classes.todoNumberGrid}>
               <span className={classes.todoNumber}>{index + 1}</span>
-              <span className={classes.dueDateText}>Ngày đến hạn</span>
+              <span className={classes.dueDateText}>Due date</span>
               <span className={classes.dueDate}>{getDate(task.dueDate)}</span>
             </Grid>
             <Grid md={7} xs={7} className={classes.todoContent}>
               <Typography component='p'>{task.description}</Typography>
             </Grid>
             <Grid md={2} className={classes.startBtn}>
-              {!task.startDate && (
-                <Button
-                  variant='contained'
-                  color='secondary'
-                  onClick={() => handleUpdateTask(task._id)}
-                >
-                  Bắt đầu
-                </Button>
-              )}
-              {task.startDate && !task.completedDate && (
-                <Button
-                  variant='contained'
-                  color='secondary'
-                  onClick={() => handleUpdateTask(task._id, true)}
-                >
-                  Hoàn thành
-                </Button>
-              )}
               {(task.startDate || task.completedDate) && (
                 <>
                   <span className={classes.dueDateText}>
                     {task.startDate && task.completedDate
-                      ? 'Ngày hoàn thành'
-                      : 'Ngày bắt đầu'}
+                      ? 'Completed date'
+                      : 'Start date'}
                   </span>
                   <span className={classes.dueDate}>
                     {getDate(task.startDate)}
@@ -224,26 +252,34 @@ const Task: FC<TaskPropReponse> = ({ index, projectId, versionId, task }) => {
               )}
             </Grid>
             <Grid md={1} className={classes.deleteTodo}>
-              <MoreButton>
-                <MenuItem onClick={() => {}}>
+              <IconButton aria-label='more' onClick={handleClickMoreButton}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleCloseMorePopup}
+              >
+                <MenuItem onClick={() => handleTaskAction(task)}>
                   <ListItemIconStyled>
                     <CheckCircleOutlineIcon style={{ color: green[500] }} />
                   </ListItemIconStyled>
-                  <Typography>Hoàn thành</Typography>
+                  <Typography>{getTaskAction(task)}</Typography>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={() => hanldleEditTask(task)}>
                   <ListItemIconStyled>
                     <EditIcon style={{ color: grey[500] }} />
                   </ListItemIconStyled>
                   <Typography>Chỉnh sửa</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => handleDelete(task._id)}>
+                <MenuItem onClick={() => handleDeleteTask(task._id)}>
                   <ListItemIconStyled>
                     <DeleteForeverIcon style={{ color: red[500] }} />
                   </ListItemIconStyled>
                   <Typography>Xóa</Typography>
                 </MenuItem>
-              </MoreButton>
+              </Menu>
             </Grid>
           </Grid>
         </CardContentStyled>

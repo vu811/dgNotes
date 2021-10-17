@@ -4,7 +4,13 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { completeTodoAsync, deleteTodoAsync, TodoResponse } from '../todoSlice'
+import {
+  completeTodoAsync,
+  deleteTodoAsync,
+  getTodoByIdAsync,
+  openTodoModal,
+  TodoProps
+} from '../todoSlice'
 import {
   IconButton,
   Menu,
@@ -66,7 +72,8 @@ const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
     fontWeight: theme.typography.fontWeightBold
   },
   todoTime: {
-    color: ({ isCompleted }) => (isCompleted ? '#66bb6a' : 'lightslategrey'),
+    //color: ({ isCompleted }) => (isCompleted ? '#66bb6a' : 'lightslategrey'),
+    color: 'rgb(34, 51, 84)',
     fontWeight: theme.typography.fontWeightBold
   },
   todoDescr: {
@@ -87,7 +94,8 @@ const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
     cursor: 'pointer'
   },
   cardContent: {
-    color: ({ isCompleted }) => (isCompleted ? '#66bb6a' : 'rgb(34, 51, 84)'),
+    //color: ({ isCompleted }) => (isCompleted ? '#66bb6a' : 'rgb(34, 51, 84)'),
+    color: 'rgb(34, 51, 84)',
     backgroundColor: ({ isCompleted }) => (isCompleted ? '#c9f8de' : 'white')
   },
   test: {
@@ -104,50 +112,48 @@ const CardContentStyled = withStyles({
   }
 })(CardContent)
 
-const IconButtonStyled = withStyles((theme) => ({
-  root: {
-    padding: '2px',
-    color: theme.palette.text.primary,
-    fontWeight: theme.typography.fontWeightBold
-  }
-}))(IconButton)
-
 const ListItemIconStyled = withStyles((theme) => ({
   root: {
     minWidth: '30px'
   }
 }))(ListItemIcon)
-
 export interface TodoItemProps {
   index: number
-  item: TodoResponse
+  data: TodoProps
 }
-
 export interface StyleProps {
   isCompleted?: boolean
 }
 
-const TodoItem: FC<TodoItemProps> = ({ index, item }) => {
+const TodoItem: FC<TodoItemProps> = ({ index, data }) => {
   const styleProps: StyleProps = {
-    isCompleted: item.isCompleted
+    isCompleted: data.isCompleted
   }
   const classes = useStyles(styleProps)
   const dispatch = useAppDispatch()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClickMorePopup = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose = () => {
+  const handleCloseMorePopup = () => {
     setAnchorEl(null)
   }
 
-  const handleCompleteTodo = async (id: string) => {
-    handleClose()
+  const handleEditTodo = async (id?: string) => {
+    handleCloseMorePopup()
+    const result = await dispatch(getTodoByIdAsync(id ?? '')).unwrap()
+    if (result) {
+      dispatch(openTodoModal({ isAddNew: false }))
+    }
+  }
+
+  const handleCompleteTodo = async (id?: string) => {
+    handleCloseMorePopup()
     try {
-      const result = await dispatch(completeTodoAsync(id)).unwrap()
+      const result = await dispatch(completeTodoAsync(id ?? '')).unwrap()
       if (result) {
         dispatch(
           flashAlert({
@@ -161,10 +167,10 @@ const TodoItem: FC<TodoItemProps> = ({ index, item }) => {
     }
   }
 
-  const handleDeleteTodo = async (id: string) => {
-    handleClose()
+  const handleDeleteTodo = async (id?: string) => {
+    handleCloseMorePopup()
     try {
-      const result = await dispatch(deleteTodoAsync(id)).unwrap()
+      const result = await dispatch(deleteTodoAsync(id ?? '')).unwrap()
       if (result) {
         dispatch(
           flashAlert({ message: 'Xóa thành công!', type: FlashType.Success })
@@ -185,14 +191,14 @@ const TodoItem: FC<TodoItemProps> = ({ index, item }) => {
             </Grid>
             <Grid md={10} xs={8} className={classes.todoContent}>
               <Typography component='p' className={classes.todoTime}>
-                {item.time}
+                {data.time}
               </Typography>
               <Typography component='p' className={classes.todoDescr}>
-                {item.description}
+                {data.description}
               </Typography>
             </Grid>
             <Grid md={1} className={classes.deleteTodo}>
-              <IconButton aria-label='settings' onClick={handleClick}>
+              <IconButton aria-label='more' onClick={handleClickMorePopup}>
                 <MoreVertIcon />
               </IconButton>
               <Menu
@@ -200,23 +206,23 @@ const TodoItem: FC<TodoItemProps> = ({ index, item }) => {
                 keepMounted
                 open={Boolean(anchorEl)}
                 className={classes.test}
-                onClose={handleClose}
+                onClose={handleCloseMorePopup}
               >
-                <MenuItem onClick={() => handleCompleteTodo(item._id)}>
+                <MenuItem onClick={() => handleCompleteTodo(data._id)}>
                   <ListItemIconStyled>
                     <CheckCircleOutlineIcon style={{ color: green[500] }} />
                   </ListItemIconStyled>
                   <Typography>
-                    {item.isCompleted ? 'Chưa hoàn thành' : 'Hoàn thành'}
+                    {data.isCompleted ? 'Chưa hoàn thành' : 'Hoàn thành'}
                   </Typography>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={() => handleEditTodo(data._id)}>
                   <ListItemIconStyled>
                     <EditIcon style={{ color: grey[500] }} />
                   </ListItemIconStyled>
                   <Typography>Chỉnh sửa</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => handleDeleteTodo(item._id)}>
+                <MenuItem onClick={() => handleDeleteTodo(data._id)}>
                   <ListItemIconStyled>
                     <DeleteForeverIcon style={{ color: red[500] }} />
                   </ListItemIconStyled>

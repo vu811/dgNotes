@@ -21,15 +21,13 @@ import {
   getProjectsAsync,
   openProjectModal,
   ProjectProps,
-  selectProjects
+  selectProjects,
+  updateProjectAsync
 } from './projectSlice'
 import ProjectItem from './components/projectItem'
-
-const validationProjectSchema = yup.object({
-  name: yup.string().required('Vui lòng nhập tên dự án'),
-  startDate: yup.date().required('Vui lòng nhập ngày bắt đầu'),
-  description: yup.string().max(500, 'Tối đa 500 kí tự')
-})
+import { Typography } from '@material-ui/core'
+import NoItemPage from '../../common/components/noItemPage'
+import ProjectModal from './components/projectModal'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -60,6 +58,11 @@ const useStyles = makeStyles((theme: Theme) =>
         maxHeight: 'calc(100vh - 202px)',
         overflowY: 'auto'
       }
+    },
+    navigator: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginBottom: '10px'
     }
   })
 )
@@ -76,105 +79,37 @@ const Project = () => {
     dispatch(getProjectsAsync())
   }, [])
 
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      startDate: new Date(),
-      description: ''
-    },
-    validationSchema: validationProjectSchema,
-    onSubmit: (values) => {
-      const payload: ProjectProps = {
-        name: values.name,
-        startDate: values.startDate,
-        description: values.description
-      }
-      dispatch(addProjectAsync(payload))
-    }
-  })
-
   return (
     <div className={classes.root}>
-      <Button
-        variant='contained'
-        color='secondary'
-        startIcon={<AddCircleOutlineIcon />}
-        className={classes.newProjectBtn}
-        onClick={() => dispatch(openProjectModal())}
-      >
-        thêm dự án
-      </Button>
-      <Grid container spacing={3} className={classes.projectWrapper}>
-        {projects &&
+      <div className={classes.navigator}>
+        <Typography variant='subtitle1'>Quản lí dự án</Typography>
+        <div>
+          <Button
+            variant='contained'
+            color='secondary'
+            startIcon={<AddCircleOutlineIcon />}
+            className={classes.newProjectBtn}
+            onClick={() => dispatch(openProjectModal({ isAddNew: true }))}
+          >
+            thêm
+          </Button>
+        </div>
+      </div>
+      <Grid container spacing={2} className={classes.projectWrapper}>
+        {projects && projects.length > 0 ? (
           projects.map((project: ProjectProps) => (
             <ProjectItem item={project} />
-          ))}
+          ))
+        ) : (
+          <NoItemPage text='Chưa có dự án nào!' />
+        )}
       </Grid>
-      <Modal
-        title='Thêm dự án'
-        open={isOpenProjectModal}
-        onClose={() => dispatch(closeProjectModal())}
-        onSubmit={formik.handleSubmit}
-      >
-        <form
-          className={classes.root}
-          noValidate
-          autoComplete='off'
-          onSubmit={formik.handleSubmit}
-        >
-          <TextField
-            id='name'
-            name='name'
-            label='Tên dự án'
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            error={Boolean(formik.errors.name)}
-            helperText={formik.errors.name}
-            placeholder='Tên dự án'
-            fullWidth
-            color='secondary'
-            margin='normal'
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              id='startDate'
-              name='startDate'
-              label='Ngày bắt đầu'
-              value={formik.values.startDate}
-              color='secondary'
-              margin='normal'
-              format='dd/MM/yyyy'
-              onChange={(val) => {
-                formik.setFieldValue('startDate', val)
-              }}
-              KeyboardButtonProps={{
-                'aria-label': 'change date'
-              }}
-            />
-          </MuiPickersUtilsProvider>
-          <TextField
-            id='description'
-            name='description'
-            label='Mô tả'
-            value={formik.values.description}
-            onChange={formik.handleChange}
-            error={Boolean(formik.errors.description)}
-            helperText={formik.errors.description}
-            placeholder='Mô tả dự án'
-            fullWidth
-            multiline
-            rows={4}
-            color='secondary'
-            margin='normal'
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-        </form>
-      </Modal>
+      {isOpenProjectModal && (
+        <ProjectModal
+          open={isOpenProjectModal}
+          close={() => dispatch(closeProjectModal())}
+        />
+      )}
     </div>
   )
 }

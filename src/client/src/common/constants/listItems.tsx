@@ -82,7 +82,7 @@ const ListItems = () => {
       </ListItemStyle>
       <ListItemStyle
         button
-        selected={location.pathname === '/project'}
+        selected={location.pathname.includes('/project')}
         onClick={() => history.push('/project')}
       >
         <ListItemIcon>

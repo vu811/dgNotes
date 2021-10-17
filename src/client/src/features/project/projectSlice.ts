@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../app/store'
 import {
   getProjects,
@@ -9,69 +9,63 @@ import {
   deleteTask,
   deleteVersion,
   deleteProject,
-  updateTask
+  updateTask,
+  updateProject,
+  updateVersion
 } from './projectApi'
-
 export interface ProjectDetailProps extends ProjectProps {
   versions: VersionFullProps[]
 }
-
 export interface TaskProps {
-  _id?: String
-  description: String
+  _id?: string
+  description: string
   dueDate: Date
   startDate: Date
   completedDate: Date
 }
-
 export interface VersionProps {
-  _id?: String
-  name: String
+  _id?: string
+  name: string
   startDate: Date | null
-  description: String
+  description: string
 }
-
 export interface VersionFullProps extends VersionProps {
   tasks: TaskProps[]
 }
-
 export interface VersionPayload {
-  id: String
+  id: string
   version: VersionProps
 }
-
 export interface ProjectBasePayload {
   projectId: any
   versionId: any
 }
-
 export interface TaskPayload extends ProjectBasePayload {
   task: any
 }
-
 export interface DeleteTaskPayload extends ProjectBasePayload {
   taskId: any
 }
-
 export interface UpdateTaskPayload extends DeleteTaskPayload {
-  isStarted: boolean
-  isCompleted: boolean
+  isStarted?: boolean
+  isCompleted?: boolean
+  description?: string
+  dueDate?: Date
 }
-
 export interface ProjectProps {
-  _id?: String
-  name: String
+  _id?: string
+  name: string
   startDate: Date
-  description: String
+  description: string
 }
-
 export interface ProjectState {
   isOpenProjectModal: boolean
   isOpenVersionModal: boolean
   isOpenTaskModal: boolean
   projects: ProjectProps[]
   projectDetail: ProjectDetailProps | null
-  loading?: boolean
+  task: TaskProps | null
+  version: VersionProps | null
 }
 
 const initialState: ProjectState = {
@@ -80,7 +74,8 @@ const initialState: ProjectState = {
   isOpenTaskModal: false,
   projects: [],
   projectDetail: null,
-  loading: undefined
+  task: null,
+  version: null
 }
 
 export const getProjectsAsync = createAsyncThunk('project/get', async () => {
@@ -100,6 +95,14 @@ export const addProjectAsync = createAsyncThunk(
   'project/add',
   async (payload: ProjectProps) => {
     const response = await addProject(payload)
+    return response.data
+  }
+)
+
+export const updateProjectAsync = createAsyncThunk(
+  'project/update',
+  async (payload: ProjectProps) => {
+    const response = await updateProject(payload._id ?? '', payload)
     return response.data
   }
 )
@@ -139,15 +142,30 @@ export const deleteTaskAsync = createAsyncThunk(
 export const updateTaskAsync = createAsyncThunk(
   'project/updateTask',
   async (payload: UpdateTaskPayload) => {
-    const response = await updateTask(
-      payload.projectId,
-      payload.versionId,
-      payload.taskId,
-      {
-        isStarted: payload.isStarted || false,
-        isCompleted: payload.isCompleted || false
-      }
-    )
+    const {
+      projectId,
+      versionId,
+      taskId,
+      isStarted,
+      isCompleted,
+      description,
+      dueDate
+    } = payload
+    const response = await updateTask(projectId, versionId, taskId, {
+      isStarted,
+      isCompleted,
+      description,
+      dueDate
+    })
+    return response.data
+  }
+)
+
+export const updateVersionAsync = createAsyncThunk(
+  'project/updateVersion',
+  async (payload: VersionPayload) => {
+    const { id, version } = payload
+    const response = await updateVersion(id, version)
     return response.data
   }
 )
@@ -162,7 +180,7 @@ export const deleteVersionAsync = createAsyncThunk(
 
 export const deleteProjectAsync = createAsyncThunk(
   'project/deleteProject',
-  async (id?: String) => {
+  async (id?: string) => {
     const response = await deleteProject(id)
     return response.data
   }
@@ -172,20 +190,29 @@ export const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
-    openProjectModal: (state) => {
+    openProjectModal: (state, action) => {
       state.isOpenProjectModal = true
+      if (action.payload.isAddNew) {
+        state.projectDetail = null
+      }
     },
     closeProjectModal: (state) => {
       state.isOpenProjectModal = false
     },
-    openVersionModal: (state) => {
+    openVersionModal: (state, action) => {
       state.isOpenVersionModal = true
+      if (action.payload) {
+        state.version = action.payload
+      }
     },
     closeVersionModal: (state) => {
       state.isOpenVersionModal = false
     },
-    openTaskModal: (state) => {
+    openTaskModal: (state, action) => {
       state.isOpenTaskModal = true
+      if (action.payload) {
+        state.task = action.payload
+      }
     },
     closeTaskModal: (state) => {
       state.isOpenTaskModal = false
@@ -224,6 +251,23 @@ export const projectSlice = createSlice({
       })
       .addCase(updateTaskAsync.fulfilled, (state, action) => {
         state.projectDetail = action.payload
+      })
+      .addCase(updateProjectAsync.fulfilled, (state, action) => {
+        const { _id, name, startDate, description } = action.payload
+        const updatedProjects = state.projects.map((project) => {
+          if (project._id === _id) {
+            project.name = name
+            project.startDate = startDate
+            project.description = description
+          }
+          return project
+        })
+        state.projects = updatedProjects
+        state.isOpenProjectModal = false
+      })
+      .addCase(updateVersionAsync.fulfilled, (state, action) => {
+        state.projectDetail = action.payload
+        state.isOpenVersionModal = false
       })
   }
 })

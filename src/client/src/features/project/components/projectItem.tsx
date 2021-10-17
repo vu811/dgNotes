@@ -2,12 +2,16 @@ import { FC, useState } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
-import { red } from '@material-ui/core/colors'
-import CardActions from '@material-ui/core/CardActions'
+import { grey, red } from '@material-ui/core/colors'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
-import { deleteProjectAsync, ProjectProps } from '../projectSlice'
+import {
+  deleteProjectAsync,
+  getProjectAsync,
+  openProjectModal,
+  ProjectProps
+} from '../projectSlice'
 import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
@@ -16,7 +20,12 @@ import { useHistory } from 'react-router-dom'
 import { useAppDispatch } from '../../../app/hooks'
 import { FlashType } from '../../../enums'
 import { flashAlert } from '../../../app/appSlice'
-import { Chip, Menu, MenuItem } from '@material-ui/core'
+import { ListItemIcon, Menu, MenuItem } from '@material-ui/core'
+import { getDate } from '../../../utils/dateTimeHelper'
+import WatchLaterTwoToneIcon from '@material-ui/icons/WatchLaterTwoTone'
+import Filter1TwoToneIcon from '@material-ui/icons/Filter1TwoTone'
+import DateRangeTwoToneIcon from '@material-ui/icons/DateRangeTwoTone'
+import AssignmentTwoToneIcon from '@material-ui/icons/AssignmentTwoTone'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,13 +60,24 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between'
   },
   cardHeader: {
-    cursor: 'pointer'
+    cursor: 'pointer',
+    padding: '16px 30px'
   },
   startDate: {
-    backgroundColor: theme.palette.info.light,
-    fontWeight: 700,
-    padding: '4px',
-    borderRadius: '3px'
+    color: theme.palette.text.primary,
+    fontWeight: 700
+  },
+  propTitle: {
+    color: theme.palette.text.primary,
+    fontWeight: 700
+  },
+  propContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  propContentText: {
+    marginLeft: '10px'
   }
 }))
 
@@ -66,6 +86,21 @@ const IconButtonStyled = withStyles({
     padding: '5px'
   }
 })(IconButton)
+
+const ListItemIconStyled = withStyles((theme) => ({
+  root: {
+    minWidth: '30px'
+  }
+}))(ListItemIcon)
+
+const CardContentStyled = withStyles({
+  root: {
+    padding: '0 30px',
+    '&:last-child': {
+      paddingBottom: '16px'
+    }
+  }
+})(CardContent)
 
 export interface ProjectItemProps {
   item: ProjectProps
@@ -77,20 +112,30 @@ const ProjectItem: FC<ProjectItemProps> = ({ item }) => {
   const dispatch = useAppDispatch()
 
   const goToDetail = (id?: any) => {
-    history.push(`projects/${id}`)
+    history.push(`project/${id}`)
   }
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClickMoreButton = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose = () => {
+  const handleCloseMorePopup = () => {
     setAnchorEl(null)
   }
 
-  const handleDeleteProject = async (id?: String) => {
+  const handleEditProject = async (id: string) => {
+    handleCloseMorePopup()
+    const result = await dispatch(getProjectAsync(id)).unwrap()
+    if (result) {
+      dispatch(openProjectModal({ isAddNew: false }))
+    }
+  }
+
+  const handleDeleteProject = async (id?: string) => {
     try {
       const result = await dispatch(deleteProjectAsync(id)).unwrap()
       if (result) {
@@ -104,62 +149,125 @@ const ProjectItem: FC<ProjectItemProps> = ({ item }) => {
   }
 
   return (
-    <Grid item md={4} xs={12}>
+    <Grid item md={12}>
       <Card className={classes.root}>
         <CardHeader
           action={
-            <IconButton aria-label='settings' onClick={handleClick}>
+            <IconButton aria-label='settings' onClick={handleClickMoreButton}>
               <MoreVertIcon />
             </IconButton>
           }
           title={
-            <Typography
-              variant='h5'
-              component='h2'
-              className={classes.projectName}
-              onClick={() => goToDetail(item._id)}
-            >
-              {item.name}
-            </Typography>
+            <Grid container>
+              <Grid item md={10}>
+                <Typography
+                  variant='h4'
+                  component='div'
+                  className={classes.projectName}
+                  onClick={() => goToDetail(item._id)}
+                >
+                  {item.name}
+                </Typography>
+              </Grid>
+              <Grid item md={2}>
+                <Typography
+                  variant='subtitle1'
+                  component='span'
+                  className={classes.startDate}
+                >
+                  {'Ngày bắt đầu - '}
+                </Typography>
+                <Typography
+                  variant='body2'
+                  component='span'
+                  color='textSecondary'
+                >
+                  {getDate(item.startDate)}
+                </Typography>
+              </Grid>
+            </Grid>
           }
           subheader={
-            <Chip label='In progress' size='small' color='secondary' />
+            <Typography variant='body2' color='textSecondary' component='p'>
+              {item.description}
+            </Typography>
           }
           className={classes.cardHeader}
         />
-        <CardContent>
-          <Typography variant='body2' color='textSecondary' component='p'>
-            {item.description}
-          </Typography>
-        </CardContent>
-        <CardActions className={classes.cardAction}>
-          <span className={classes.startDate}> Start date: 12/12/2021</span>
-        </CardActions>
+        <CardContentStyled>
+          <Grid container>
+            <Grid item md={3}>
+              <Typography
+                variant='subtitle2'
+                component='div'
+                className={classes.propTitle}
+              >
+                Trạng thái:
+              </Typography>
+              <div className={classes.propContent}>
+                <WatchLaterTwoToneIcon />
+                <span className={classes.propContentText}>đang thực hiện</span>
+              </div>
+            </Grid>
+            <Grid item md={3}>
+              <Typography
+                variant='subtitle2'
+                component='div'
+                className={classes.propTitle}
+              >
+                Phiên bản hiện tại:
+              </Typography>
+              <div className={classes.propContent}>
+                <Filter1TwoToneIcon color='secondary' />
+                <span className={classes.propContentText}>1.0</span>
+              </div>
+            </Grid>
+            <Grid item md={3}>
+              <Typography
+                variant='subtitle2'
+                component='div'
+                className={classes.propTitle}
+              >
+                Ngày release:
+              </Typography>
+              <div className={classes.propContent}>
+                <DateRangeTwoToneIcon style={{ color: 'blueviolet' }} />
+                <span className={classes.propContentText}>12/03/2021</span>
+              </div>
+            </Grid>
+            <Grid item md={3}>
+              <Typography
+                variant='subtitle2'
+                component='div'
+                className={classes.propTitle}
+              >
+                Pending task:
+              </Typography>
+              <div className={classes.propContent}>
+                <AssignmentTwoToneIcon style={{ color: 'orange' }} />
+                <span className={classes.propContentText}>5/15</span>
+              </div>
+            </Grid>
+          </Grid>
+        </CardContentStyled>
       </Card>
       <Menu
-        id='simple-menu'
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
-        onClose={handleClose}
+        onClose={handleCloseMorePopup}
       >
-        <MenuItem onClick={handleClose}>
-          <IconButtonStyled
-            color='secondary'
-            onClick={() => handleDeleteProject(item._id)}
-          >
-            <EditIcon />
-            <Typography>Chỉnh sửa</Typography>
-          </IconButtonStyled>
+        <MenuItem onClick={() => handleEditProject(item._id ?? '')}>
+          <ListItemIconStyled>
+            <EditIcon style={{ color: grey[500] }} />
+          </ListItemIconStyled>
+          <Typography>Chỉnh sửa</Typography>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <IconButtonStyled
-            color='primary'
-            onClick={() => handleDeleteProject(item._id)}
-          >
-            <DeleteForeverIcon />
-            <Typography>Xóa</Typography>
-          </IconButtonStyled>
+        <MenuItem onClick={() => handleDeleteProject(item._id)}>
+          <ListItemIconStyled>
+            <DeleteForeverIcon style={{ color: red[500] }} />
+          </ListItemIconStyled>
+          <Typography>Xóa</Typography>
         </MenuItem>
       </Menu>
     </Grid>
