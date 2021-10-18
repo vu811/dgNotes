@@ -5,6 +5,10 @@ const Schema = mongoose.Schema
 
 export const goalSchema = new Schema(
   {
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
     goalType: {
       type: Number,
       enum: GoalType,

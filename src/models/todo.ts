@@ -4,6 +4,10 @@ const Schema = mongoose.Schema
 
 export const todoSchema = new Schema(
   {
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
     date: {
       type: String,
       required: [true, 'startDate is required']

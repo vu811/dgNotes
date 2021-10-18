@@ -5,8 +5,20 @@ const Schema = mongoose.Schema
 export const userSchema = new Schema(
   {
     name: {
+      type: String
+    },
+    username: {
       type: String,
-      required: [true, 'name is required']
+      required: [true, 'username is required']
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    isActive: {
+      type: Boolean,
+      required: true,
+      default: true
     }
   },
   {

@@ -4,6 +4,10 @@ const Schema = mongoose.Schema
 
 export const bucketSchema = new Schema(
   {
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
     description: {
       type: String,
       required: [true, 'description is required']

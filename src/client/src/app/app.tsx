@@ -12,11 +12,12 @@ import Todo from '../features/todo'
 import ProjectDetail from '../features/project/components/projectDetail'
 import Goal from '../features/goal'
 import BucketList from '../features/bucketList'
+import Login from '../auth/login'
 
 const App = () => {
   const buildPages = () => {
     const pages: RouteProps[] = [
-      { exact: true, path: '/', render: () => withLayout(<DashBoard />) },
+      { exact: true, path: '/', render: () => <Login /> },
       { path: '/todo', render: () => withLayout(<Todo />) },
       { exact: true, path: '/project', render: () => withLayout(<Project />) },
       {

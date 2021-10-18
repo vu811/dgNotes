@@ -5,6 +5,10 @@ const Schema = mongoose.Schema
 
 export const projectSchema = new Schema(
   {
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
     name: {
       type: String,
       required: [true, 'name is required']
