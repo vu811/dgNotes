@@ -153,7 +153,7 @@ const ProjectItem: FC<ProjectItemProps> = ({ item }) => {
       <Card className={classes.root}>
         <CardHeader
           action={
-            <IconButton aria-label='settings' onClick={handleClickMoreButton}>
+            <IconButton aria-label='more' onClick={handleClickMoreButton}>
               <MoreVertIcon />
             </IconButton>
           }

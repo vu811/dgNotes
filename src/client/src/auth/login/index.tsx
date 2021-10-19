@@ -1,39 +1,78 @@
+import clsx from 'clsx'
 import {
+  Box,
   Button,
   Checkbox,
+  FilledInput,
+  FormControl,
   FormControlLabel,
-  TextField
+  FormHelperText,
+  InputAdornment,
+  Link,
+  makeStyles,
+  OutlinedInput,
+  TextField,
+  Typography
 } from '@material-ui/core'
 import AuthLayout from '../../layouts/auth'
 
+const useStyles = makeStyles((theme) => ({
+  wrapper: {
+    padding: '1%'
+  },
+  formControl: {
+    width: '100%',
+    marginBottom: '5%'
+  },
+  margin: {
+    margin: theme.spacing(1)
+  },
+  textField: {
+    width: '25ch'
+  },
+  signInBtn: {
+    //marginTop: '5%'
+  },
+  welcomeText: {
+    fontWeight: 900
+  },
+  inputLabel: {
+    fontWeight: theme.typography.fontWeightMedium
+  },
+  form: {
+    marginTop: '20%'
+  }
+}))
+
 const Login = () => {
+  const classes = useStyles()
   return (
     <AuthLayout>
-      <form>
-        <TextField
-          margin='normal'
-          required
-          fullWidth
-          id='email'
-          label='Email Address'
-          name='email'
-          autoComplete='email'
-          autoFocus
-        />
-        <TextField
-          margin='normal'
-          required
-          fullWidth
-          name='password'
-          label='Password'
-          type='password'
+      <FormControl className={classes.formControl} variant='outlined'>
+        <Typography
+          variant='h6'
+          component='label'
+          className={classes.inputLabel}
+        >
+          Tên người dùng
+        </Typography>
+        <OutlinedInput id='username' type='text' fullWidth color='secondary' />
+      </FormControl>
+      <FormControl className={classes.formControl} variant='outlined'>
+        <Typography
+          variant='h6'
+          component='label'
+          className={classes.inputLabel}
+        >
+          Mật khẩu
+        </Typography>
+        <OutlinedInput
           id='password'
-          autoComplete='current-password'
+          type='password'
+          fullWidth
+          color='secondary'
         />
-        <Button type='submit' fullWidth variant='contained' color='primary'>
-          Sign In
-        </Button>
-      </form>
+      </FormControl>
     </AuthLayout>
   )
 }
