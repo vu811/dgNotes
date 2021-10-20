@@ -1,4 +1,5 @@
 import express, { Express } from 'express'
+import { login, register } from '../controllers/auth.controller'
 import {
   addBucket,
   completeBucket,
@@ -39,6 +40,11 @@ import {
 
 const routes = (app: Express) => {
   const router = express.Router()
+
+  /* Auth API */
+  const authRoute = '/api/auth'
+  router.get(`${authRoute}/register`, register)
+  router.get(`${authRoute}/login`, login)
 
   /* Project API */
   const projectBaseRoute = '/api/projects'

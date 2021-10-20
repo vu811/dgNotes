@@ -1,17 +1,7 @@
-import clsx from 'clsx'
 import {
-  Box,
   Button,
-  Checkbox,
-  FilledInput,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  InputAdornment,
-  Link,
   makeStyles,
   OutlinedInput,
-  TextField,
   Typography
 } from '@material-ui/core'
 import AuthLayout from '../../layouts/auth'
@@ -24,43 +14,28 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     marginBottom: '5%'
   },
-  margin: {
-    margin: theme.spacing(1)
-  },
-  textField: {
-    width: '25ch'
-  },
-  signInBtn: {
-    //marginTop: '5%'
-  },
-  welcomeText: {
-    fontWeight: 900
-  },
   inputLabel: {
     fontWeight: theme.typography.fontWeightMedium
-  },
-  form: {
-    marginTop: '20%'
   }
 }))
 
 const Login = () => {
   const classes = useStyles()
   return (
-    <AuthLayout>
-      <FormControl className={classes.formControl} variant='outlined'>
+    <AuthLayout onSubmit={() => {}}>
+      <div className={classes.formControl}>
         <Typography
-          variant='h6'
+          variant='subtitle2'
           component='label'
           className={classes.inputLabel}
         >
-          Tên người dùng
+          Email
         </Typography>
         <OutlinedInput id='username' type='text' fullWidth color='secondary' />
-      </FormControl>
-      <FormControl className={classes.formControl} variant='outlined'>
+      </div>
+      <div className={classes.formControl}>
         <Typography
-          variant='h6'
+          variant='subtitle2'
           component='label'
           className={classes.inputLabel}
         >
@@ -72,7 +47,16 @@ const Login = () => {
           fullWidth
           color='secondary'
         />
-      </FormControl>
+      </div>
+      <Button
+        type='submit'
+        fullWidth
+        variant='contained'
+        color='primary'
+        size='large'
+      >
+        Đăng nhập
+      </Button>
     </AuthLayout>
   )
 }

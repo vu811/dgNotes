@@ -34,6 +34,8 @@ const ContainerStyled = withStyles({
 const DefaultLayout: FC = (props) => {
   const classes = useStyles()
 
+  console.log('DefaultLayout')
+
   return (
     <>
       <CssBaseline />

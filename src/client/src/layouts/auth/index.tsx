@@ -1,75 +1,66 @@
 import {
   Box,
   Card,
-  CardContent,
   CardMedia,
   CssBaseline,
-  Grid,
-  IconButton,
   makeStyles,
   Typography,
-  useTheme,
-  Button,
-  Checkbox,
-  FilledInput,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  InputAdornment,
-  Link,
-  OutlinedInput,
-  TextField
+  Button
 } from '@material-ui/core'
-import { GifRounded } from '@material-ui/icons'
-import React, { FC } from 'react'
+import { FC, ReactNode } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 import cover from '../../assets/images/cover.jpg'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh'
+    height: '100vh',
+    flexDirection: 'column'
   },
   card: {
     display: 'flex',
     flexDirection: 'row'
   },
-  authForm: {},
-  content: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
   wrapper: {
-    padding: '1%'
+    padding: '2%',
+    width: '420px'
   },
   formControl: {
-    width: '100%',
-    marginBottom: '5%'
-  },
-  margin: {
-    margin: theme.spacing(1)
-  },
-  textField: {
-    width: '25ch'
-  },
-  signInBtn: {
-    //marginTop: '5%'
+    width: '100%'
   },
   welcomeText: {
     fontWeight: 900
   },
-  inputLabel: {
-    fontWeight: theme.typography.fontWeightMedium
-  },
   form: {
-    marginTop: '20%'
+    marginTop: '10%'
+  },
+  logoText: {
+    color: theme.palette.primary.main,
+    fontWeight: 900
+  },
+  authText: {
+    cursor: 'pointer',
+    color: theme.palette.secondary.main,
+    fontWeight: theme.typography.fontWeightMedium
   }
 }))
 
-const AuthLayout: FC = ({ children }) => {
+interface AuthProps {
+  onSubmit: () => void
+  children: ReactNode
+}
+
+const AuthLayout: FC<AuthProps> = ({ onSubmit, children }) => {
   const classes = useStyles()
+  const history = useHistory()
+  const location = useLocation()
+  const isLoginPage = location.pathname === '/auth/login'
+
+  const handleClickAuthLink = () => {
+    history.push(isLoginPage ? '/auth/register' : '/auth/login')
+  }
   return (
     <>
       <CssBaseline />
@@ -79,7 +70,7 @@ const AuthLayout: FC = ({ children }) => {
             component='img'
             style={{ width: '90vh', height: '70vh' }}
             image={cover}
-            alt='Live from space album cover'
+            alt='auth cover image'
           />
           <Box className={classes.wrapper}>
             <Typography
@@ -87,27 +78,40 @@ const AuthLayout: FC = ({ children }) => {
               component='h3'
               className={classes.welcomeText}
             >
-              Chào mừng bạn đến với dgNOTES!
+              {'Chào mừng bạn đến với '}
+              <Typography
+                variant='h5'
+                component='span'
+                className={classes.logoText}
+              >
+                dgNOTES
+              </Typography>
             </Typography>
+
             <Typography variant='body2' component='span' color='textSecondary'>
-              {'Bạn chưa có tài khoản? '}
+              {isLoginPage
+                ? 'Bạn chưa có tài khoản? '
+                : 'Bạn đã có tài khoản? '}
             </Typography>
-            <Typography component='span'>
-              <Link href='/goal' onClick={() => {}}>
-                Đăng ký
-              </Link>
+            <Typography
+              variant='body2'
+              component='span'
+              className={classes.authText}
+              onClick={handleClickAuthLink}
+            >
+              {isLoginPage ? 'Tạo một tài khoản' : 'Đăng nhập'}
             </Typography>
             <div className={classes.form}>{children}</div>
-            <Button
+            {/* <Button
               type='submit'
               fullWidth
               variant='contained'
               color='primary'
-              className={classes.signInBtn}
               size='large'
+              onClick={onSubmit}
             >
-              Đăng nhập
-            </Button>
+              {isLoginPage ? 'Đăng nhập' : 'Đăng ký'}
+            </Button> */}
           </Box>
         </Card>
       </div>

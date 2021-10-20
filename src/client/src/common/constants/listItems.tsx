@@ -62,7 +62,9 @@ const ListItems = () => {
     <div>
       <ListItemStyle
         button
-        selected={location.pathname === '/'}
+        selected={
+          location.pathname === '/' || location.pathname === '/app/dashboard'
+        }
         onClick={() => history.push('/')}
       >
         <ListItemIcon>
@@ -72,8 +74,8 @@ const ListItems = () => {
       </ListItemStyle>
       <ListItemStyle
         button
-        selected={location.pathname === '/todo'}
-        onClick={() => history.push('/todo')}
+        selected={location.pathname === '/app/todo'}
+        onClick={() => history.push('/app/todo')}
       >
         <ListItemIcon>
           <PlaylistAddCheckTwoToneIcon />
@@ -82,8 +84,8 @@ const ListItems = () => {
       </ListItemStyle>
       <ListItemStyle
         button
-        selected={location.pathname.includes('/project')}
-        onClick={() => history.push('/project')}
+        selected={location.pathname.includes('/app/project')}
+        onClick={() => history.push('/app/project')}
       >
         <ListItemIcon>
           <CodeRoundedIcon />
@@ -92,8 +94,8 @@ const ListItems = () => {
       </ListItemStyle>
       <ListItemStyle
         button
-        selected={location.pathname === '/goal'}
-        onClick={() => history.push('/goal')}
+        selected={location.pathname === '/app/goal'}
+        onClick={() => history.push('/app/goal')}
       >
         <ListItemIcon>
           <TrackChangesRoundedIcon />
@@ -102,8 +104,8 @@ const ListItems = () => {
       </ListItemStyle>
       <ListItemStyle
         button
-        selected={location.pathname === '/bucket-list'}
-        onClick={() => history.push('/bucket-list')}
+        selected={location.pathname === '/app/bucket-list'}
+        onClick={() => history.push('/app/bucket-list')}
       >
         <ListItemIcon>
           <FormatListNumberedIcon />

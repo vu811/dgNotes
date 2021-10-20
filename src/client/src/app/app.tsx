@@ -13,19 +13,27 @@ import ProjectDetail from '../features/project/components/projectDetail'
 import Goal from '../features/goal'
 import BucketList from '../features/bucketList'
 import Login from '../auth/login'
+import Register from '../auth/register'
 
 const App = () => {
   const buildPages = () => {
     const pages: RouteProps[] = [
-      { exact: true, path: '/', render: () => <Login /> },
-      { path: '/todo', render: () => withLayout(<Todo />) },
-      { exact: true, path: '/project', render: () => withLayout(<Project />) },
+      { exact: true, path: '/', render: () => withLayout(<DashBoard />) },
+      { path: '/app/dashboard', render: () => withLayout(<DashBoard />) },
+      { path: '/app/todo', render: () => withLayout(<Todo />) },
       {
-        path: '/project/:id',
+        exact: true,
+        path: '/app/project',
+        render: () => withLayout(<Project />)
+      },
+      {
+        path: '/app/project/:id',
         render: () => withLayout(<ProjectDetail />)
       },
-      { path: '/goal', render: () => withLayout(<Goal />) },
-      { path: '/bucket-list', render: () => withLayout(<BucketList />) }
+      { path: '/app/goal', render: () => withLayout(<Goal />) },
+      { path: '/app/bucket-list', render: () => withLayout(<BucketList />) },
+      { path: '/auth/login', render: () => <Login /> },
+      { path: '/auth/register', render: () => <Register /> }
     ]
     return pages
   }
