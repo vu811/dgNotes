@@ -1,5 +1,5 @@
 import express, { Express } from 'express'
-import { login, register } from '../controllers/auth.controller'
+import { getMe, login, register } from '../controllers/auth.controller'
 import {
   addBucket,
   completeBucket,
@@ -37,18 +37,20 @@ import {
   getTodoById,
   updateTodo
 } from '../controllers/todo.controller'
+import { verifyJwtToken } from '../middlewares/verifyJwtToken'
 
 const routes = (app: Express) => {
   const router = express.Router()
 
   /* Auth API */
   const authRoute = '/api/auth'
-  router.get(`${authRoute}/register`, register)
-  router.get(`${authRoute}/login`, login)
+  router.post(`${authRoute}/register`, register)
+  router.post(`${authRoute}/login`, login)
+  router.get(`${authRoute}/me`, verifyJwtToken(), getMe)
 
   /* Project API */
   const projectBaseRoute = '/api/projects'
-  router.get(projectBaseRoute, getProjects)
+  router.get(projectBaseRoute, verifyJwtToken(), getProjects)
   router.post(projectBaseRoute, addProject)
   router.post(`${projectBaseRoute}/:id/versions`, addVersion)
   router.get(`${projectBaseRoute}/:id`, getProject)

@@ -34,6 +34,7 @@ const BucketList = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
+    console.log('bucket list')
     dispatch(getBucketListAsync())
   }, [])
 

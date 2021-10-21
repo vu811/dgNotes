@@ -8,6 +8,9 @@ import {
 import * as yup from 'yup'
 import { useFormik } from 'formik'
 import AuthLayout from '../../layouts/auth'
+import { useAppDispatch } from '../../app/hooks'
+import { registerAsync } from '../authSlice'
+import { useHistory } from 'react-router'
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -29,17 +32,19 @@ const validationProjectSchema = yup.object({
   name: yup.string().required('Vui lòng nhập tên của bạn'),
   email: yup
     .string()
-    .email('địa chỉ email không đúng')
+    .email('Địa chỉ email không hợp lệ')
     .required('Vui lòng nhập email'),
   password: yup
     .string()
     .min(6, 'Mật khẩu ít nhất 6 kí tự')
-    .max(12, 'Mật khẩu tối đa 12')
+    .max(12, 'Mật khẩu tối đa 12 kí tự')
     .required('Vui lòng nhập mật khẩu')
 })
 
 const Register = () => {
   const classes = useStyles()
+  const history = useHistory()
+  const dispatch = useAppDispatch()
 
   const formik = useFormik({
     initialValues: {
@@ -48,8 +53,13 @@ const Register = () => {
       password: ''
     },
     validationSchema: validationProjectSchema,
-    onSubmit: (values) => {
-      console.log('register', values)
+    onSubmit: async (values) => {
+      try {
+        const result = await dispatch(registerAsync(values)).unwrap()
+        if (result) {
+          history.push('/auth/login')
+        }
+      } catch (error) {}
     }
   })
   return (

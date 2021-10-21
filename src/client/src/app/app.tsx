@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { withLayout } from '../layouts/container'
 import {
   BrowserRouter as Router,
@@ -14,8 +14,17 @@ import Goal from '../features/goal'
 import BucketList from '../features/bucketList'
 import Login from '../auth/login'
 import Register from '../auth/register'
+import { useAppDispatch } from './hooks'
+import { getMeAsync } from '../auth/authSlice'
 
 const App = () => {
+  const dispatch = useAppDispatch()
+
+  useLayoutEffect(() => {
+    console.log('getMeAsync')
+    dispatch(getMeAsync())
+  }, [])
+
   const buildPages = () => {
     const pages: RouteProps[] = [
       { exact: true, path: '/', render: () => withLayout(<DashBoard />) },

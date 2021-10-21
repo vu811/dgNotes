@@ -5,10 +5,12 @@ import todoReducer from '../features/todo/todoSlice'
 import appReducer from './appSlice'
 import goalReducer from '../features/goal/goalSlice'
 import bucketReducer from '../features/bucketList/bucketSlice'
+import authReducer from '../auth/authSlice'
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
+    auth: authReducer,
     layout: layoutReducer,
     project: projectReducer,
     todo: todoReducer,

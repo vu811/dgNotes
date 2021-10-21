@@ -21,6 +21,59 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   try {
+    const user = await User.findOne({ email: req.body.email })
+    if (!user) {
+      res.status(404).json({ auth: false, error: 'User not found' })
+    }
+    const isValidPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    )
+    if (!isValidPassword) {
+      res
+        .status(500)
+        .json({ auth: false, accessToken: null, error: 'Invalid password' })
+    }
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.AUTH_SECRET ?? 'thisisasecretkey'
+    )
+    res.cookie('dgNOTES', token, {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: true
+    })
+
+    const userInfo = {
+      _id: user._id,
+      name: user.name,
+      email: user.email
+    }
+    res.status(200).json({ auth: true, accessToken: token, user: userInfo })
+  } catch (error) {
+    res.status(500).json({ auth: false, error: error })
+  }
+}
+
+export const getMe = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies.dgNOTES
+
+    const decoded: any = jwt.verify(
+      token,
+      process.env.AUTH_SECRET ?? 'thisisasecretkey'
+    )
+
+    console.log('decoded', decoded)
+
+    const user = await User.findOne({ _id: decoded.id })
+
+    const userInfo = {
+      _id: user._id,
+      name: user.name,
+      email: user.email
+    }
+    res.status(200).json(userInfo)
   } catch (ex: any) {
     res.status(500).json({ message: ex.message })
   }

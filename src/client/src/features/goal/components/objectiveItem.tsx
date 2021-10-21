@@ -181,7 +181,7 @@ const ObjectiveItem: FC<ObjectiveItemProps> = ({ index, data }) => {
         }
       >
         <Grid container>
-          <Grid md={2} className={classes.todoNumberGrid}>
+          <Grid item md={2} className={classes.todoNumberGrid}>
             <Tooltip
               arrow
               placement='top-start'
@@ -202,10 +202,10 @@ const ObjectiveItem: FC<ObjectiveItemProps> = ({ index, data }) => {
             </Tooltip>
             <span className={classes.todoNumber}>{index + 1}</span>
           </Grid>
-          <Grid md={9} xs={8} className={classes.todoContent}>
+          <Grid item md={9} xs={8} className={classes.todoContent}>
             {data.goal}
           </Grid>
-          <Grid md={1} className={classes.actions}>
+          <Grid item md={1} className={classes.actions}>
             {/* <MoreButton key={data._id}>
               <MenuItem onClick={() => {}}>
                 <ListItemIconStyled>

@@ -56,12 +56,12 @@ const Objective = ({ goals }: ObjectiveProps) => {
           Lịch sử
         </ButtonStyled>
       </div>
-      {objectiveTypes.map((objective) => {
+      {objectiveTypes.map((objective, index) => {
         const goalsByObjective = goals.filter(
           (x) => x.objectiveType === objective.type
         )
         return (
-          <TimelineItem>
+          <TimelineItem key={index}>
             <TimelineOppositeContent>
               <Typography variant='subtitle1' color='textPrimary'>
                 {objective.name}
