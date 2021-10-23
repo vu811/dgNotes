@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../utils/httpHelper'
 import { LoginPayload, RegisterPayload } from './authSlice'
 
 export const register = (payload: RegisterPayload) => {
@@ -10,7 +10,9 @@ export const login = (payload: LoginPayload) => {
 }
 
 export const getMe = () => {
-  const a = axios.get('/api/auth/me')
-  console.log('a', a)
-  return a
+  return axios.get('/api/auth/me')
+}
+
+export const logout = () => {
+  return axios.get('/api/auth/logout')
 }

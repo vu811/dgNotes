@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../utils/httpHelper'
 import { ProjectProps, TaskProps, VersionProps } from './projectSlice'
 
 export const getProject = (id: String) => {

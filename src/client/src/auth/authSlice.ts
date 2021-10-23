@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getMe, login, register } from './authApi'
+import { getMe, login, logout, register } from './authApi'
 
 export interface UserProps {
   _id: string
@@ -42,9 +42,13 @@ export const loginAsync = createAsyncThunk(
   }
 )
 
+export const logoutAsync = createAsyncThunk('auth/logout', async () => {
+  await logout()
+})
+
 export const getMeAsync = createAsyncThunk('auth/me', async () => {
   const response = await getMe()
-  return response
+  return response.data
 })
 
 export const authSlice = createSlice({
@@ -55,11 +59,14 @@ export const authSlice = createSlice({
     builder.addCase(registerAsync.fulfilled, (state, action) => {
       state.email = action.payload.email
     })
+    builder.addCase(loginAsync.fulfilled, (state, action) => {
+      state.currentUser = action.payload
+    })
     builder.addCase(getMeAsync.fulfilled, (state, action) => {
-      //state.email = action.payload.email
+      state.currentUser = action.payload
     })
     builder.addCase(getMeAsync.rejected, (state, action) => {
-      //state.email = action.payload.email
+      state.currentUser = null
     })
   }
 })

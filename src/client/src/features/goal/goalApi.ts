@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../utils/httpHelper'
 import { GoalProps } from './goalSlice'
 
 export const getGoal = (id: string) => {

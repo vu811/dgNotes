@@ -13,7 +13,9 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { selectIsOpenSideBar, updateSidebar } from '../layoutSlice'
 
 import { useHistory } from 'react-router-dom'
-import { LinearProgress } from '@material-ui/core'
+import { Avatar, LinearProgress } from '@material-ui/core'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import { logoutAsync } from '../../auth/authSlice'
 
 const drawerWidth = 240
 const useStyles = makeStyles((theme) => ({
@@ -63,6 +65,11 @@ const Header = () => {
     history.push('/')
   }
 
+  const handleLogout = () => {
+    dispatch(logoutAsync())
+    history.push('/auth/login')
+  }
+
   return (
     <>
       <AppBar
@@ -93,10 +100,19 @@ const Header = () => {
               dgNOTES
             </span>
           </Typography>
-          <IconButton color='inherit'>
+          {/* <IconButton color='inherit'>
             <Badge badgeContent={4} color='secondary'>
               <NotificationsIcon />
             </Badge>
+          </IconButton> */}
+          <IconButton>
+            <Avatar>V</Avatar>
+          </IconButton>
+          <Typography variant='subtitle1' component='span'>
+            Vu Nguyen
+          </Typography>
+          <IconButton onClick={handleLogout}>
+            <ExitToAppIcon style={{ color: 'rgba(0, 0, 0, 0.54)' }} />
           </IconButton>
         </Toolbar>
         {/* <LinearProgress variant='determinate' value={67} color='secondary' /> */}

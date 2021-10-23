@@ -1,5 +1,5 @@
 import express, { Express } from 'express'
-import { getMe, login, register } from '../controllers/auth.controller'
+import { getMe, login, logout, register } from '../controllers/auth.controller'
 import {
   addBucket,
   completeBucket,
@@ -47,6 +47,7 @@ const routes = (app: Express) => {
   router.post(`${authRoute}/register`, register)
   router.post(`${authRoute}/login`, login)
   router.get(`${authRoute}/me`, verifyJwtToken(), getMe)
+  router.get(`${authRoute}/logout`, logout)
 
   /* Project API */
   const projectBaseRoute = '/api/projects'
@@ -70,7 +71,7 @@ const routes = (app: Express) => {
 
   /* Todo API */
   const todoBaseRoute = '/api/todos'
-  router.get(todoBaseRoute, getTodos)
+  router.get(todoBaseRoute, verifyJwtToken(), getTodos)
   router.post(todoBaseRoute, addTodo)
   router.delete(`${todoBaseRoute}/:id`, deleteTodo)
   router.put(`${todoBaseRoute}/:id/complete`, completeTodo)

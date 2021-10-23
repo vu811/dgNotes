@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { TodoProps } from './todoSlice'
+import axios from '../../utils/httpHelper'
 
 export const getTodos = (date: string) => {
   return axios.get(`/api/todos?date=${date}`)

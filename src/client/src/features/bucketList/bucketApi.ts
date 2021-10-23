@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../utils/httpHelper'
 import { BucketProps } from './bucketSlice'
 
 export const getBucket = (id: string) => {

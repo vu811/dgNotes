@@ -49,7 +49,7 @@ export const login = async (req: Request, res: Response) => {
       name: user.name,
       email: user.email
     }
-    res.status(200).json({ auth: true, accessToken: token, user: userInfo })
+    res.status(200).json(userInfo)
   } catch (error) {
     res.status(500).json({ auth: false, error: error })
   }
@@ -64,8 +64,6 @@ export const getMe = async (req: Request, res: Response) => {
       process.env.AUTH_SECRET ?? 'thisisasecretkey'
     )
 
-    console.log('decoded', decoded)
-
     const user = await User.findOne({ _id: decoded.id })
 
     const userInfo = {
@@ -74,6 +72,15 @@ export const getMe = async (req: Request, res: Response) => {
       email: user.email
     }
     res.status(200).json(userInfo)
+  } catch (ex: any) {
+    res.status(500).json({ message: ex.message })
+  }
+}
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie('dgNOTES')
+    res.status(200).json('Loged out succesfully')
   } catch (ex: any) {
     res.status(500).json({ message: ex.message })
   }

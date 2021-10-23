@@ -7,7 +7,7 @@ export const errorHandler = (
   response: Response,
   next: NextFunction
 ) => {
-  console.log('lili', error)
+  console.log('Error', error)
   const status = error.status || 500
   const message = error.message || 'Something went wrong'
   response.status(status).json({
