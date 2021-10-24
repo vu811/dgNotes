@@ -5,6 +5,7 @@ import connectDb from './config/db'
 import routes from './routes'
 import cookieParser from 'cookie-parser'
 import { errorHandler } from './middlewares/errorHandler'
+import { permissionHandler } from './middlewares/permissionHandler'
 
 dotenv.config()
 
@@ -16,17 +17,11 @@ app.use(cors())
 app.use(express.json())
 app.use(cookieParser())
 
-// app.use(
-//   jwt({
-//     secret: 'secret123',
-//     algorithms: ['HS256'],
-//     getToken: (req) => req.cookies.dgNOTES
-//   })
-// )
-
 routes(app)
 
+// Middlewares
 app.use(errorHandler)
+app.use(permissionHandler)
 
 const PORT: string | number = process.env.PORT || 5000
 app.listen(PORT, () =>

@@ -15,6 +15,9 @@ import {
   updateProjectAsync
 } from '../projectSlice'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { withContainer } from '../../../layouts/container'
+import { CurrentUserProps } from '../../../auth/authSlice'
+import { FC } from 'react'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -60,7 +63,12 @@ const validationProjectSchema = yup.object({
   description: yup.string().max(500, 'Tối đa 500 kí tự')
 })
 
-const ProjectModal = ({ open, close }: any) => {
+interface ProjectModalProps extends CurrentUserProps {
+  open: boolean
+  close: () => void
+}
+
+const ProjectModal: FC<ProjectModalProps> = ({ open, close, currentUser }) => {
   const classes = useStyles()
   const project = useAppSelector((state) => state.project.projectDetail)
   const dispatch = useAppDispatch()
@@ -81,6 +89,7 @@ const ProjectModal = ({ open, close }: any) => {
     onSubmit: async (values, { resetForm }) => {
       const payload: ProjectProps = {
         _id: project ? project._id : '',
+        userId: currentUser?._id,
         name: values.name,
         startDate: values.startDate,
         description: values.description
@@ -160,4 +169,4 @@ const ProjectModal = ({ open, close }: any) => {
   )
 }
 
-export default ProjectModal
+export default withContainer(ProjectModal)

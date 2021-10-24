@@ -19,8 +19,9 @@ export const updateProject = async (req: Request, res: Response) => {
 }
 
 export const addProject = async (req: Request, res: Response) => {
-  const { name, startDate, description } = req.body
+  const { userId, name, startDate, description } = req.body
   const newProject = new Project({
+    userId,
     name,
     startDate,
     description

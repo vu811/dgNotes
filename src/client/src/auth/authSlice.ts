@@ -7,6 +7,10 @@ export interface UserProps {
   email: string
 }
 
+export interface CurrentUserProps {
+  currentUser?: UserProps
+}
+
 export interface LoginPayload {
   email: string
   password: string

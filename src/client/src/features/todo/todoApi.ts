@@ -1,8 +1,8 @@
 import { TodoProps } from './todoSlice'
 import axios from '../../utils/httpHelper'
 
-export const getTodos = (date: string) => {
-  return axios.get(`/api/todos?date=${date}`)
+export const getTodos = (userId: string, date: string) => {
+  return axios.get(`/api/todos?userId=${userId}&date=${date}`)
 }
 
 export const addTodo = (payload: TodoProps) => {

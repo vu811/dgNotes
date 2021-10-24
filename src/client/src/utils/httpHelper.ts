@@ -2,6 +2,16 @@ import axios from 'axios'
 
 const axiosApiInstance = axios.create()
 
+axiosApiInstance.interceptors.request.use(
+  async (request) => {
+    console.log('cookie', request)
+    return request
+  },
+  (error) => {
+    Promise.reject(error)
+  }
+)
+
 axiosApiInstance.interceptors.response.use(
   (response) => {
     return response

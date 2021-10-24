@@ -24,10 +24,11 @@ interface CustomRouteProps extends RouteProps {
 
 const App = () => {
   console.log('App')
-  // useLayoutEffect(() => {
-  //   console.log('getMeAsync')
-  //   dispatch(getMeAsync())
-  // }, [])
+  const dispatch = useAppDispatch()
+  useLayoutEffect(() => {
+    console.log('getMeAsync')
+    dispatch(getMeAsync())
+  }, [])
 
   const buildPages = () => {
     const pages: RouteProps[] = [

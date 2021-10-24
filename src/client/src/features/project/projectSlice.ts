@@ -54,6 +54,7 @@ export interface UpdateTaskPayload extends DeleteTaskPayload {
 }
 export interface ProjectProps {
   _id?: string
+  userId?: string
   name: string
   startDate: Date
   description: string

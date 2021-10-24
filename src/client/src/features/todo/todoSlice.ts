@@ -14,10 +14,16 @@ export interface TodoState {
 }
 export interface TodoProps {
   _id?: string
+  userId?: string
   date: string
   time: string
   description: string
   isCompleted?: boolean
+}
+
+export interface GetTodoPayload {
+  userId: string
+  date: string
 }
 
 const initialState: TodoState = {
@@ -44,8 +50,8 @@ export const updateTodoAsync = createAsyncThunk(
 
 export const getTodosAsync = createAsyncThunk(
   'todo/get',
-  async (date: string) => {
-    const response = await getTodos(date)
+  async ({ userId, date }: GetTodoPayload) => {
+    const response = await getTodos(userId, date)
     return response.data
   }
 )

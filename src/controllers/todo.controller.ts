@@ -2,8 +2,9 @@ import { Request, Response } from 'express'
 import Todo from '../models/todo'
 
 export const addTodo = async (req: Request, res: Response) => {
-  const { date, time, description } = req.body
+  const { userId, date, time, description } = req.body
   const newTodo = new Todo({
+    userId,
     date,
     time,
     description
@@ -41,7 +42,10 @@ export const updateTodo = async (req: Request, res: Response) => {
 
 export const getTodos = async (req: Request, res: Response) => {
   try {
-    const todos = await Todo.find().where('date').equals(req.query.date)
+    const todos = await Todo.find({
+      userId: req.query.userId,
+      date: req.query.date
+    })
     res.status(200).json(todos)
   } catch (ex: any) {
     res.status(404).json({ message: ex.message })

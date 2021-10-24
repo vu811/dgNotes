@@ -12,6 +12,8 @@ import DateFnsUtils from '@date-io/date-fns'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { getDate, getTime } from '../../../utils/dateTimeHelper'
 import { addTodoAsync, TodoProps, updateTodoAsync } from '../todoSlice'
+import { FC } from 'react'
+import { CurrentUserProps } from '../../../auth/authSlice'
 
 const validationSchema = yup.object({
   startTime: yup.date(),
@@ -22,7 +24,13 @@ const validationSchema = yup.object({
     .max(100, 'Tối đa 100 kí tự')
 })
 
-const TodoModal = ({ date, open, close }: any) => {
+interface TodoModalProps extends CurrentUserProps {
+  date: string
+  open: boolean
+  close: () => void
+}
+
+const TodoModal: FC<TodoModalProps> = ({ date, open, close, currentUser }) => {
   const todo = useAppSelector((state) => state.todo.todo)
   const dispatch = useAppDispatch()
   const formik = useFormik({
@@ -37,10 +45,10 @@ const TodoModal = ({ date, open, close }: any) => {
         },
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log(values)
       const payload: TodoProps = {
         _id: todo ? todo._id : '',
-        date: getDate(date),
+        userId: currentUser?._id,
+        date: getDate(new Date(date), true),
         time: getTime(values.time?.toISOString() ?? ''),
         description: values.description
       }

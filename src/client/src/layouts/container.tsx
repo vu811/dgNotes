@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { getMeAsync } from '../auth/authSlice'
+import { CurrentUserProps, getMeAsync, UserProps } from '../auth/authSlice'
 import DefaultLayout from './defaultLayout'
 
 const withLayout: any = (component: JSX.Element) => {
@@ -20,4 +20,12 @@ const withLayout: any = (component: JSX.Element) => {
   )
 }
 
-export { withLayout }
+const withContainer =
+  <P extends object>(Component: React.ComponentType<P>): React.FC<P> =>
+  ({ ...props }) => {
+    console.log('withContainer')
+    const currentUser = useAppSelector((state) => state.auth.currentUser)
+    return <Component {...props} currentUser={currentUser} />
+  }
+
+export { withLayout, withContainer }

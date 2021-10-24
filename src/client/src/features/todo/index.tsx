@@ -27,6 +27,7 @@ import TodoItem from './components/todoItem'
 import TodoModal from './components/todoModal'
 import NoItemPage from '../../common/components/noItemPage'
 import { getUrlQuery } from '../../utils/commonHelper'
+import { withContainer } from '../../layouts/container'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -79,11 +80,10 @@ const DatePickerStyled = withStyles({
   }
 })(DatePicker)
 
-const Todo = () => {
+const Todo = ({ currentUser }: any) => {
   const classes = useStyles()
   const location = useLocation()
   const history = useHistory()
-
   const todoDate = getUrlQuery(location.search)
     ? getUrlQuery(location.search)
     : getDate(new Date(), true)
@@ -93,8 +93,14 @@ const Todo = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getTodosAsync(todoDate))
-  }, [todoDate])
+    if (currentUser) {
+      const payload = {
+        userId: currentUser?._id,
+        date: todoDate
+      }
+      dispatch(getTodosAsync(payload))
+    }
+  }, [currentUser?._id, todoDate])
 
   const handleChangeTodoDate = (date: any) => {
     history.push(`/todos?date=${getDate(date, true)}`)
@@ -146,10 +152,11 @@ const Todo = () => {
           date={todoDate}
           open={isOpenTodoModal}
           close={() => dispatch(closeTodoModal())}
+          currentUser={currentUser}
         />
       )}
     </Container>
   )
 }
 
-export default Todo
+export default withContainer(Todo)
