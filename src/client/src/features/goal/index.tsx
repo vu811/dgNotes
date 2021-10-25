@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Typography from '@material-ui/core/Typography'
@@ -10,7 +10,9 @@ import { goalTypes } from '../../data'
 import Objective from './components/objective'
 import GoalModal from './components/goalModal'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { closeGoalModal, getGoalsAsync } from './goalSlice'
+import { closeGoalModal, getGoalsAsync, GetGoalsPayload } from './goalSlice'
+import { withContainer } from '../../layouts/container'
+import { CurrentUserProps } from '../../auth/authSlice'
 
 const useStyles = makeStyles((theme: Theme) => ({
   versionList: {
@@ -60,7 +62,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-const Goal = () => {
+interface GoalTypeProps extends CurrentUserProps {}
+
+const Goal: FC<GoalTypeProps> = ({ currentUser }) => {
   const classes = useStyles()
   const dispatch = useAppDispatch()
   const isOpenGoalModal = useAppSelector((state) => state.goal.isOpenGoalModal)
@@ -68,10 +72,19 @@ const Goal = () => {
   const [goalType, setGoalType] = useState(0)
 
   useEffect(() => {
-    dispatch(getGoalsAsync(goalType))
-  }, [goalType])
+    if (currentUser?._id) {
+      const payload: GetGoalsPayload = {
+        userId: currentUser?._id,
+        goalType
+      }
+      dispatch(getGoalsAsync(payload))
+    }
+  }, [currentUser?._id, goalType])
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChangeGoalTab = (
+    event: React.ChangeEvent<{}>,
+    newValue: number
+  ) => {
     setGoalType(newValue)
   }
 
@@ -84,7 +97,7 @@ const Goal = () => {
         <AppBar position='static' color='transparent'>
           <Tabs
             value={goalType}
-            onChange={handleChange}
+            onChange={handleChangeGoalTab}
             variant='scrollable'
             scrollButtons='on'
             indicatorColor='primary'
@@ -118,10 +131,11 @@ const Goal = () => {
           goalType={goalType}
           open={isOpenGoalModal}
           close={() => dispatch(closeGoalModal())}
+          currentUser={currentUser}
         />
       )}
     </Container>
   )
 }
 
-export default Goal
+export default withContainer(Goal)

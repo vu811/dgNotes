@@ -2,8 +2,9 @@ import { Request, Response } from 'express'
 import Goal from '../models/goal'
 
 export const addGoal = async (req: Request, res: Response) => {
-  const { goalType, objectiveType, goal, plan } = req.body
+  const { userId, goalType, objectiveType, goal, plan } = req.body
   const newGoal = new Goal({
+    userId,
     goalType,
     objectiveType,
     goal,
@@ -44,7 +45,10 @@ export const getGoal = async (req: Request, res: Response) => {
 
 export const getGoals = async (req: Request, res: Response) => {
   try {
-    const goals = await Goal.find().where('goalType').equals(req.query.type)
+    const goals = await Goal.find({
+      userId: req.query.userId,
+      goalType: req.query.type
+    })
     res.status(200).json(goals)
   } catch (ex: any) {
     res.status(404).json({ message: ex.message })

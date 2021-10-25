@@ -79,10 +79,13 @@ const initialState: ProjectState = {
   version: null
 }
 
-export const getProjectsAsync = createAsyncThunk('project/get', async () => {
-  const response = await getProjects()
-  return response.data
-})
+export const getProjectsAsync = createAsyncThunk(
+  'project/get',
+  async (userId: string) => {
+    const response = await getProjects(userId)
+    return response.data
+  }
+)
 
 export const getProjectAsync = createAsyncThunk(
   'project/getById',

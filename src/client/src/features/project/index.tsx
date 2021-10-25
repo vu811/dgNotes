@@ -1,33 +1,23 @@
 import 'date-fns'
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
-import Modal from '../../common/components/modal'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
-import TextField from '@material-ui/core/TextField'
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from '@material-ui/pickers'
-// @ts-ignore
-import DateFnsUtils from '@date-io/date-fns'
-import * as yup from 'yup'
-import { useFormik } from 'formik'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
-  addProjectAsync,
   closeProjectModal,
   getProjectsAsync,
   openProjectModal,
   ProjectProps,
-  selectProjects,
-  updateProjectAsync
+  selectProjects
 } from './projectSlice'
 import ProjectItem from './components/projectItem'
 import { Typography } from '@material-ui/core'
 import NoItemPage from '../../common/components/noItemPage'
 import ProjectModal from './components/projectModal'
+import { withContainer } from '../../layouts/container'
+import { CurrentUserProps } from '../../auth/authSlice'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,7 +57,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const Project = () => {
+interface ProjectTypeProps extends CurrentUserProps {}
+
+const Project: FC<ProjectTypeProps> = ({ currentUser }) => {
   const classes = useStyles()
   const projects = useAppSelector(selectProjects)
   const isOpenProjectModal = useAppSelector(
@@ -76,8 +68,10 @@ const Project = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getProjectsAsync())
-  }, [])
+    if (currentUser?._id) {
+      dispatch(getProjectsAsync(currentUser?._id))
+    }
+  }, [currentUser?._id])
 
   return (
     <div className={classes.root}>
@@ -108,9 +102,10 @@ const Project = () => {
         <ProjectModal
           open={isOpenProjectModal}
           close={() => dispatch(closeProjectModal())}
+          currentUser={currentUser}
         />
       )}
     </div>
   )
 }
-export default Project
+export default withContainer(Project)

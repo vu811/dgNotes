@@ -5,8 +5,8 @@ export const getProject = (id: String) => {
   return axios.get(`/api/projects/${id}`)
 }
 
-export const getProjects = () => {
-  return axios.get('/api/projects')
+export const getProjects = (userId: string) => {
+  return axios.get(`/api/projects?userId=${userId}`)
 }
 
 export const addProject = (payload: ProjectProps) => {

@@ -5,8 +5,8 @@ export const getBucket = (id: string) => {
   return axios.get(`/api/buckets/${id}`)
 }
 
-export const getBucketList = () => {
-  return axios.get(`/api/buckets`)
+export const getBucketList = (userId: string) => {
+  return axios.get(`/api/buckets?userId=${userId}`)
 }
 
 export const addBucket = (payload: BucketProps) => {

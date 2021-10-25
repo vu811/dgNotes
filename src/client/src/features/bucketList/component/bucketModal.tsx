@@ -1,3 +1,4 @@
+import { FC } from 'react'
 import { TextField } from '@material-ui/core'
 import { useFormik } from 'formik'
 import Modal from '../../../common/components/modal'
@@ -8,6 +9,7 @@ import {
   BucketResProps,
   updateBucketAsync
 } from '../bucketSlice'
+import { CurrentUserProps } from '../../../auth/authSlice'
 
 const validationSchema = yup.object({
   description: yup
@@ -16,7 +18,12 @@ const validationSchema = yup.object({
     .max(100, 'Tối đa 100 kí tự')
 })
 
-const BucketModal = ({ open, close }: any) => {
+interface BucketModalProps extends CurrentUserProps {
+  open: boolean
+  close: () => void
+}
+
+const BucketModal: FC<BucketModalProps> = ({ open, close, currentUser }) => {
   const bucket = useAppSelector((state) => state.bucket.bucket)
   const dispatch = useAppDispatch()
   const formik = useFormik({
@@ -31,6 +38,7 @@ const BucketModal = ({ open, close }: any) => {
     onSubmit: async (values, { resetForm }) => {
       const payload: BucketResProps = {
         _id: bucket ? bucket._id : '',
+        userId: currentUser?._id,
         description: values.description
       }
       const saved = bucket

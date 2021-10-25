@@ -1,3 +1,4 @@
+import { FC, useEffect } from 'react'
 import {
   makeStyles,
   Theme,
@@ -6,9 +7,10 @@ import {
   Button
 } from '@material-ui/core'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
-import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { CurrentUserProps } from '../../auth/authSlice'
 import NoItemPage from '../../common/components/noItemPage'
+import { withContainer } from '../../layouts/container'
 import {
   closeBucketModal,
   getBucketListAsync,
@@ -25,7 +27,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-const BucketList = () => {
+interface BucletListTypeProps extends CurrentUserProps {}
+
+const BucketList: FC<BucletListTypeProps> = ({ currentUser }) => {
   const classes = useStyles()
   const isOpenBucketModal = useAppSelector(
     (state) => state.bucket.isOpenBucketModal
@@ -34,9 +38,10 @@ const BucketList = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    console.log('bucket list')
-    dispatch(getBucketListAsync())
-  }, [])
+    if (currentUser?._id) {
+      dispatch(getBucketListAsync(currentUser?._id))
+    }
+  }, [currentUser?._id])
 
   return (
     <Container maxWidth='md'>
@@ -64,10 +69,11 @@ const BucketList = () => {
         <BucketModal
           open={isOpenBucketModal}
           close={() => dispatch(closeBucketModal())}
+          currentUser={currentUser}
         />
       )}
     </Container>
   )
 }
 
-export default BucketList
+export default withContainer(BucketList)

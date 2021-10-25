@@ -15,6 +15,7 @@ export interface GoalState {
 }
 
 export interface GoalProps {
+  userId?: string
   goalType: number
   objectiveType: number
   revision?: number
@@ -27,27 +28,36 @@ export interface GoalResProps extends GoalProps {
   completedDate?: Date | null
 }
 
+export interface GetGoalsPayload {
+  userId: string
+  goalType: number
+}
+
 const initialState: GoalState = {
   isOpenGoalModal: false,
   goals: [],
   goal: null
 }
 
-export const getGoalAsync = createAsyncThunk('getGoal', async (id: string) => {
-  const response = await getGoal(id)
-  return response.data
-})
+export const getGoalAsync = createAsyncThunk(
+  'goal/getById',
+  async (id: string) => {
+    const response = await getGoal(id)
+    return response.data
+  }
+)
 
 export const getGoalsAsync = createAsyncThunk(
-  'getGoals',
-  async (goalType: number) => {
-    const response = await getGoals(goalType)
+  'goal/get',
+  async (payload: GetGoalsPayload) => {
+    const { userId, goalType } = payload
+    const response = await getGoals(userId, goalType)
     return response.data
   }
 )
 
 export const addGoalAsync = createAsyncThunk(
-  'addGoal',
+  'goal/add',
   async (payload: GoalResProps) => {
     const response = await addGoal(payload)
     return response.data
@@ -55,7 +65,7 @@ export const addGoalAsync = createAsyncThunk(
 )
 
 export const updateGoalAsync = createAsyncThunk(
-  'updateGoal',
+  'goal/update',
   async (payload: GoalResProps) => {
     const response = await updateGoal(payload._id, payload)
     return response.data
@@ -63,7 +73,7 @@ export const updateGoalAsync = createAsyncThunk(
 )
 
 export const deleteGoalAsync = createAsyncThunk(
-  'deleteGoal',
+  'goal/delete',
   async (id: string) => {
     const response = await deleteGoal(id)
     return response.data
@@ -71,7 +81,7 @@ export const deleteGoalAsync = createAsyncThunk(
 )
 
 export const completeGoalAsync = createAsyncThunk(
-  'completeGoal',
+  'goal/complete',
   async (id: string) => {
     const response = await completeGoal(id)
     return response.data

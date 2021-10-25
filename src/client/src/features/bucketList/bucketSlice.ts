@@ -15,6 +15,7 @@ export interface BucketState {
 }
 
 export interface BucketProps {
+  userId?: string
   description: string
   completedDate?: Date
 }
@@ -47,8 +48,8 @@ export const addBucketAsync = createAsyncThunk(
 
 export const getBucketListAsync = createAsyncThunk(
   'bucketList/getAll',
-  async () => {
-    const response = await getBucketList()
+  async (userId: string) => {
+    const response = await getBucketList(userId)
     return response.data
   }
 )

@@ -5,8 +5,8 @@ export const getGoal = (id: string) => {
   return axios.get(`/api/goals/${id}`)
 }
 
-export const getGoals = (goalType: number) => {
-  return axios.get(`/api/goals?type=${goalType}`)
+export const getGoals = (userId: string, goalType: number) => {
+  return axios.get(`/api/goals?userId=${userId}&type=${goalType}`)
 }
 
 export const addGoal = (payload: GoalProps) => {

@@ -2,8 +2,9 @@ import { Request, Response } from 'express'
 import Bucket from '../models/bucket'
 
 export const addBucket = async (req: Request, res: Response) => {
-  const { description } = req.body
+  const { userId, description } = req.body
   const newBucket = new Bucket({
+    userId,
     description
   })
   try {
@@ -16,7 +17,7 @@ export const addBucket = async (req: Request, res: Response) => {
 
 export const getBucketList = async (req: Request, res: Response) => {
   try {
-    const bucketList = await Bucket.find()
+    const bucketList = await Bucket.find({ userId: req.query.userId })
     res.status(200).json(bucketList)
   } catch (ex: any) {
     res.status(404).json({ message: ex.message })

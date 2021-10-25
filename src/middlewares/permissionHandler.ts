@@ -6,20 +6,22 @@ export const permissionHandler = (
   response: Response,
   next: NextFunction
 ) => {
-  console.log('ggggg', request.params)
-  if (request.params.userId) {
+  if (request.query.userId) {
     const token = request.cookies.dgNOTES
     const decoded: any = jwt.verify(
       token,
       process.env.AUTH_SECRET ?? 'thisisasecretkey'
     )
 
-    if (request.params.userId === decoded.id) {
-      console.log('goood')
+    if (request.query.userId !== decoded.id) {
       response.status(401).json({
         status: 401,
         message: 'No permission'
       })
+    } else {
+      next()
     }
+  } else {
+    next()
   }
 }

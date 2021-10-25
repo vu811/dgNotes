@@ -11,6 +11,8 @@ import * as yup from 'yup'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { objectiveTypes } from '../../../data'
 import { addGoalAsync, GoalResProps, updateGoalAsync } from '../goalSlice'
+import { CurrentUserProps } from '../../../auth/authSlice'
+import { FC } from 'react'
 
 const validationSchema = yup.object({
   goal: yup
@@ -50,7 +52,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const GoalModal = ({ goalType, open, close }: any) => {
+interface GoalModalProps extends CurrentUserProps {
+  goalType: number
+  open: boolean
+  close: () => void
+}
+
+const GoalModal: FC<GoalModalProps> = ({
+  goalType,
+  open,
+  close,
+  currentUser
+}) => {
   const dispatch = useAppDispatch()
   const goalState = useAppSelector((state) => state.goal.goal)
 
@@ -71,6 +84,7 @@ const GoalModal = ({ goalType, open, close }: any) => {
       const { objectiveType, goal, plan } = values
       const payload: GoalResProps = {
         _id: goalState ? goalState._id : '',
+        userId: currentUser?._id,
         goalType: goalType,
         objectiveType,
         goal,

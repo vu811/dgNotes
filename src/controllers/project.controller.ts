@@ -37,7 +37,9 @@ export const addProject = async (req: Request, res: Response) => {
 
 export const getProjects = async (req: Request, res: Response) => {
   try {
-    const projects = await Project.find({}).sort({ name: 1 })
+    const projects = await Project.find({ userId: req.query.userId }).sort({
+      name: 1
+    })
     res.status(200).json(projects)
   } catch (ex: any) {
     res.status(404).json({ message: ex.message })
