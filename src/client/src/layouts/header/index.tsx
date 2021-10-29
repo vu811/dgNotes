@@ -13,9 +13,11 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { selectIsOpenSideBar, updateSidebar } from '../layoutSlice'
 
 import { useHistory } from 'react-router-dom'
-import { Avatar, LinearProgress } from '@material-ui/core'
+import { Avatar, LinearProgress, Popover } from '@material-ui/core'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import { logoutAsync } from '../../auth/authSlice'
+import avatar from '../../assets/images/avatar.jpg'
+import React from 'react'
 
 const drawerWidth = 240
 const useStyles = makeStyles((theme) => ({
@@ -61,6 +63,19 @@ const Header = () => {
   const dispatch = useAppDispatch()
   const history = useHistory()
 
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const open = Boolean(anchorEl)
+  const id = open ? 'simple-popover' : undefined
+
   const goToHome = () => {
     history.push('/')
   }
@@ -105,15 +120,31 @@ const Header = () => {
               <NotificationsIcon />
             </Badge>
           </IconButton> */}
-          <IconButton>
-            <Avatar>V</Avatar>
+          <IconButton onClick={handleClick}>
+            <Avatar src={avatar} />
           </IconButton>
-          <Typography variant='subtitle1' component='span'>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center'
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center'
+            }}
+          >
+            <Typography>The content of the Popover.</Typography>
+          </Popover>
+          {/* <Typography variant='subtitle1' component='span'>
             Vu Nguyen
           </Typography>
           <IconButton onClick={handleLogout}>
             <ExitToAppIcon style={{ color: 'rgba(0, 0, 0, 0.54)' }} />
-          </IconButton>
+          </IconButton> */}
         </Toolbar>
         {/* <LinearProgress variant='determinate' value={67} color='secondary' /> */}
       </AppBar>

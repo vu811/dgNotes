@@ -8,6 +8,7 @@ import {
   getBucketList,
   updateBucket
 } from '../controllers/bucket.controller'
+import { dashboard } from '../controllers/dashboard.controller'
 import {
   addGoal,
   completeGoal,
@@ -41,6 +42,10 @@ import { verifyJwtToken } from '../middlewares/verifyJwtToken'
 
 const routes = (app: Express) => {
   const router = express.Router()
+
+  /* Dashboard API */
+  const dashboardRoute = '/api/dashboard'
+  router.get(dashboardRoute, dashboard)
 
   /* Auth API */
   const authRoute = '/api/auth'
