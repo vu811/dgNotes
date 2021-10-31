@@ -1,3 +1,4 @@
+import { FC, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
@@ -10,11 +11,15 @@ import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
 import TrackChangesRoundedIcon from '@material-ui/icons/TrackChangesRounded'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
+  DashboardPayload,
   DashboardType,
   getDashboardAsync,
   selectDashboard
 } from '../dashboard/dashboardSlice'
-import { useEffect, useState } from 'react'
+import { CurrentUserProps } from '../../auth/authSlice'
+import { getDate } from '../../utils/dateTimeHelper'
+import { withContainer } from '../../layouts/container'
+import { getTotal } from '../../utils/commonHelper'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,18 +40,27 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function DashBoard() {
+interface DashboardProps extends CurrentUserProps {}
+
+const Dashboard: FC<DashboardProps> = ({ currentUser }) => {
   const classes = useStyles()
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight)
   const dispatch = useAppDispatch()
   const [data, setData] = useState<any>(null)
+  const dashboard = useAppSelector((state) => state.dashboard.data)
 
   useEffect(() => {
-    getDashboardData()
-  }, [])
+    if (currentUser?._id) {
+      const payload: DashboardPayload = {
+        userId: currentUser?._id,
+        date: getDate(new Date(), true)
+      }
+      getDashboardData(payload)
+    }
+  }, [currentUser?._id])
 
-  const getDashboardData = async () => {
-    const result = await dispatch(getDashboardAsync()).unwrap()
+  const getDashboardData = async (payload: DashboardPayload) => {
+    const result = await dispatch(getDashboardAsync(payload)).unwrap()
     console.log(result)
     const dashBoard = setDashboardData(result)
     console.log(dashBoard)
@@ -121,8 +135,8 @@ export default function DashBoard() {
         <Grid item xs={12} md={6} lg={6}>
           <Paper className={fixedHeightPaper}>
             <ChartTotal
-              total={'14'}
-              title={'Tổng todo'}
+              total={getTotal(dashboard?.todo).toString()}
+              title={'Todo'}
               icon={{
                 icon: <PlaylistAddCheckTwoToneIcon />,
                 color: '#e62739',
@@ -139,8 +153,8 @@ export default function DashBoard() {
         <Grid item xs={12} md={6} lg={6}>
           <Paper className={fixedHeightPaper}>
             <ChartTotal
-              total={'15'}
-              title={'Tổng bucket'}
+              total={getTotal(dashboard?.bucketList).toString()}
+              title={'Bucket'}
               icon={{
                 icon: <FormatListNumberedIcon />,
                 color: '#e62739',
@@ -177,3 +191,5 @@ export default function DashBoard() {
     </>
   )
 }
+
+export default withContainer(Dashboard)

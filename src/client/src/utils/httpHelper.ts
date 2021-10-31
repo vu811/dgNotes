@@ -17,10 +17,11 @@ axiosApiInstance.interceptors.response.use(
     return response
   },
   async function (error) {
-    console.log(error)
     if (error.response.status === 401) {
-      console.log('ko co quyen!')
-      window.location.href = '/auth/login'
+      const loginPath = '/auth/login'
+      if (window.location.pathname !== loginPath) {
+        window.location.href = loginPath
+      }
     }
     return Promise.reject(error)
   }

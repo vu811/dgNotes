@@ -25,6 +25,7 @@ interface CustomRouteProps extends RouteProps {
 const App = () => {
   console.log('App')
   const dispatch = useAppDispatch()
+
   useLayoutEffect(() => {
     console.log('getMeAsync')
     dispatch(getMeAsync())

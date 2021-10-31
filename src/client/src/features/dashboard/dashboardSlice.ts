@@ -8,21 +8,29 @@ export interface DashboardType {
   goalCompleted: Array<number>
   goalPending: Array<number>
 }
+
 export interface DashboardState {
-  data: DashboardType | {}
+  data: DashboardType | null
+}
+
+export interface DashboardPayload {
+  userId: string
+  date: string
 }
 
 const initialState: DashboardState = {
-  data: {
-    todo: [],
-    bucketList: [],
-    goalCompleted: [],
-    goalPending: []
-  }
+  // data: {
+  //   todo: [],
+  //   bucketList: [],
+  //   goalCompleted: [],
+  //   goalPending: []
+  // }
+  data: null
 }
 
-export const getDashboardAsync = createAsyncThunk('dashboard/get', async () => {
-  const response = await getDashboard()
+export const getDashboardAsync = createAsyncThunk('dashboard/get', async (payload: DashboardPayload) => {
+  const { userId, date } = payload
+  const response = await getDashboard(userId, date)
   return response.data
 })
 

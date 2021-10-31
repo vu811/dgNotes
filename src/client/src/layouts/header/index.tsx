@@ -1,23 +1,27 @@
+import React from 'react'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
-import Badge from '@material-ui/core/Badge'
 import MenuIcon from '@material-ui/icons/Menu'
-import NotificationsIcon from '@material-ui/icons/Notifications'
-
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
-
 import { selectIsOpenSideBar, updateSidebar } from '../layoutSlice'
-
 import { useHistory } from 'react-router-dom'
-import { Avatar, LinearProgress, Popover } from '@material-ui/core'
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Popover,
+  withStyles
+} from '@material-ui/core'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { logoutAsync } from '../../auth/authSlice'
 import avatar from '../../assets/images/avatar.jpg'
-import React from 'react'
 
 const drawerWidth = 240
 const useStyles = makeStyles((theme) => ({
@@ -54,8 +58,17 @@ const useStyles = makeStyles((theme) => ({
   logoText: {
     cursor: 'pointer',
     fontWeight: theme.typography.fontWeightBold
+  },
+  profileIcon: {
+    color: theme.palette.primary.main
   }
 }))
+
+const ListItemIconStyled = withStyles((theme) => ({
+  root: {
+    minWidth: 30
+  }
+}))(ListItemIcon)
 
 const Header = () => {
   const classes = useStyles()
@@ -137,14 +150,21 @@ const Header = () => {
               horizontal: 'center'
             }}
           >
-            <Typography>The content of the Popover.</Typography>
+            <List component='nav' aria-label='user avatar'>
+              <ListItem button>
+                <ListItemIconStyled>
+                  <AccountCircleIcon />
+                </ListItemIconStyled>
+                <ListItemText primary='Tài khoản' />
+              </ListItem>
+              <ListItem button onClick={handleLogout}>
+                <ListItemIconStyled>
+                  <ExitToAppIcon />
+                </ListItemIconStyled>
+                <ListItemText primary='Đăng xuất' />
+              </ListItem>
+            </List>
           </Popover>
-          {/* <Typography variant='subtitle1' component='span'>
-            Vu Nguyen
-          </Typography>
-          <IconButton onClick={handleLogout}>
-            <ExitToAppIcon style={{ color: 'rgba(0, 0, 0, 0.54)' }} />
-          </IconButton> */}
         </Toolbar>
         {/* <LinearProgress variant='determinate' value={67} color='secondary' /> */}
       </AppBar>
