@@ -6,7 +6,9 @@ import routes from './routes'
 import cookieParser from 'cookie-parser'
 import { errorHandler } from './middlewares/errorHandler'
 import { permissionHandler } from './middlewares/permissionHandler'
+import path from 'path'
 
+const __dirname = path.resolve()
 dotenv.config()
 
 connectDb()
@@ -19,6 +21,13 @@ app.use(cookieParser())
 app.use(permissionHandler)
 
 routes(app)
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('src/client/build'))
+  app.get('*', (req, res) => {
+      res.sendFile(path.resolve(__dirname, 'src', 'client', 'build', 'index.html'))
+  })
+}
 
 app.use(errorHandler)
 
