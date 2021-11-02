@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { withLayout } from '../layouts/container'
 import {
   BrowserRouter as Router,
@@ -26,10 +26,10 @@ const App = () => {
   console.log('App')
   const dispatch = useAppDispatch()
 
-  useLayoutEffect(() => {
-    console.log('getMeAsync')
-    dispatch(getMeAsync())
-  }, [])
+  // useLayoutEffect(() => {
+  //   console.log('getMeAsync')
+  //   dispatch(getMeAsync())
+  // }, [])
 
   const buildPages = () => {
     const pages: RouteProps[] = [
@@ -55,18 +55,18 @@ const App = () => {
 
   const buildPages1 = () => {
     const pages: CustomRouteProps[] = [
-      { isPrivate: true, exact: true, path: '/', component: DashBoard },
-      { isPrivate: true, path: '/app/dashboard', component: DashBoard },
+      { isPrivate: true, exact: true, path: '/', children: <DashBoard /> },
+      { isPrivate: true, path: '/app/dashboard', children: <DashBoard /> },
       { isPrivate: true, path: '/app/todo', children: <Todo /> },
       {
         isPrivate: true,
         exact: true,
         path: '/app/project',
-        component: Project
+        children: <Project />
       },
-      { isPrivate: true, path: '/app/project/:id', component: ProjectDetail },
-      { isPrivate: true, path: '/app/goal', component: Goal },
-      { isPrivate: true, path: '/app/bucket-list', component: BucketList },
+      { isPrivate: true, path: '/app/project/:id', children: <ProjectDetail /> },
+      { isPrivate: true, path: '/app/goal', children: <Goal /> },
+      { isPrivate: true, path: '/app/bucket-list', children: <BucketList /> },
       { path: '/auth/login', children: <Login /> },
       { path: '/auth/register', children: <Register /> }
     ]
@@ -77,17 +77,17 @@ const App = () => {
     <React.Fragment>
       <Router>
         <Switch>
-          {/* {buildPages1().map((route: CustomRouteProps) => {
+          {buildPages1().map((route: CustomRouteProps) => {
             const { children, ...rest } = route
             return route.isPrivate ? (
               <PrivateRoute {...rest}>{children}</PrivateRoute>
             ) : (
               <Route {...rest}>{children}</Route>
             )
-          })} */}
-          {buildPages().map((route) => (
+          })}
+          {/* {buildPages().map((route) => (
             <Route {...route} />
-          ))}
+          ))} */}
         </Switch>
       </Router>
     </React.Fragment>
@@ -95,31 +95,33 @@ const App = () => {
 }
 
 const PrivateRoute = ({ children, ...rest }: CustomRouteProps) => {
-  // const dispatch = useAppDispatch()
-  const currentUser = useAppSelector((state) => state.auth.currentUser)
-  console.log('currentUser', document.cookie)
-  // useLayoutEffect(() => {
-  //   console.log('getMeAsync')
-  //   if (!currentUser) dispatch(getMeAsync())
-  // }, [])
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
+  const dispatch = useAppDispatch()
 
-  return (
+  useEffect(() => {
+    if (isAuthenticated === null) {
+      console.log('getMeAsync')
+      dispatch(getMeAsync())
+    }
+  }, [dispatch, isAuthenticated])
+
+  return isAuthenticated !== null ? (
     <Route
       {...rest}
-      render={() =>
-        currentUser ? (
+      render={({ location }) =>
+        isAuthenticated === true ? (
           withLayout(children)
         ) : (
           <Redirect
             to={{
-              pathname: '/auth/login'
-              //state: { from: location }
+              pathname: '/auth/login',
+              state: { from: location }
             }}
           />
         )
       }
     />
-  )
+  ) : null
 }
 
 export default App

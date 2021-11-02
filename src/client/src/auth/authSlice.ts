@@ -22,12 +22,12 @@ export interface RegisterPayload extends LoginPayload {
 
 export interface AuthState {
   currentUser: UserProps | null
-  email: string | null
+  isAuthenticated: boolean | null
 }
 
 const initialState: AuthState = {
   currentUser: null,
-  email: null
+  isAuthenticated: null
 }
 
 export const registerAsync = createAsyncThunk(
@@ -60,17 +60,17 @@ export const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(registerAsync.fulfilled, (state, action) => {
-      state.email = action.payload.email
-    })
     builder.addCase(loginAsync.fulfilled, (state, action) => {
       state.currentUser = action.payload
+      state.isAuthenticated = true
     })
     builder.addCase(getMeAsync.fulfilled, (state, action) => {
       state.currentUser = action.payload
+      state.isAuthenticated = true
     })
     builder.addCase(getMeAsync.rejected, (state, action) => {
       state.currentUser = null
+      state.isAuthenticated = false
     })
   }
 })

@@ -63,7 +63,7 @@ const Register = () => {
     }
   })
   return (
-    <AuthLayout onSubmit={formik.handleSubmit}>
+    <AuthLayout>
       {/* I dont know why CSS does not work =)). Check later */}
       {/* <FormControl className={classes.formControl} variant='outlined'>
         <Typography

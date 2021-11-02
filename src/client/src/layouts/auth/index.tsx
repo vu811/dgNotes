@@ -1,13 +1,12 @@
+import { FC } from 'react'
 import {
   Box,
   Card,
   CardMedia,
   CssBaseline,
   makeStyles,
-  Typography,
-  Button
+  Typography
 } from '@material-ui/core'
-import { FC, ReactNode } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import cover from '../../assets/images/cover.jpg'
 
@@ -47,12 +46,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-interface AuthProps {
-  onSubmit: () => void
-  children: ReactNode
-}
-
-const AuthLayout: FC<AuthProps> = ({ onSubmit, children }) => {
+const AuthLayout: FC = ({ children }) => {
   const classes = useStyles()
   const history = useHistory()
   const location = useLocation()
@@ -102,16 +96,6 @@ const AuthLayout: FC<AuthProps> = ({ onSubmit, children }) => {
               {isLoginPage ? 'Tạo một tài khoản' : 'Đăng nhập'}
             </Typography>
             <div className={classes.form}>{children}</div>
-            {/* <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              color='primary'
-              size='large'
-              onClick={onSubmit}
-            >
-              {isLoginPage ? 'Đăng nhập' : 'Đăng ký'}
-            </Button> */}
           </Box>
         </Card>
       </div>

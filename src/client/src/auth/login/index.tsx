@@ -8,9 +8,9 @@ import {
 import * as yup from 'yup'
 import { useFormik } from 'formik'
 import AuthLayout from '../../layouts/auth'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { useAppDispatch } from '../../app/hooks'
 import { loginAsync } from '../authSlice'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -36,6 +36,9 @@ const validationProjectSchema = yup.object({
 const Login = () => {
   const classes = useStyles()
   const history = useHistory()
+  const location = useLocation()
+
+  const { from }: any = location.state || { from: { pathname: "/" } }
   const dispatch = useAppDispatch()
 
   const formik = useFormik({
@@ -46,16 +49,15 @@ const Login = () => {
     validationSchema: validationProjectSchema,
     onSubmit: async (values) => {
       try {
-        console.log('login', values)
         const result = await dispatch(loginAsync(values)).unwrap()
         if (result) {
-          history.push('/app/dashboard')
+          history.replace(from)
         }
       } catch (error) {}
     }
   })
   return (
-    <AuthLayout onSubmit={() => {}}>
+    <AuthLayout>
       <div className={classes.formControl}>
         <Typography
           variant='subtitle2'
