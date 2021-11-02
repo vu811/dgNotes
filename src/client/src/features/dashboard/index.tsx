@@ -136,7 +136,7 @@ const Dashboard: FC<DashboardProps> = ({ currentUser }) => {
           <Paper className={fixedHeightPaper}>
             <ChartTotal
               total={getTotal(dashboard?.todo).toString()}
-              title={'Todo'}
+              title={'Todos hôm nay'}
               icon={{
                 icon: <PlaylistAddCheckTwoToneIcon />,
                 color: '#e62739',
