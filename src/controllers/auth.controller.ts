@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import User from '../models/user'
+import { successResult, failureResult } from '../types/apiResult'
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -23,16 +24,14 @@ export const login = async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({ email: req.body.email })
     if (!user) {
-      res.status(404).json({ auth: false, error: 'User not found' })
+      return failureResult(res, 'Tài khoản không tồn tại')
     }
     const isValidPassword = await bcrypt.compare(
       req.body.password,
       user.password
     )
     if (!isValidPassword) {
-      res
-        .status(500)
-        .json({ auth: false, accessToken: null, error: 'Invalid password' })
+      return failureResult(res, 'Mật khẩu không đúng')
     }
     const token = jwt.sign(
       { id: user._id },
@@ -49,7 +48,7 @@ export const login = async (req: Request, res: Response) => {
       name: user.name,
       email: user.email
     }
-    res.status(200).json(userInfo)
+    return successResult(res, userInfo)
   } catch (error) {
     res.status(500).json({ auth: false, error: error })
   }

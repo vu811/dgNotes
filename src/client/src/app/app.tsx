@@ -115,6 +115,7 @@ const PrivateRoute = ({ children, ...rest }: CustomRouteProps) => {
 
   useEffect(() => {
     if (isAuthenticated === null) {
+      console.log(children)
       dispatch(getMeAsync())
     }
   }, [dispatch, isAuthenticated])

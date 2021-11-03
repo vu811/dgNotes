@@ -10,7 +10,7 @@ export const getProjects = (userId: string) => {
 }
 
 export const addProject = (payload: ProjectProps) => {
-  return axios.post('/api/projects', payload)
+  return axios.post(`/api/projects`, payload)
 }
 
 export const addVersion = (id: String, payload: VersionProps) => {

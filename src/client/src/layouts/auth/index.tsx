@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core'
 import { useHistory, useLocation } from 'react-router-dom'
 import cover from '../../assets/images/cover.jpg'
+import FlashAlert from '../../common/components/flashAlert'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,6 +59,7 @@ const AuthLayout: FC = ({ children }) => {
   return (
     <>
       <CssBaseline />
+      <FlashAlert />
       <div className={classes.root}>
         <Card className={classes.card}>
           <CardMedia

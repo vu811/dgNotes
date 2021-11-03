@@ -11,6 +11,8 @@ import AuthLayout from '../../layouts/auth'
 import { useAppDispatch } from '../../app/hooks'
 import { loginAsync } from '../authSlice'
 import { useHistory, useLocation } from 'react-router'
+import { FlashType } from '../../enums'
+import { flashAlert } from '../../app/appSlice'
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -38,7 +40,7 @@ const Login = () => {
   const history = useHistory()
   const location = useLocation()
 
-  const { from }: any = location.state || { from: { pathname: "/" } }
+  const { from }: any = location.state || { from: { pathname: '/' } }
   const dispatch = useAppDispatch()
 
   const formik = useFormik({
@@ -50,8 +52,10 @@ const Login = () => {
     onSubmit: async (values) => {
       try {
         const result = await dispatch(loginAsync(values)).unwrap()
-        if (result) {
+        if (result.success) {
           history.replace(from)
+        } else {
+          dispatch(flashAlert({ message: result.error, type: FlashType.Error }))
         }
       } catch (error) {}
     }
