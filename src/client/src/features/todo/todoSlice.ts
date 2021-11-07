@@ -5,10 +5,15 @@ import {
   deleteTodo,
   completeTodo,
   getTodoById,
-  updateTodo
+  updateTodo,
+  copyTodo,
+  clearTodos
 } from './todoApi'
+
 export interface TodoState {
   isOpenTodoModal: boolean
+  isOpenCopyModal: boolean
+  isOpenClearTodoConfirmModal: boolean
   todos: Array<TodoProps>
   todo: TodoProps | null
 }
@@ -26,8 +31,15 @@ export interface GetTodoPayload {
   date: string
 }
 
+export interface CopyTodoPayload extends GetTodoPayload {
+  fromDate: Date | null,
+  toDate: Date | null
+}
+
 const initialState: TodoState = {
   isOpenTodoModal: false,
+  isOpenCopyModal: false,
+  isOpenClearTodoConfirmModal: false,
   todos: [],
   todo: null
 }
@@ -80,6 +92,22 @@ export const deleteTodoAsync = createAsyncThunk(
   }
 )
 
+export const copyTodoAsync = createAsyncThunk(
+  'todo/copy',
+  async (payload: CopyTodoPayload) => {
+    const response = await copyTodo(payload)
+    return response.data
+  }
+)
+
+export const clearTodosAsync = createAsyncThunk(
+  'todo/clear',
+  async ({ userId, date }: GetTodoPayload) => {
+    const response = await clearTodos(userId, date)
+    return response.data
+  }
+)
+
 export const projectSlice = createSlice({
   name: 'todo',
   initialState,
@@ -92,6 +120,18 @@ export const projectSlice = createSlice({
     },
     closeTodoModal: (state) => {
       state.isOpenTodoModal = false
+    },
+    openCopyModal: (state) => {
+      state.isOpenCopyModal = true
+    },
+    closeCopyModal: (state) => {
+      state.isOpenCopyModal = false
+    },
+    openClearTodoConfirmModal: (state) => {
+      state.isOpenClearTodoConfirmModal = true
+    },
+    closeClearTodoConfirmModal: (state) => {
+      state.isOpenClearTodoConfirmModal = false
     }
   },
   extraReducers: (builder) => {
@@ -129,8 +169,15 @@ export const projectSlice = createSlice({
         state.todos = updatedTodos
         state.isOpenTodoModal = false
       })
+      .addCase(copyTodoAsync.fulfilled, (state, action) => {
+        state.isOpenCopyModal = false
+      })
+      .addCase(clearTodosAsync.fulfilled, (state, action) => {
+        state.todos = []
+        state.isOpenClearTodoConfirmModal = false
+      })
   }
 })
 
-export const { openTodoModal, closeTodoModal } = projectSlice.actions
+export const { openTodoModal, closeTodoModal, openCopyModal, closeCopyModal, openClearTodoConfirmModal, closeClearTodoConfirmModal } = projectSlice.actions
 export default projectSlice.reducer

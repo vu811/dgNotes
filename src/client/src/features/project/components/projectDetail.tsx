@@ -163,7 +163,9 @@ const ProjectDetail = () => {
   return (
     <Container maxWidth='md'>
       <div className={classes.navigator}>
-        <Typography variant='subtitle1'> Dự án: dgNOTES</Typography>
+        <Typography variant='subtitle1'>
+          Dự án: {projectDetail?.name}
+        </Typography>
         <Button
           variant='contained'
           color='secondary'

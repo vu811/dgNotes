@@ -10,7 +10,7 @@ export const todoSchema = new Schema(
     },
     date: {
       type: String,
-      required: [true, 'startDate is required']
+      required: [true, 'date is required']
     },
     time: {
       type: String

@@ -36,7 +36,9 @@ import {
   deleteTodo,
   completeTodo,
   getTodoById,
-  updateTodo
+  updateTodo,
+  copyTodo,
+  clearTodo
 } from '../controllers/todo.controller'
 import { verifyJwtToken } from '../middlewares/verifyJwtToken'
 
@@ -76,12 +78,14 @@ const routes = (app: Express) => {
 
   /* Todo API */
   const todoBaseRoute = '/api/todos'
+  router.delete(`${todoBaseRoute}/clear`, clearTodo)
   router.get(todoBaseRoute, verifyJwtToken(), getTodos)
   router.post(todoBaseRoute, addTodo)
   router.delete(`${todoBaseRoute}/:id`, deleteTodo)
   router.put(`${todoBaseRoute}/:id/complete`, completeTodo)
   router.get(`${todoBaseRoute}/:id`, getTodoById)
   router.put(`${todoBaseRoute}/:id`, updateTodo)
+  router.post(`${todoBaseRoute}/copy`, copyTodo)
 
   /* Goal API */
   const goalBaseRoute = '/api/goals'

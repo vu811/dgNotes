@@ -6,6 +6,8 @@ import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import Button from '@material-ui/core/Button'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
+import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
+import ClearIcon from '@material-ui/icons/Clear'
 import {
   Grid,
   makeStyles,
@@ -19,7 +21,13 @@ import {
   closeTodoModal,
   openTodoModal,
   getTodosAsync,
-  TodoProps
+  TodoProps,
+  openCopyModal,
+  closeCopyModal,
+  GetTodoPayload,
+  clearTodosAsync,
+  closeClearTodoConfirmModal,
+  openClearTodoConfirmModal
 } from './todoSlice'
 
 import { getDate } from '../../utils/dateTimeHelper'
@@ -28,6 +36,10 @@ import TodoModal from './components/todoModal'
 import NoItemPage from '../../common/components/noItemPage'
 import { getUrlQuery } from '../../utils/commonHelper'
 import { withContainer } from '../../layouts/container'
+import CopyModal from './components/copyModal'
+import { flashAlert } from '../../app/appSlice'
+import { FlashType } from '../../enums'
+import ClearTodoConfirmModal from './components/clearTodoConfirmModal'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -71,6 +83,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  copyBtn: {
+    marginRight: '5%'
   }
 }))
 
@@ -90,6 +105,10 @@ const Todo = ({ currentUser }: any) => {
 
   const todos = useAppSelector((state) => state.todo.todos)
   const isOpenTodoModal = useAppSelector((state) => state.todo.isOpenTodoModal)
+  const isOpenCopyModal = useAppSelector((state) => state.todo.isOpenCopyModal)
+  const isOpenClearTodoConfirmModal = useAppSelector(
+    (state) => state.todo.isOpenClearTodoConfirmModal
+  )
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -103,7 +122,24 @@ const Todo = ({ currentUser }: any) => {
   }, [currentUser?._id, todoDate])
 
   const handleChangeTodoDate = (date: any) => {
-    history.push(`/todos?date=${getDate(date, true)}`)
+    history.push(`/app/todo?date=${getDate(date, true)}`)
+  }
+
+  const handleClearTodos = async () => {
+    try {
+      const payload: GetTodoPayload = {
+        userId: currentUser?._id ?? '',
+        date: todoDate
+      }
+      const result = await dispatch(clearTodosAsync(payload)).unwrap()
+      if (result) {
+        dispatch(
+          flashAlert({ message: 'Đã xóa hết!', type: FlashType.Success })
+        )
+      }
+    } catch (err) {
+      dispatch(flashAlert({ message: err, type: FlashType.Error }))
+    }
   }
 
   return (
@@ -127,6 +163,26 @@ const Todo = ({ currentUser }: any) => {
           </MuiPickersUtilsProvider>
           <div className={classes.addTodoBtnWrapper}>
             <Button
+              variant='outlined'
+              color='secondary'
+              className={classes.copyBtn}
+              startIcon={<FileCopyOutlinedIcon />}
+              disabled={todos.length === 0}
+              onClick={() => dispatch(openCopyModal())}
+            >
+              Copy
+            </Button>
+            <Button
+              variant='outlined'
+              color='primary'
+              className={classes.copyBtn}
+              startIcon={<ClearIcon />}
+              disabled={todos.length === 0}
+              onClick={() => dispatch(openClearTodoConfirmModal())}
+            >
+              Clear
+            </Button>
+            <Button
               variant='contained'
               color='secondary'
               startIcon={<AddCircleOutlineIcon />}
@@ -143,7 +199,7 @@ const Todo = ({ currentUser }: any) => {
               <TodoItem index={index} data={todo} />
             ))
           ) : (
-            <NoItemPage text='Chưa có tu-đu nào!' />
+            <NoItemPage text='Chưa có todo nào!' />
           )}
         </Grid>
       </Grid>
@@ -153,6 +209,22 @@ const Todo = ({ currentUser }: any) => {
           open={isOpenTodoModal}
           close={() => dispatch(closeTodoModal())}
           currentUser={currentUser}
+        />
+      )}
+      {isOpenCopyModal && (
+        <CopyModal
+          date={todoDate}
+          open={isOpenCopyModal}
+          close={() => dispatch(closeCopyModal())}
+          currentUser={currentUser}
+        />
+      )}
+      {isOpenClearTodoConfirmModal && (
+        <ClearTodoConfirmModal
+          date={todoDate}
+          open={isOpenClearTodoConfirmModal}
+          close={() => dispatch(closeClearTodoConfirmModal())}
+          onSubmit={handleClearTodos}
         />
       )}
     </Container>

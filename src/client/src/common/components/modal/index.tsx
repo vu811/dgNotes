@@ -12,7 +12,6 @@ import MuiDialogContent from '@material-ui/core/DialogContent'
 import MuiDialogActions from '@material-ui/core/DialogActions'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
-import SaveIcon from '@material-ui/icons/Save'
 import Typography from '@material-ui/core/Typography'
 
 const styles = (theme: Theme) =>
@@ -62,12 +61,14 @@ const DialogContent = withStyles((theme: Theme) => ({
 const DialogActions = withStyles((theme: Theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(1)
+    padding: theme.spacing(1),
+    justifyContent: 'space-between'
   }
 }))(MuiDialogActions)
 
 interface ModalProps {
   title: string
+  submitText?: string
   open: boolean
   onClose: () => void
   onSubmit: () => void
@@ -75,6 +76,7 @@ interface ModalProps {
 
 const Modal: FC<ModalProps> = ({
   title,
+  submitText,
   open,
   onClose,
   onSubmit,
@@ -86,22 +88,29 @@ const Modal: FC<ModalProps> = ({
         maxWidth='sm'
         fullWidth={true}
         onClose={onClose}
-        aria-labelledby='customized-dialog-title'
+        aria-labelledby='modal'
         open={open}
       >
-        <DialogTitle id='customized-dialog-title' onClose={onClose}>
+        <DialogTitle id='modal' onClose={onClose}>
           {title}
         </DialogTitle>
         <DialogContent dividers>{children}</DialogContent>
         <DialogActions>
           <Button
+            variant='outlined'
+            color='default'
+            size='small'
+            onClick={onClose}
+          >
+            Hủy
+          </Button>
+          <Button
             variant='contained'
             color='secondary'
             size='small'
-            startIcon={<SaveIcon />}
             onClick={onSubmit}
           >
-            Lưu
+            {submitText ? submitText : 'Lưu'}
           </Button>
         </DialogActions>
       </Dialog>
