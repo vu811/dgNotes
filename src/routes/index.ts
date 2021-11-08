@@ -30,6 +30,7 @@ import {
   updateProject,
   updateVersion
 } from '../controllers/project.controller'
+import { shareTodo } from '../controllers/sharing.controller'
 import {
   addTodo,
   getTodos,
@@ -86,6 +87,7 @@ const routes = (app: Express) => {
   router.get(`${todoBaseRoute}/:id`, getTodoById)
   router.put(`${todoBaseRoute}/:id`, updateTodo)
   router.post(`${todoBaseRoute}/copy`, copyTodo)
+  router.get(`${todoBaseRoute}/sharing`, shareTodo)
 
   /* Goal API */
   const goalBaseRoute = '/api/goals'

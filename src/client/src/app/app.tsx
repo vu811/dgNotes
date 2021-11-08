@@ -25,28 +25,28 @@ interface CustomRouteProps extends RouteProps {
 }
 
 const App = () => {
-  const buildPages = () => {
-    const pages: RouteProps[] = [
-      { exact: true, path: '/', render: () => withLayout(<DashBoard />) },
-      { path: '/app/dashboard', render: () => withLayout(<DashBoard />) },
-      { path: '/app/todo', render: () => withLayout(<Todo />) },
-      {
-        exact: true,
-        path: '/app/project',
-        render: () => withLayout(<Project />)
-      },
-      {
-        path: '/app/project/:id',
-        render: () => withLayout(<ProjectDetail />)
-      },
-      { path: '/app/goal', render: () => withLayout(<Goal />) },
-      { path: '/app/bucket-list', render: () => withLayout(<BucketList />) },
-      { path: '/app/sharing', render: () => withLayout(<Todo />, true) },
-      { path: '/auth/login', render: () => <Login /> },
-      { path: '/auth/register', render: () => <Register /> }
-    ]
-    return pages
-  }
+  // const buildPages = () => {
+  //   const pages: RouteProps[] = [
+  //     { exact: true, path: '/', render: () => withLayout(<DashBoard />) },
+  //     { path: '/app/dashboard', render: () => withLayout(<DashBoard />) },
+  //     { path: '/app/todo', render: () => withLayout(<Todo />) },
+  //     {
+  //       exact: true,
+  //       path: '/app/project',
+  //       render: () => withLayout(<Project />)
+  //     },
+  //     {
+  //       path: '/app/project/:id',
+  //       render: () => withLayout(<ProjectDetail />)
+  //     },
+  //     { path: '/app/goal', render: () => withLayout(<Goal />) },
+  //     { path: '/app/bucket-list', render: () => withLayout(<BucketList />) },
+  //     { path: '/app/sharing', render: () => withLayout(<Todo />, true) },
+  //     { path: '/auth/login', render: () => <Login /> },
+  //     { path: '/auth/register', render: () => <Register /> }
+  //   ]
+  //   return pages
+  // }
 
   const buildPagesWithProtected = () => {
     const pages: CustomRouteProps[] = [
@@ -88,7 +88,7 @@ const App = () => {
         sharingView: true,
         key: 'sharing',
         path: '/app/sharing',
-        children: <Todo />
+        children: <Todo sharingView={true} />
       },
       { key: 'login', path: '/auth/login', children: <Login /> },
       { key: 'register', path: '/auth/register', children: <Register /> }

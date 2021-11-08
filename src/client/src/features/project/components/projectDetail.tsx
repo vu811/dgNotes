@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles, Theme } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Typography from '@material-ui/core/Typography'

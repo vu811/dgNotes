@@ -7,7 +7,9 @@ import {
   getTodoById,
   updateTodo,
   copyTodo,
-  clearTodos
+  clearTodos,
+  shareTodo,
+  getSharingTodo
 } from './todoApi'
 
 export interface TodoState {
@@ -32,7 +34,7 @@ export interface GetTodoPayload {
 }
 
 export interface CopyTodoPayload extends GetTodoPayload {
-  fromDate: Date | null,
+  fromDate: Date | null
   toDate: Date | null
 }
 
@@ -108,6 +110,22 @@ export const clearTodosAsync = createAsyncThunk(
   }
 )
 
+export const shareTodosAsync = createAsyncThunk(
+  'todo/share',
+  async ({ userId, date }: GetTodoPayload) => {
+    const response = await shareTodo(userId, date)
+    return response.data
+  }
+)
+
+export const getSharingTodosAsync = createAsyncThunk(
+  'todo/getSharing',
+  async (id: string) => {
+    const response = await getSharingTodo(id)
+    return response.data
+  }
+)
+
 export const projectSlice = createSlice({
   name: 'todo',
   initialState,
@@ -179,5 +197,12 @@ export const projectSlice = createSlice({
   }
 })
 
-export const { openTodoModal, closeTodoModal, openCopyModal, closeCopyModal, openClearTodoConfirmModal, closeClearTodoConfirmModal } = projectSlice.actions
+export const {
+  openTodoModal,
+  closeTodoModal,
+  openCopyModal,
+  closeCopyModal,
+  openClearTodoConfirmModal,
+  closeClearTodoConfirmModal
+} = projectSlice.actions
 export default projectSlice.reducer

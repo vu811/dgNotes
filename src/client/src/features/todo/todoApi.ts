@@ -26,13 +26,23 @@ export const deleteTodo = (id: string) => {
 }
 
 export const copyTodo = (payload: CopyTodoPayload) => {
-  return axios.post(`/api/todos/copy?userId=${payload.userId}&date=${payload.date}`, 
-  { 
-    fromDate: payload.fromDate, 
-    toDate: payload.toDate 
-  })
+  return axios.post(
+    `/api/todos/copy?userId=${payload.userId}&date=${payload.date}`,
+    {
+      fromDate: payload.fromDate,
+      toDate: payload.toDate
+    }
+  )
 }
 
 export const clearTodos = (userId: string, date: string) => {
   return axios.delete(`/api/todos/clear?userId=${userId}&date=${date}`)
+}
+
+export const shareTodo = (userId: string, todoDate: string) => {
+  return axios.get(`/api/todos/sharing?userId=${userId}&todoDate=${todoDate}`)
+}
+
+export const getSharingTodo = (id: string) => {
+  return axios.get(`/api/todos/sharing/${id}`)
 }
