@@ -1,12 +1,13 @@
 import React from 'react'
 import { useAppSelector } from '../app/hooks'
 import DefaultLayout from './defaultLayout'
+import SharingLayout from './sharingLayout'
 
-const withLayout: any = (component: JSX.Element) => {
-  return (
-    <>
-      <DefaultLayout>{component}</DefaultLayout>
-    </>
+const withLayout: any = (component: JSX.Element, sharingView = false) => {
+  return sharingView ? (
+    <SharingLayout>{component}</SharingLayout>
+  ) : (
+    <DefaultLayout>{component}</DefaultLayout>
   )
 }
 

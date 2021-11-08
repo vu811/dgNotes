@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
@@ -70,7 +70,11 @@ const ListItemIconStyled = withStyles((theme) => ({
   }
 }))(ListItemIcon)
 
-const Header = () => {
+interface HeaderProps {
+  sharingView?: boolean
+}
+
+const Header: FC<HeaderProps> = ({ sharingView }) => {
   const classes = useStyles()
   const isOpenSidebar = useAppSelector(selectIsOpenSideBar)
   const dispatch = useAppDispatch()
@@ -105,18 +109,20 @@ const Header = () => {
         className={clsx(classes.appBar, isOpenSidebar && classes.appBarShift)}
       >
         <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge='start'
-            color='inherit'
-            aria-label='open drawer'
-            onClick={() => dispatch(updateSidebar(true))}
-            className={clsx(
-              classes.menuButton,
-              isOpenSidebar && classes.menuButtonHidden
-            )}
-          >
-            <MenuIcon />
-          </IconButton>
+          {!sharingView && (
+            <IconButton
+              edge='start'
+              color='inherit'
+              aria-label='open drawer'
+              onClick={() => dispatch(updateSidebar(true))}
+              className={clsx(
+                classes.menuButton,
+                isOpenSidebar && classes.menuButtonHidden
+              )}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
           <Typography
             component='h1'
             variant='h6'
@@ -133,38 +139,42 @@ const Header = () => {
               <NotificationsIcon />
             </Badge>
           </IconButton> */}
-          <IconButton onClick={handleClick}>
-            <Avatar src={avatar} />
-          </IconButton>
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center'
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center'
-            }}
-          >
-            <List component='nav' aria-label='user avatar'>
-              <ListItem button>
-                <ListItemIconStyled>
-                  <AccountCircleIcon />
-                </ListItemIconStyled>
-                <ListItemText primary='Tài khoản' />
-              </ListItem>
-              <ListItem button onClick={handleLogout}>
-                <ListItemIconStyled>
-                  <ExitToAppIcon />
-                </ListItemIconStyled>
-                <ListItemText primary='Đăng xuất' />
-              </ListItem>
-            </List>
-          </Popover>
+          {!sharingView && (
+            <>
+              <IconButton onClick={handleClick}>
+                <Avatar src={avatar} />
+              </IconButton>
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center'
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center'
+                }}
+              >
+                <List component='nav' aria-label='user avatar'>
+                  <ListItem button>
+                    <ListItemIconStyled>
+                      <AccountCircleIcon />
+                    </ListItemIconStyled>
+                    <ListItemText primary='Tài khoản' />
+                  </ListItem>
+                  <ListItem button onClick={handleLogout}>
+                    <ListItemIconStyled>
+                      <ExitToAppIcon />
+                    </ListItemIconStyled>
+                    <ListItemText primary='Đăng xuất' />
+                  </ListItem>
+                </List>
+              </Popover>
+            </>
+          )}
         </Toolbar>
         {/* <LinearProgress variant='determinate' value={67} color='secondary' /> */}
       </AppBar>

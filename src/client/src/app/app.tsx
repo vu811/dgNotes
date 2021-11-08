@@ -20,6 +20,7 @@ import { getMeAsync } from '../auth/authSlice'
 
 interface CustomRouteProps extends RouteProps {
   isPrivate?: boolean
+  sharingView?: boolean
   key: string
 }
 
@@ -40,6 +41,7 @@ const App = () => {
       },
       { path: '/app/goal', render: () => withLayout(<Goal />) },
       { path: '/app/bucket-list', render: () => withLayout(<BucketList />) },
+      { path: '/app/sharing', render: () => withLayout(<Todo />, true) },
       { path: '/auth/login', render: () => <Login /> },
       { path: '/auth/register', render: () => <Register /> }
     ]
@@ -82,6 +84,12 @@ const App = () => {
         path: '/app/bucket-list',
         children: <BucketList />
       },
+      {
+        sharingView: true,
+        key: 'sharing',
+        path: '/app/sharing',
+        children: <Todo />
+      },
       { key: 'login', path: '/auth/login', children: <Login /> },
       { key: 'register', path: '/auth/register', children: <Register /> }
     ]
@@ -96,6 +104,8 @@ const App = () => {
             const { children, ...rest } = route
             return route.isPrivate ? (
               <PrivateRoute {...rest}>{children}</PrivateRoute>
+            ) : route.sharingView ? (
+              <Route render={() => withLayout(children, true)} />
             ) : (
               <Route {...rest}>{children}</Route>
             )
@@ -109,13 +119,12 @@ const App = () => {
   )
 }
 
-const PrivateRoute = ({ children, ...rest }: CustomRouteProps) => {
+const PrivateRoute = ({ children, sharingView, ...rest }: CustomRouteProps) => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (isAuthenticated === null) {
-      console.log(children)
       dispatch(getMeAsync())
     }
   }, [dispatch, isAuthenticated])
@@ -125,7 +134,7 @@ const PrivateRoute = ({ children, ...rest }: CustomRouteProps) => {
       {...rest}
       render={({ location }) =>
         isAuthenticated === true ? (
-          withLayout(children)
+          withLayout(children, sharingView)
         ) : (
           <Redirect
             to={{

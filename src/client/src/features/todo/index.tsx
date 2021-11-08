@@ -40,6 +40,7 @@ import CopyModal from './components/copyModal'
 import { flashAlert } from '../../app/appSlice'
 import { FlashType } from '../../enums'
 import ClearTodoConfirmModal from './components/clearTodoConfirmModal'
+import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -162,6 +163,16 @@ const Todo = ({ currentUser }: any) => {
             />
           </MuiPickersUtilsProvider>
           <div className={classes.addTodoBtnWrapper}>
+            <Button
+              variant='outlined'
+              color='secondary'
+              className={classes.copyBtn}
+              startIcon={<ShareOutlinedIcon />}
+              disabled={todos.length === 0}
+              onClick={() => dispatch(openCopyModal())}
+            >
+              Share
+            </Button>
             <Button
               variant='outlined'
               color='secondary'
