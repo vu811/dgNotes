@@ -135,7 +135,7 @@ const Todo = ({ currentUser }: any) => {
       const result = await dispatch(clearTodosAsync(payload)).unwrap()
       if (result) {
         dispatch(
-          flashAlert({ message: 'Đã xóa hết!', type: FlashType.Success })
+          flashAlert({ message: 'Đã xóa hết todo!', type: FlashType.Success })
         )
       }
     } catch (err) {
