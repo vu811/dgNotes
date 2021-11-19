@@ -27,7 +27,11 @@ import {
   GetTodoPayload,
   clearTodosAsync,
   closeClearTodoConfirmModal,
-  openClearTodoConfirmModal
+  openClearTodoConfirmModal,
+  getSharingTodosAsync,
+  shareTodosAsync,
+  openSharingModal,
+  closeSharingModal
 } from './todoSlice'
 
 import { getDate } from '../../utils/dateTimeHelper'
@@ -42,8 +46,10 @@ import { FlashType } from '../../enums'
 import ClearTodoConfirmModal from './components/clearTodoConfirmModal'
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined'
 import { CurrentUserProps } from '../../auth/authSlice'
+import SharingModal from './components/sharingModal'
+import TodoSharingHeader from './components/todoSharingHeader'
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles<Theme, TodoStyleProps>((theme: Theme) => ({
   root: {
     flexGrow: 1
   },
@@ -74,11 +80,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: theme.typography.fontWeightBold
   },
   todoList: {
-    marginTop: '5px'
-    // [theme.breakpoints.up('md')]: {
-    //   maxHeight: 'calc(100vh - 225px)',
-    //   overflowY: 'auto'
-    // }
+    marginTop: '5px',
+    [theme.breakpoints.up('md')]: {
+      maxHeight: ({ sharingView }) =>
+        sharingView ? 'calc(100vh - 269px)' : 'calc(100vh - 225px)',
+      overflowY: 'auto'
+    }
   },
   navigator: {
     display: 'flex',
@@ -101,8 +108,19 @@ interface TodoTypeProps extends CurrentUserProps {
   sharingView?: boolean
 }
 
+interface ParamTypes {
+  sharingId: string
+}
+
+interface TodoStyleProps {
+  sharingView?: boolean
+}
+
 const Todo: FC<TodoTypeProps> = ({ sharingView, currentUser }) => {
-  const classes = useStyles()
+  const styleProps: TodoStyleProps = {
+    sharingView
+  }
+  const classes = useStyles(styleProps)
   const location = useLocation()
   const history = useHistory()
   const todoDate = getUrlQuery(location.search)
@@ -115,15 +133,23 @@ const Todo: FC<TodoTypeProps> = ({ sharingView, currentUser }) => {
   const isOpenClearTodoConfirmModal = useAppSelector(
     (state) => state.todo.isOpenClearTodoConfirmModal
   )
-  let { sharingId }: { sharingId: string } = useParams()
+  const isOpenSharingModal = useAppSelector(
+    (state) => state.todo.isOpenSharingModal
+  )
+  let { sharingId } = useParams<ParamTypes>()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     getTodos(sharingId, currentUser?._id, todoDate)
   }, [sharingId, currentUser?._id, todoDate])
 
-  const getTodos = (sharingId: string, userId?: string, todoDate?: string) => {
+  const getTodos = async (
+    sharingId: string,
+    userId?: string,
+    todoDate?: string
+  ) => {
     if (sharingId) {
+      dispatch(getSharingTodosAsync(sharingId))
     } else {
       if (userId) {
         const payload = {
@@ -156,74 +182,94 @@ const Todo: FC<TodoTypeProps> = ({ sharingView, currentUser }) => {
     }
   }
 
+  const handleShareTodo = async () => {
+    try {
+      const payload: GetTodoPayload = {
+        userId: currentUser?._id ?? '',
+        date: todoDate ?? ''
+      }
+      dispatch(shareTodosAsync(payload))
+      dispatch(openSharingModal())
+    } catch (err) {
+      dispatch(flashAlert({ message: err, type: FlashType.Error }))
+    }
+  }
+
+  const renderTodoHeader = () => {
+    if (sharingView) {
+      return <TodoSharingHeader />
+    } else {
+      return (
+        <div className={classes.navigator}>
+          <Typography variant='subtitle1'>Danh sách todo</Typography>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DatePickerStyled
+              id='startDate'
+              name='startDate'
+              label='Ngày'
+              value={todoDate}
+              color='secondary'
+              format='dd/MM/yyyy'
+              className={classes.todoDate}
+              onChange={(val) => handleChangeTodoDate(val)}
+              inputProps={{ className: classes.todoDateInput }}
+              InputLabelProps={{ className: classes.todoDateInput }}
+            />
+          </MuiPickersUtilsProvider>
+          <div className={classes.addTodoBtnWrapper}>
+            <Button
+              variant='outlined'
+              color='secondary'
+              className={classes.copyBtn}
+              startIcon={<ShareOutlinedIcon />}
+              disabled={todos.length === 0}
+              onClick={handleShareTodo}
+            >
+              Share
+            </Button>
+            <Button
+              variant='outlined'
+              color='secondary'
+              className={classes.copyBtn}
+              startIcon={<FileCopyOutlinedIcon />}
+              disabled={todos.length === 0}
+              onClick={() => dispatch(openCopyModal())}
+            >
+              Copy
+            </Button>
+            <Button
+              variant='outlined'
+              color='primary'
+              className={classes.copyBtn}
+              startIcon={<ClearIcon />}
+              disabled={todos.length === 0}
+              onClick={() => dispatch(openClearTodoConfirmModal())}
+            >
+              Clear
+            </Button>
+            <Button
+              variant='contained'
+              color='secondary'
+              startIcon={<AddCircleOutlineIcon />}
+              className={classes.addTodoBtn}
+              onClick={() => dispatch(openTodoModal({ isAddNew: true }))}
+            >
+              <span className={classes.addTodoBtnText}>thêm</span>
+            </Button>
+          </div>
+        </div>
+      )
+    }
+  }
+
   return (
     <Container maxWidth='md'>
       <Grid>
-        {!sharingView && (
-          <div className={classes.navigator}>
-            <Typography variant='subtitle1'>Todo list</Typography>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <DatePickerStyled
-                id='startDate'
-                name='startDate'
-                label='Ngày'
-                value={todoDate}
-                color='secondary'
-                format='dd/MM/yyyy'
-                className={classes.todoDate}
-                onChange={(val) => handleChangeTodoDate(val)}
-                inputProps={{ className: classes.todoDateInput }}
-                InputLabelProps={{ className: classes.todoDateInput }}
-              />
-            </MuiPickersUtilsProvider>
-            <div className={classes.addTodoBtnWrapper}>
-              <Button
-                variant='outlined'
-                color='secondary'
-                className={classes.copyBtn}
-                startIcon={<ShareOutlinedIcon />}
-                disabled={todos.length === 0}
-                onClick={() => dispatch(openCopyModal())}
-              >
-                Share
-              </Button>
-              <Button
-                variant='outlined'
-                color='secondary'
-                className={classes.copyBtn}
-                startIcon={<FileCopyOutlinedIcon />}
-                disabled={todos.length === 0}
-                onClick={() => dispatch(openCopyModal())}
-              >
-                Copy
-              </Button>
-              <Button
-                variant='outlined'
-                color='primary'
-                className={classes.copyBtn}
-                startIcon={<ClearIcon />}
-                disabled={todos.length === 0}
-                onClick={() => dispatch(openClearTodoConfirmModal())}
-              >
-                Clear
-              </Button>
-              <Button
-                variant='contained'
-                color='secondary'
-                startIcon={<AddCircleOutlineIcon />}
-                className={classes.addTodoBtn}
-                onClick={() => dispatch(openTodoModal({ isAddNew: true }))}
-              >
-                <span className={classes.addTodoBtnText}>thêm</span>
-              </Button>
-            </div>
-          </div>
-        )}
-
+        {renderTodoHeader()}
         <Grid container spacing={2} className={classes.todoList}>
           {todos && todos.length > 0 ? (
             todos.map((todo: TodoProps, index: number) => (
-              <TodoItem index={index} data={todo} />
+              <TodoItem index={index} data={todo} sharingView={sharingView} />
             ))
           ) : (
             <NoItemPage text='Chưa có todo nào!' />
@@ -252,6 +298,12 @@ const Todo: FC<TodoTypeProps> = ({ sharingView, currentUser }) => {
           open={isOpenClearTodoConfirmModal}
           close={() => dispatch(closeClearTodoConfirmModal())}
           onSubmit={handleClearTodos}
+        />
+      )}
+      {isOpenSharingModal && (
+        <SharingModal
+          open={isOpenSharingModal}
+          close={() => dispatch(closeSharingModal())}
         />
       )}
     </Container>

@@ -126,8 +126,16 @@ const Dashboard: FC<DashboardProps> = ({ currentUser }) => {
       <Grid container spacing={1}>
         <Grid item xs={12} md={12} lg={12}>
           <Typography variant='subtitle1' className={classes.welcome}>
-            Xin chào, Vu 👋
+            Xin chào, {currentUser?.name}
+            <Typography
+              variant='h4'
+              component='span'
+              className={classes.welcome}
+            >
+              👋
+            </Typography>
           </Typography>
+
           <Typography variant='body2' component='span' color='textSecondary'>
             Chúc bạn nhiều năng lượng để hoàn thành tốt công việc hôm nay nhé!
           </Typography>

@@ -16,8 +16,11 @@ export interface TodoState {
   isOpenTodoModal: boolean
   isOpenCopyModal: boolean
   isOpenClearTodoConfirmModal: boolean
+  isOpenSharingModal: boolean
   todos: Array<TodoProps>
   todo: TodoProps | null
+  sharingId: string | null
+  shareInfo: SharingInfoProps | null
 }
 export interface TodoProps {
   _id?: string
@@ -38,12 +41,20 @@ export interface CopyTodoPayload extends GetTodoPayload {
   toDate: Date | null
 }
 
+interface SharingInfoProps {
+  date: Date
+  sharedUsername: string
+}
+
 const initialState: TodoState = {
   isOpenTodoModal: false,
   isOpenCopyModal: false,
   isOpenClearTodoConfirmModal: false,
+  isOpenSharingModal: false,
   todos: [],
-  todo: null
+  todo: null,
+  sharingId: null,
+  shareInfo: null
 }
 
 export const getTodoByIdAsync = createAsyncThunk(
@@ -150,6 +161,12 @@ export const projectSlice = createSlice({
     },
     closeClearTodoConfirmModal: (state) => {
       state.isOpenClearTodoConfirmModal = false
+    },
+    openSharingModal: (state) => {
+      state.isOpenSharingModal = true
+    },
+    closeSharingModal: (state) => {
+      state.isOpenSharingModal = false
     }
   },
   extraReducers: (builder) => {
@@ -194,6 +211,16 @@ export const projectSlice = createSlice({
         state.todos = []
         state.isOpenClearTodoConfirmModal = false
       })
+      .addCase(shareTodosAsync.fulfilled, (state, action) => {
+        state.sharingId = action.payload.data._id
+      })
+      .addCase(getSharingTodosAsync.fulfilled, (state, action) => {
+        state.todos = action.payload.data.todos
+        state.shareInfo = {
+          date: action.payload.data.date,
+          sharedUsername: action.payload.data.userInfo.name
+        }
+      })
   }
 })
 
@@ -203,6 +230,8 @@ export const {
   openCopyModal,
   closeCopyModal,
   openClearTodoConfirmModal,
-  closeClearTodoConfirmModal
+  closeClearTodoConfirmModal,
+  openSharingModal,
+  closeSharingModal
 } = projectSlice.actions
 export default projectSlice.reducer

@@ -40,9 +40,9 @@ export const clearTodos = (userId: string, date: string) => {
 }
 
 export const shareTodo = (userId: string, todoDate: string) => {
-  return axios.get(`/api/todos/sharing?userId=${userId}&todoDate=${todoDate}`)
+  return axios.get(`/api/sharing?userId=${userId}&todoDate=${todoDate}`)
 }
 
 export const getSharingTodo = (id: string) => {
-  return axios.get(`/api/todos/sharing/${id}`)
+  return axios.get(`/api/sharing/${id}`)
 }

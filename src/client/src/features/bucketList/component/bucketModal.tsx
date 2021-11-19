@@ -10,6 +10,8 @@ import {
   updateBucketAsync
 } from '../bucketSlice'
 import { CurrentUserProps } from '../../../auth/authSlice'
+import { flashAlert } from '../../../app/appSlice'
+import { FlashType } from '../../../enums'
 
 const validationSchema = yup.object({
   description: yup
@@ -44,7 +46,15 @@ const BucketModal: FC<BucketModalProps> = ({ open, close, currentUser }) => {
       const saved = bucket
         ? await dispatch(updateBucketAsync(payload)).unwrap()
         : await dispatch(addBucketAsync(payload)).unwrap()
-      if (saved) resetForm()
+      if (saved) {
+        dispatch(
+          flashAlert({
+            message: bucket ? 'Cập nhật thành công' : 'Thêm thành công',
+            type: FlashType.Success
+          })
+        )
+        resetForm()
+      }
     }
   })
   return (

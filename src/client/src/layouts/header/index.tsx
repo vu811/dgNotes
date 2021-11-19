@@ -21,7 +21,7 @@ import {
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { logoutAsync } from '../../auth/authSlice'
-import avatar from '../../assets/images/avatar.jpg'
+import avatar from '../../assets/images/avatar.png'
 
 const drawerWidth = 240
 const useStyles = makeStyles((theme) => ({

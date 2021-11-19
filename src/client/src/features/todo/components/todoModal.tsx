@@ -1,4 +1,5 @@
 import 'date-fns'
+import { FC } from 'react'
 import { TextField } from '@material-ui/core'
 import { useFormik } from 'formik'
 import Modal from '../../../common/components/modal'
@@ -12,8 +13,9 @@ import DateFnsUtils from '@date-io/date-fns'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { getDate, getTime } from '../../../utils/dateTimeHelper'
 import { addTodoAsync, TodoProps, updateTodoAsync } from '../todoSlice'
-import { FC } from 'react'
 import { CurrentUserProps } from '../../../auth/authSlice'
+import { flashAlert } from '../../../app/appSlice'
+import { FlashType } from '../../../enums'
 
 const validationSchema = yup.object({
   startTime: yup.date(),
@@ -55,7 +57,15 @@ const TodoModal: FC<TodoModalProps> = ({ date, open, close, currentUser }) => {
       const saved = todo
         ? await dispatch(updateTodoAsync(payload)).unwrap()
         : await dispatch(addTodoAsync(payload)).unwrap()
-      if (saved) resetForm()
+      if (saved) {
+        dispatch(
+          flashAlert({
+            message: todo ? 'Cập nhật thành công' : 'Thêm thành công',
+            type: FlashType.Success
+          })
+        )
+        resetForm()
+      }
     }
   })
   return (

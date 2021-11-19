@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import {
   createStyles,
+  makeStyles,
   Theme,
   withStyles,
   WithStyles
@@ -13,6 +14,15 @@ import MuiDialogActions from '@material-ui/core/DialogActions'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
+
+interface ModalProps {
+  title: string
+  submitText?: string
+  isInfoModal?: boolean
+  open: boolean
+  onClose: () => void
+  onSubmit: () => void
+}
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -66,22 +76,22 @@ const DialogActions = withStyles((theme: Theme) => ({
   }
 }))(MuiDialogActions)
 
-interface ModalProps {
-  title: string
-  submitText?: string
-  open: boolean
-  onClose: () => void
-  onSubmit: () => void
-}
+const useStyles = makeStyles(() => ({
+  infoModalAction: {
+    justifyContent: 'end'
+  }
+}))
 
 const Modal: FC<ModalProps> = ({
   title,
   submitText,
+  isInfoModal,
   open,
   onClose,
   onSubmit,
   children
 }) => {
+  const classes = useStyles()
   return (
     <div>
       <Dialog
@@ -95,17 +105,19 @@ const Modal: FC<ModalProps> = ({
           {title}
         </DialogTitle>
         <DialogContent dividers>{children}</DialogContent>
-        <DialogActions>
+        <DialogActions className={isInfoModal ? classes.infoModalAction : ''}>
+          {!isInfoModal && (
+            <Button
+              variant='text'
+              color='default'
+              size='small'
+              onClick={onClose}
+            >
+              Hủy
+            </Button>
+          )}
           <Button
-            variant='outlined'
-            color='default'
-            size='small'
-            onClick={onClose}
-          >
-            Hủy
-          </Button>
-          <Button
-            variant='contained'
+            variant={isInfoModal ? 'text' : 'outlined'}
             color='secondary'
             size='small'
             onClick={onSubmit}

@@ -84,6 +84,8 @@ export const copyTodo = async (req: Request, res: Response) => {
     if (todos.length === 0) return failureResult(res, 'Không thể thực hiện')
     const fromDateConverted = new Date(fromDate)
     const toDateConverted = new Date(toDate)
+    console.log({ fromDate, toDate})
+    console.log({ fromDateConverted, toDateConverted})
 
     for (let date = fromDateConverted; date <= toDateConverted; date.setDate(date.getDate() + 1)) {
       const todoDate = new Date(date)

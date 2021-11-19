@@ -25,29 +25,6 @@ interface CustomRouteProps extends RouteProps {
 }
 
 const App = () => {
-  // const buildPages = () => {
-  //   const pages: RouteProps[] = [
-  //     { exact: true, path: '/', render: () => withLayout(<DashBoard />) },
-  //     { path: '/app/dashboard', render: () => withLayout(<DashBoard />) },
-  //     { path: '/app/todo', render: () => withLayout(<Todo />) },
-  //     {
-  //       exact: true,
-  //       path: '/app/project',
-  //       render: () => withLayout(<Project />)
-  //     },
-  //     {
-  //       path: '/app/project/:id',
-  //       render: () => withLayout(<ProjectDetail />)
-  //     },
-  //     { path: '/app/goal', render: () => withLayout(<Goal />) },
-  //     { path: '/app/bucket-list', render: () => withLayout(<BucketList />) },
-  //     { path: '/app/sharing', render: () => withLayout(<Todo />, true) },
-  //     { path: '/auth/login', render: () => <Login /> },
-  //     { path: '/auth/register', render: () => <Register /> }
-  //   ]
-  //   return pages
-  // }
-
   const buildPagesWithProtected = () => {
     const pages: CustomRouteProps[] = [
       {
@@ -87,39 +64,45 @@ const App = () => {
       {
         sharingView: true,
         key: 'sharing',
-        path: '/app/sharing',
+        path: '/app/sharing/:sharingId',
         children: <Todo sharingView={true} />
       },
-      { key: 'login', path: '/auth/login', children: <Login /> },
-      { key: 'register', path: '/auth/register', children: <Register /> }
+      {
+        key: 'register',
+        path: '/auth/register',
+        children: <Register />
+      },
+      {
+        key: 'login',
+        path: '/auth/login',
+        children: <Login />
+      }
     ]
     return pages
+  }
+
+  const renderRoute = () => {
+    const routes = buildPagesWithProtected().map((route: CustomRouteProps) => {
+      const { children, ...rest } = route
+      if (route.isPrivate)
+        return <PrivateRoute {...rest}>{children}</PrivateRoute>
+      if (route.sharingView)
+        return <Route {...rest} render={() => withLayout(children, true)} />
+      return <Route {...rest}>{children}</Route>
+    })
+    return routes
   }
 
   return (
     <React.Fragment>
       <Router>
-        <Switch>
-          {buildPagesWithProtected().map((route: CustomRouteProps) => {
-            const { children, ...rest } = route
-            return route.isPrivate ? (
-              <PrivateRoute {...rest}>{children}</PrivateRoute>
-            ) : route.sharingView ? (
-              <Route render={() => withLayout(children, true)} />
-            ) : (
-              <Route {...rest}>{children}</Route>
-            )
-          })}
-          {/* {buildPages().map((route) => (
-            <Route {...route} />
-          ))} */}
-        </Switch>
+        <Switch>{renderRoute()}</Switch>
       </Router>
     </React.Fragment>
   )
 }
 
-const PrivateRoute = ({ children, sharingView, ...rest }: CustomRouteProps) => {
+const PrivateRoute = ({ children, ...rest }: CustomRouteProps) => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
   const dispatch = useAppDispatch()
 
@@ -134,7 +117,7 @@ const PrivateRoute = ({ children, sharingView, ...rest }: CustomRouteProps) => {
       {...rest}
       render={({ location }) =>
         isAuthenticated === true ? (
-          withLayout(children, sharingView)
+          withLayout(children)
         ) : (
           <Redirect
             to={{

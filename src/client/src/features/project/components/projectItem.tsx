@@ -81,12 +81,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const IconButtonStyled = withStyles({
-  root: {
-    padding: '5px'
-  }
-})(IconButton)
-
 const ListItemIconStyled = withStyles((theme) => ({
   root: {
     minWidth: '30px'

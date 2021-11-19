@@ -73,7 +73,7 @@ const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
   },
   todoTime: {
     //color: ({ isCompleted }) => (isCompleted ? '#66bb6a' : 'lightslategrey'),
-    color: 'rgb(34, 51, 84)',
+    //color: 'rgb(34, 51, 84)',
     fontWeight: theme.typography.fontWeightBold
   },
   todoDescr: {
@@ -120,12 +120,13 @@ const ListItemIconStyled = withStyles((theme) => ({
 export interface TodoItemProps {
   index: number
   data: TodoProps
+  sharingView?: boolean
 }
 export interface StyleProps {
   isCompleted?: boolean
 }
 
-const TodoItem: FC<TodoItemProps> = ({ index, data }) => {
+const TodoItem: FC<TodoItemProps> = ({ index, data, sharingView }) => {
   const styleProps: StyleProps = {
     isCompleted: data.isCompleted
   }
@@ -190,46 +191,53 @@ const TodoItem: FC<TodoItemProps> = ({ index, data }) => {
               <span className={classes.todoNumber}>{index + 1}</span>
             </Grid>
             <Grid md={10} xs={8} className={classes.todoContent}>
-              <Typography component='p' className={classes.todoTime}>
+              <Typography
+                variant='body2'
+                color='textSecondary'
+                component='p'
+                className={classes.todoTime}
+              >
                 {data.time}
               </Typography>
               <Typography component='p' className={classes.todoDescr}>
                 {data.description}
               </Typography>
             </Grid>
-            <Grid md={1} className={classes.deleteTodo}>
-              <IconButton aria-label='more' onClick={handleClickMorePopup}>
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                className={classes.test}
-                onClose={handleCloseMorePopup}
-              >
-                <MenuItem onClick={() => handleCompleteTodo(data._id)}>
-                  <ListItemIconStyled>
-                    <CheckCircleOutlineIcon style={{ color: green[500] }} />
-                  </ListItemIconStyled>
-                  <Typography>
-                    {data.isCompleted ? 'Chưa hoàn thành' : 'Hoàn thành'}
-                  </Typography>
-                </MenuItem>
-                <MenuItem onClick={() => handleEditTodo(data._id)}>
-                  <ListItemIconStyled>
-                    <EditIcon style={{ color: grey[500] }} />
-                  </ListItemIconStyled>
-                  <Typography>Chỉnh sửa</Typography>
-                </MenuItem>
-                <MenuItem onClick={() => handleDeleteTodo(data._id)}>
-                  <ListItemIconStyled>
-                    <DeleteForeverIcon style={{ color: red[500] }} />
-                  </ListItemIconStyled>
-                  <Typography>Xóa</Typography>
-                </MenuItem>
-              </Menu>
-            </Grid>
+            {!sharingView && (
+              <Grid md={1} className={classes.deleteTodo}>
+                <IconButton aria-label='more' onClick={handleClickMorePopup}>
+                  <MoreVertIcon />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  className={classes.test}
+                  onClose={handleCloseMorePopup}
+                >
+                  <MenuItem onClick={() => handleCompleteTodo(data._id)}>
+                    <ListItemIconStyled>
+                      <CheckCircleOutlineIcon style={{ color: green[500] }} />
+                    </ListItemIconStyled>
+                    <Typography>
+                      {data.isCompleted ? 'Chưa hoàn thành' : 'Hoàn thành'}
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem onClick={() => handleEditTodo(data._id)}>
+                    <ListItemIconStyled>
+                      <EditIcon style={{ color: grey[500] }} />
+                    </ListItemIconStyled>
+                    <Typography>Chỉnh sửa</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={() => handleDeleteTodo(data._id)}>
+                    <ListItemIconStyled>
+                      <DeleteForeverIcon style={{ color: red[500] }} />
+                    </ListItemIconStyled>
+                    <Typography>Xóa</Typography>
+                  </MenuItem>
+                </Menu>
+              </Grid>
+            )}
           </Grid>
         </CardContentStyled>
       </Card>
