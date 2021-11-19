@@ -21,9 +21,6 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     width: '100%',
     marginBottom: '5%'
-  },
-  inputLabel: {
-    fontWeight: theme.typography.fontWeightMedium
   }
 }))
 
@@ -63,11 +60,7 @@ const Login = () => {
   return (
     <AuthLayout>
       <div className={classes.formControl}>
-        <Typography
-          variant='subtitle2'
-          component='label'
-          className={classes.inputLabel}
-        >
+        <Typography variant='subtitle2' component='label'>
           Email
         </Typography>
         <OutlinedInput
@@ -84,11 +77,7 @@ const Login = () => {
         </FormHelperText>
       </div>
       <div className={classes.formControl}>
-        <Typography
-          variant='subtitle2'
-          component='label'
-          className={classes.inputLabel}
-        >
+        <Typography variant='subtitle2' component='label'>
           Mật khẩu
         </Typography>
         <OutlinedInput

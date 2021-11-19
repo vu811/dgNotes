@@ -20,9 +20,6 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     marginBottom: '5%'
   },
-  inputLabel: {
-    fontWeight: theme.typography.fontWeightMedium
-  },
   form: {
     marginTop: '20%'
   }
@@ -101,11 +98,7 @@ const Register = () => {
         />
       </FormControl> */}
       <div className={classes.formControl}>
-        <Typography
-          variant='subtitle2'
-          component='label'
-          className={classes.inputLabel}
-        >
+        <Typography variant='subtitle2' component='label'>
           Tên
         </Typography>
         <OutlinedInput
@@ -122,11 +115,7 @@ const Register = () => {
         </FormHelperText>
       </div>
       <div className={classes.formControl}>
-        <Typography
-          variant='subtitle2'
-          component='label'
-          className={classes.inputLabel}
-        >
+        <Typography variant='subtitle2' component='label'>
           Email
         </Typography>
         <OutlinedInput
@@ -143,11 +132,7 @@ const Register = () => {
         </FormHelperText>
       </div>
       <div className={classes.formControl}>
-        <Typography
-          variant='subtitle2'
-          component='label'
-          className={classes.inputLabel}
-        >
+        <Typography variant='subtitle2' component='label'>
           Mật khẩu
         </Typography>
         <OutlinedInput
