@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, createStyles } from '@material-ui/core/styles'
 import {
   completeTodoAsync,
   deleteTodoAsync,
@@ -28,80 +28,82 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import { green, grey, red } from '@material-ui/core/colors'
 import { ListItemIcon } from '@material-ui/core'
 
-const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
-  root: {
-    flexGrow: 1
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  },
-  newProjectBtn: {
-    marginBottom: '10px'
-  },
-  boderCheckBox: {
-    borderRight: `solid 2px ${theme.palette.primary.main}`
-  },
-  todoContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  todoNumber: {
-    display: 'inline-block',
-    color: theme.palette.primary.main,
-    backgroundColor: 'rgba(255, 25, 67, 0.1)',
-    borderRadius: '50%',
-    width: '30px',
-    height: '30px',
-    textAlign: 'center',
-    fontSize: '20px',
-    fontWeight: theme.typography.fontWeightBold
-  },
-  todoTime: {
-    //color: ({ isCompleted }) => (isCompleted ? '#66bb6a' : 'lightslategrey'),
-    //color: 'rgb(34, 51, 84)',
-    fontWeight: theme.typography.fontWeightBold
-  },
-  todoDescr: {
-    fontWeight: theme.typography.fontWeightBold
-  },
-  todoNumberGrid: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  deleteTodo: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: theme.palette.primary.main,
-    cursor: 'pointer'
-  },
-  cardContent: {
-    //color: ({ isCompleted }) => (isCompleted ? '#66bb6a' : 'rgb(34, 51, 84)'),
-    color: 'rgb(34, 51, 84)',
-    backgroundColor: ({ isCompleted }) => (isCompleted ? '#c9f8de' : 'white')
-  },
-  test: {
-    padding: 0
-  }
-}))
+const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary
+    },
+    bullet: {
+      display: 'inline-block',
+      margin: '0 2px',
+      transform: 'scale(0.8)'
+    },
+    title: {
+      fontSize: 14
+    },
+    pos: {
+      marginBottom: 12
+    },
+    newProjectBtn: {
+      marginBottom: '10px'
+    },
+    boderCheckBox: {
+      borderRight: `solid 2px ${theme.palette.primary.main}`
+    },
+    todoContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    todoNumber: {
+      display: 'inline-block',
+      color: theme.palette.primary.main,
+      backgroundColor: 'rgba(255, 25, 67, 0.1)',
+      borderRadius: '50%',
+      width: '30px',
+      height: '30px',
+      textAlign: 'center',
+      fontSize: '20px',
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    todoTime: {
+      //color: ({ isCompleted }) => (isCompleted ? '#66bb6a' : 'lightslategrey'),
+      //color: 'rgb(34, 51, 84)',
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    todoDescr: {
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    todoNumberGrid: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    deleteTodo: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: theme.palette.primary.main,
+      cursor: 'pointer'
+    },
+    cardContent: {
+      //color: ({ isCompleted }) => (isCompleted ? '#66bb6a' : 'rgb(34, 51, 84)'),
+      color: 'rgb(34, 51, 84)',
+      backgroundColor: ({ isCompleted }) => (isCompleted ? '#c9f8de' : 'white')
+    },
+    test: {
+      padding: 0
+    }
+  })
+)
 
 const CardContentStyled = withStyles({
   root: {
@@ -112,11 +114,13 @@ const CardContentStyled = withStyles({
   }
 })(CardContent)
 
-const ListItemIconStyled = withStyles((theme) => ({
-  root: {
-    minWidth: '30px'
-  }
-}))(ListItemIcon)
+const ListItemIconStyled = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      minWidth: '30px'
+    }
+  })
+)(ListItemIcon)
 export interface TodoItemProps {
   index: number
   data: TodoProps

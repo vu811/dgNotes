@@ -3,7 +3,9 @@ import {
   makeStyles,
   MenuItem,
   Select,
-  TextField
+  TextField,
+  Theme,
+  createStyles
 } from '@material-ui/core'
 import { useFormik } from 'formik'
 import Modal from '../../../common/components/modal'
@@ -21,36 +23,38 @@ const validationSchema = yup.object({
     .max(500, 'Tối đa 500 kí tự')
 })
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  },
-  newProjectBtn: {
-    marginBottom: '10px'
-  },
-  projectWrapper: {
-    [theme.breakpoints.up('md')]: {
-      maxHeight: 'calc(100vh - 202px)',
-      overflowY: 'auto'
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary
+    },
+    bullet: {
+      display: 'inline-block',
+      margin: '0 2px',
+      transform: 'scale(0.8)'
+    },
+    title: {
+      fontSize: 14
+    },
+    pos: {
+      marginBottom: 12
+    },
+    newProjectBtn: {
+      marginBottom: '10px'
+    },
+    projectWrapper: {
+      [theme.breakpoints.up('md')]: {
+        maxHeight: 'calc(100vh - 202px)',
+        overflowY: 'auto'
+      }
     }
-  }
-}))
+  })
+)
 
 interface GoalModalProps extends CurrentUserProps {
   goalType: number

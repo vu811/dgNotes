@@ -1,5 +1,6 @@
 import 'date-fns'
-import { Theme, withStyles } from '@material-ui/core'
+import { FC, useState } from 'react'
+import { Theme, withStyles, createStyles } from '@material-ui/core'
 import { useFormik } from 'formik'
 import Modal from '../../../common/components/modal'
 import * as yup from 'yup'
@@ -9,7 +10,6 @@ import DateFnsUtils from '@date-io/date-fns'
 import { useAppDispatch } from '../../../app/hooks'
 import { getDate } from '../../../utils/dateTimeHelper'
 import { copyTodoAsync, CopyTodoPayload } from '../todoSlice'
-import { FC, useState } from 'react'
 import { CurrentUserProps } from '../../../auth/authSlice'
 import { makeStyles } from '@material-ui/styles'
 import { flashAlert } from '../../../app/appSlice'
@@ -32,17 +32,19 @@ const DatePickerStyled = withStyles({
   }
 })(DatePicker)
 
-const useStyles = makeStyles((theme: Theme) => ({
-  fromDate: {
-    marginTop: 10
-  },
-  toDate: {
-    marginTop: 10
-  },
-  todoDateInput: {
-    fontWeight: theme.typography.fontWeightBold
-  }
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    fromDate: {
+      marginTop: 10
+    },
+    toDate: {
+      marginTop: 10
+    },
+    todoDateInput: {
+      fontWeight: theme.typography.fontWeightBold as number
+    }
+  })
+)
 
 const CopyModal: FC<TodoModalProps> = ({ date, open, close, currentUser }) => {
   const classes = useStyles()

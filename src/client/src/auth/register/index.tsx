@@ -3,7 +3,9 @@ import {
   FormHelperText,
   makeStyles,
   OutlinedInput,
-  Typography
+  Typography,
+  Theme,
+  createStyles
 } from '@material-ui/core'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
@@ -12,18 +14,20 @@ import { useAppDispatch } from '../../app/hooks'
 import { registerAsync } from '../authSlice'
 import { useHistory } from 'react-router'
 
-const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    padding: '1%'
-  },
-  formControl: {
-    width: '100%',
-    marginBottom: '5%'
-  },
-  form: {
-    marginTop: '20%'
-  }
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    wrapper: {
+      padding: '1%'
+    },
+    formControl: {
+      width: '100%',
+      marginBottom: '5%'
+    },
+    form: {
+      marginTop: '20%'
+    }
+  })
+)
 
 const validationProjectSchema = yup.object({
   name: yup.string().required('Vui lòng nhập tên của bạn'),

@@ -1,6 +1,11 @@
 import React, { FC } from 'react'
 import clsx from 'clsx'
-import { makeStyles } from '@material-ui/core/styles'
+import {
+  Theme,
+  withStyles,
+  createStyles,
+  makeStyles
+} from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -15,8 +20,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Popover,
-  withStyles
+  Popover
 } from '@material-ui/core'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
@@ -24,51 +28,53 @@ import { logoutAsync } from '../../auth/authSlice'
 import avatar from '../../assets/images/avatar.png'
 
 const drawerWidth = 240
-const useStyles = makeStyles((theme) => ({
-  toolbar: {
-    paddingRight: 24 // keep right padding when drawer closed
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
-  },
-  menuButton: {
-    marginRight: 36
-  },
-  menuButtonHidden: {
-    display: 'none'
-  },
-  title: {
-    flexGrow: 1,
-    [theme.breakpoints.down('xs')]: {
-      textAlign: 'center'
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    toolbar: {
+      paddingRight: 24 // keep right padding when drawer closed
+    },
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen
+      })
+    },
+    appBarShift: {
+      marginLeft: drawerWidth,
+      width: `calc(100% - ${drawerWidth}px)`,
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen
+      })
+    },
+    menuButton: {
+      marginRight: 36
+    },
+    menuButtonHidden: {
+      display: 'none'
+    },
+    title: {
+      flexGrow: 1,
+      [theme.breakpoints.down('xs')]: {
+        textAlign: 'center'
+      }
+    },
+    logoText: {
+      cursor: 'pointer',
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    profileIcon: {
+      color: theme.palette.primary.main
     }
-  },
-  logoText: {
-    cursor: 'pointer',
-    fontWeight: theme.typography.fontWeightBold
-  },
-  profileIcon: {
-    color: theme.palette.primary.main
-  }
-}))
+  })
+)
 
-const ListItemIconStyled = withStyles((theme) => ({
+const ListItemIconStyled = withStyles({
   root: {
     minWidth: 30
   }
-}))(ListItemIcon)
+})(ListItemIcon)
 
 interface HeaderProps {
   sharingView?: boolean

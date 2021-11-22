@@ -3,13 +3,12 @@ import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 import {
   IconButton,
   ListItemIcon,
   Menu,
   MenuItem,
-  Theme,
   withStyles
 } from '@material-ui/core'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
@@ -17,7 +16,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import { green, grey, red } from '@material-ui/core/colors'
 import { useAppDispatch } from '../../../app/hooks'
-import { flashAlert, setMoreButtonAnchorEl } from '../../../app/appSlice'
+import { flashAlert } from '../../../app/appSlice'
 import { FlashType } from '../../../enums'
 import {
   deleteTaskAsync,
@@ -29,98 +28,101 @@ import {
 } from '../projectSlice'
 import { getDate } from '../../../utils/dateTimeHelper'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
+
 export interface StyleProps {
   taskStatus: number
 }
 
-const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
-  root: {
-    flexGrow: 1
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  },
-  newProjectBtn: {
-    marginBottom: '10px'
-  },
-  avatar: {
-    backgroundColor: red[500]
-  },
-  boderCheckBox: {
-    borderRight: `solid 2px ${theme.palette.primary.main}`
-  },
-  todoContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontWeight: theme.typography.fontWeightBold
-  },
-  todoNumber: {
-    display: 'inline-block',
-    color: theme.palette.primary.main,
-    backgroundColor: 'rgba(255, 25, 67, 0.1)',
-    borderRadius: '50%',
-    width: '30px',
-    height: '30px',
-    textAlign: 'center',
-    fontSize: '20px',
-    fontWeight: theme.typography.fontWeightBold
-  },
-  todoTime: {
-    fontWeight: theme.typography.fontWeightBold
-  },
-  todoNumberGrid: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  deleteTodo: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: theme.palette.primary.main,
-    cursor: 'pointer'
-  },
-  startBtn: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  dueDateText: {
-    fontSize: '0.8em',
-    fontWeight: theme.typography.fontWeightBold
-  },
-  dueDate: {
-    //fontWeight: theme.typography.fontWeightBold,
-    color: theme.palette.text.secondary
-  },
-  taskBackground: {
-    backgroundColor: ({ taskStatus }) => {
-      if (taskStatus === 0) return 'white'
-      //else if (taskStatus === 1) return 'rgba(255, 163, 25, 0.1)'
-      //else return 'rgba(76, 175, 80, 0.1)'
-      else if (taskStatus === 1) return '#fae2a0'
-      else return '#c9f8de'
+const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary
+    },
+    bullet: {
+      display: 'inline-block',
+      margin: '0 2px',
+      transform: 'scale(0.8)'
+    },
+    title: {
+      fontSize: 14
+    },
+    pos: {
+      marginBottom: 12
+    },
+    newProjectBtn: {
+      marginBottom: '10px'
+    },
+    avatar: {
+      backgroundColor: red[500]
+    },
+    boderCheckBox: {
+      borderRight: `solid 2px ${theme.palette.primary.main}`
+    },
+    todoContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    todoNumber: {
+      display: 'inline-block',
+      color: theme.palette.primary.main,
+      backgroundColor: 'rgba(255, 25, 67, 0.1)',
+      borderRadius: '50%',
+      width: '30px',
+      height: '30px',
+      textAlign: 'center',
+      fontSize: '20px',
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    todoTime: {
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    todoNumberGrid: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    deleteTodo: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: theme.palette.primary.main,
+      cursor: 'pointer'
+    },
+    startBtn: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    dueDateText: {
+      fontSize: '0.8em',
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    dueDate: {
+      //fontWeight: theme.typography.fontWeightBold,
+      color: theme.palette.text.secondary
+    },
+    taskBackground: {
+      backgroundColor: ({ taskStatus }) => {
+        if (taskStatus === 0) return 'white'
+        //else if (taskStatus === 1) return 'rgba(255, 163, 25, 0.1)'
+        //else return 'rgba(76, 175, 80, 0.1)'
+        else if (taskStatus === 1) return '#fae2a0'
+        else return '#c9f8de'
+      }
     }
-  }
-}))
+  })
+)
 
 const CardContentStyled = withStyles({
   root: {
@@ -131,11 +133,13 @@ const CardContentStyled = withStyles({
   }
 })(CardContent)
 
-const ListItemIconStyled = withStyles((theme) => ({
-  root: {
-    minWidth: '30px'
-  }
-}))(ListItemIcon)
+const ListItemIconStyled = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      minWidth: '30px'
+    }
+  })
+)(ListItemIcon)
 
 export interface TaskPropReponse {
   index: number

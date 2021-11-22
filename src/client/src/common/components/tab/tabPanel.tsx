@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core'
+import { makeStyles, createStyles, Theme } from '@material-ui/core'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -6,12 +6,14 @@ interface TabPanelProps {
   value: any
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    padding: '0.75em'
-  }
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+      padding: '0.75em'
+    }
+  })
+)
 
 const TabPanel = ({ children, value, index, ...other }: TabPanelProps) => {
   const classes = useStyles()

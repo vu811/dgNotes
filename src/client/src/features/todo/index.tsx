@@ -14,7 +14,8 @@ import {
   Theme,
   withStyles,
   Container,
-  Typography
+  Typography,
+  createStyles
 } from '@material-ui/core'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
@@ -33,7 +34,6 @@ import {
   openSharingModal,
   closeSharingModal
 } from './todoSlice'
-
 import { getDate } from '../../utils/dateTimeHelper'
 import TodoItem from './components/todoItem'
 import TodoModal from './components/todoModal'
@@ -49,54 +49,56 @@ import { CurrentUserProps } from '../../auth/authSlice'
 import SharingModal from './components/sharingModal'
 import TodoSharingHeader from './components/todoSharingHeader'
 
-const useStyles = makeStyles<Theme, TodoStyleProps>((theme: Theme) => ({
-  root: {
-    flexGrow: 1
-  },
-  addTodoBtnWrapper: {
-    display: 'inline-flex',
-    marginLeft: '30px',
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: 0
-    }
-  },
-  addTodoBtn: {
-    [theme.breakpoints.down('xs')]: {
-      '& .MuiButton-startIcon': {
-        marginLeft: 0,
-        marginRight: 0
+const useStyles = makeStyles<Theme, TodoStyleProps>((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1
+    },
+    addTodoBtnWrapper: {
+      display: 'inline-flex',
+      marginLeft: '30px',
+      [theme.breakpoints.down('xs')]: {
+        marginLeft: 0
       }
+    },
+    addTodoBtn: {
+      [theme.breakpoints.down('xs')]: {
+        '& .MuiButton-startIcon': {
+          marginLeft: 0,
+          marginRight: 0
+        }
+      }
+    },
+    addTodoBtnText: {
+      [theme.breakpoints.down('xs')]: {
+        display: 'none'
+      }
+    },
+    todoDate: {
+      verticalAlign: 'bottom'
+    },
+    todoDateInput: {
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    todoList: {
+      marginTop: '5px',
+      [theme.breakpoints.up('md')]: {
+        maxHeight: ({ sharingView }) =>
+          sharingView ? 'calc(100vh - 269px)' : 'calc(100vh - 225px)',
+        overflowY: 'auto'
+      }
+    },
+    navigator: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    copyBtn: {
+      marginRight: '5%'
     }
-  },
-  addTodoBtnText: {
-    [theme.breakpoints.down('xs')]: {
-      display: 'none'
-    }
-  },
-  todoDate: {
-    verticalAlign: 'bottom'
-  },
-  todoDateInput: {
-    fontWeight: theme.typography.fontWeightBold
-  },
-  todoList: {
-    marginTop: '5px',
-    [theme.breakpoints.up('md')]: {
-      maxHeight: ({ sharingView }) =>
-        sharingView ? 'calc(100vh - 269px)' : 'calc(100vh - 225px)',
-      overflowY: 'auto'
-    }
-  },
-  navigator: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  copyBtn: {
-    marginRight: '5%'
-  }
-}))
+  })
+)
 
 const DatePickerStyled = withStyles({
   input: {

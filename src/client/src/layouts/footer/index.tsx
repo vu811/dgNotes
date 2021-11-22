@@ -1,4 +1,11 @@
-import { Box, makeStyles, Typography, withStyles } from '@material-ui/core'
+import {
+  Box,
+  makeStyles,
+  Typography,
+  withStyles,
+  Theme,
+  createStyles
+} from '@material-ui/core'
 
 const BoxStyled = withStyles({
   root: {
@@ -6,11 +13,13 @@ const BoxStyled = withStyles({
   }
 })(Box)
 
-const useStyles = makeStyles((theme) => ({
-  footerText: {
-    fontWeight: theme.typography.fontWeightBold
-  }
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    footerText: {
+      fontWeight: theme.typography.fontWeightBold as number
+    }
+  })
+)
 
 const Footer = () => {
   const classes = useStyles()

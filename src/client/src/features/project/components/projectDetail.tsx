@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles, Theme } from '@material-ui/core/styles'
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Typography from '@material-ui/core/Typography'
 import {
@@ -44,56 +44,60 @@ import EditIcon from '@material-ui/icons/Edit'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { getDate } from '../../../utils/dateTimeHelper'
 
-const useStyles = makeStyles((theme: Theme) => ({
-  versionList: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    display: 'flex',
-    marginTop: '5px',
-    [theme.breakpoints.up('md')]: {
-      maxHeight: 'calc(100vh - 231px)',
-      overflowY: 'auto'
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    versionList: {
+      flexGrow: 1,
+      backgroundColor: theme.palette.background.paper,
+      display: 'flex',
+      marginTop: '5px',
+      [theme.breakpoints.up('md')]: {
+        maxHeight: 'calc(100vh - 231px)',
+        overflowY: 'auto'
+      }
+    },
+    tabs: {
+      borderRight: `1px solid ${theme.palette.divider}`
+    },
+    navigator: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginBottom: '1.5em'
+    },
+    task: {
+      marginBottom: '10px',
+      borderRadius: '4px',
+      border: '1px solid rgba(0, 0, 0, 0.12)'
+    },
+    addTaskBtn: {
+      marginLeft: '10px'
+    },
+    versionBtnGroup: {
+      marginBottom: '0.75em'
+    },
+    divideer: {
+      marginTop: '0.75em',
+      marginBottom: '0.75em'
+    },
+    taskHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: '10px'
+    },
+    taskText: {
+      fontWeight: theme.typography.fontWeightBold as number
     }
-  },
-  tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`
-  },
-  navigator: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: '1.5em'
-  },
-  task: {
-    marginBottom: '10px',
-    borderRadius: '4px',
-    border: '1px solid rgba(0, 0, 0, 0.12)'
-  },
-  addTaskBtn: {
-    marginLeft: '10px'
-  },
-  versionBtnGroup: {
-    marginBottom: '0.75em'
-  },
-  divideer: {
-    marginTop: '0.75em',
-    marginBottom: '0.75em'
-  },
-  taskHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: '10px'
-  },
-  taskText: {
-    fontWeight: theme.typography.fontWeightBold
-  }
-}))
+  })
+)
 
-const ListItemIconStyled = withStyles((theme) => ({
-  root: {
-    minWidth: '30px'
-  }
-}))(ListItemIcon)
+const ListItemIconStyled = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      minWidth: '30px'
+    }
+  })
+)(ListItemIcon)
 
 const ProjectDetail = () => {
   const classes = useStyles()

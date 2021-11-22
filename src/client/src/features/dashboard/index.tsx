@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import clsx from 'clsx'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import { Bar, Doughnut } from 'react-chartjs-2'
@@ -13,32 +13,33 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
   DashboardPayload,
   DashboardType,
-  getDashboardAsync,
-  selectDashboard
+  getDashboardAsync
 } from '../dashboard/dashboardSlice'
 import { CurrentUserProps } from '../../auth/authSlice'
 import { getDate } from '../../utils/dateTimeHelper'
 import { withContainer } from '../../layouts/container'
 import { getTotal } from '../../utils/commonHelper'
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column'
-  },
-  fixedHeight: {
-    minHeight: 300
-  },
-  welcome: {
-    fontSize: '2rem',
-    lineHeight: 1.25
-  },
-  doughnutChart: {
-    height: 200
-  }
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: theme.spacing(2),
+      display: 'flex',
+      overflow: 'auto',
+      flexDirection: 'column'
+    },
+    fixedHeight: {
+      minHeight: 300
+    },
+    welcome: {
+      fontSize: '2rem',
+      lineHeight: 1.25
+    },
+    doughnutChart: {
+      height: 200
+    }
+  })
+)
 
 interface DashboardProps extends CurrentUserProps {}
 

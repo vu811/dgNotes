@@ -5,47 +5,51 @@ import {
   CardMedia,
   CssBaseline,
   makeStyles,
-  Typography
+  Typography,
+  Theme,
+  createStyles
 } from '@material-ui/core'
 import { useHistory, useLocation } from 'react-router-dom'
 import cover from '../../assets/images/cover.jpg'
 import FlashAlert from '../../common/components/flashAlert'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-    flexDirection: 'column'
-  },
-  card: {
-    display: 'flex',
-    flexDirection: 'row'
-  },
-  wrapper: {
-    padding: '2%',
-    width: '420px'
-  },
-  formControl: {
-    width: '100%'
-  },
-  welcomeText: {
-    fontWeight: 900
-  },
-  form: {
-    marginTop: '10%'
-  },
-  logoText: {
-    color: theme.palette.primary.main,
-    fontWeight: 900
-  },
-  authText: {
-    cursor: 'pointer',
-    color: theme.palette.secondary.main,
-    fontWeight: theme.typography.fontWeightMedium
-  }
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100vh',
+      flexDirection: 'column'
+    },
+    card: {
+      display: 'flex',
+      flexDirection: 'row'
+    },
+    wrapper: {
+      padding: '2%',
+      width: '420px'
+    },
+    formControl: {
+      width: '100%'
+    },
+    welcomeText: {
+      fontWeight: 900
+    },
+    form: {
+      marginTop: '10%'
+    },
+    logoText: {
+      color: theme.palette.primary.main,
+      fontWeight: 900
+    },
+    authText: {
+      cursor: 'pointer',
+      color: theme.palette.secondary.main,
+      fontWeight: theme.typography.fontWeightMedium as number
+    }
+  })
+)
 
 const AuthLayout: FC = ({ children }) => {
   const classes = useStyles()

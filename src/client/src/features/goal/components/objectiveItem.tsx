@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, createStyles } from '@material-ui/core/styles'
 import { MenuItem, Theme, Tooltip, withStyles } from '@material-ui/core'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import EditIcon from '@material-ui/icons/Edit'
@@ -19,86 +19,87 @@ import {
   openGoalModal
 } from '../goalSlice'
 import { useAppDispatch } from '../../../app/hooks'
-import { flashAlert, setMoreButtonAnchorEl } from '../../../app/appSlice'
+import { flashAlert } from '../../../app/appSlice'
 import { FlashType } from '../../../enums'
-import MoreButton from '../../../common/components/moreButton'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
-const useStyles = makeStyles<Theme>((theme) => ({
-  root: {
-    marginBottom: '0.5em'
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  },
-  newProjectBtn: {
-    marginBottom: '10px'
-  },
-  boderCheckBox: {
-    borderRight: `solid 2px ${theme.palette.primary.main}`
-  },
-  todoContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  todoNumber: {
-    display: 'inline-block',
-    color: theme.palette.primary.main,
-    backgroundColor: 'rgba(255, 25, 67, 0.1)',
-    borderRadius: '50%',
-    width: '30px',
-    height: '30px',
-    textAlign: 'center',
-    fontSize: '20px',
-    fontWeight: theme.typography.fontWeightBold
-  },
-  todoDescr: {
-    fontWeight: theme.typography.fontWeightBold
-  },
-  todoNumberGrid: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  actions: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: theme.palette.primary.main,
-    cursor: 'pointer'
-  },
-  cardContent: {
-    color: 'rgb(34, 51, 84)',
-    backgroundColor: '#f5f8fc'
-  },
-  cardContentCompleted: {
-    color: 'rgb(34, 51, 84)',
-    backgroundColor: 'rgb(201, 248, 222)'
-  },
-  test: {
-    padding: 0
-  },
-  planVerified: {
-    cursor: 'poiter'
-  }
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      marginBottom: '0.5em'
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary
+    },
+    bullet: {
+      display: 'inline-block',
+      margin: '0 2px',
+      transform: 'scale(0.8)'
+    },
+    title: {
+      fontSize: 14
+    },
+    pos: {
+      marginBottom: 12
+    },
+    newProjectBtn: {
+      marginBottom: '10px'
+    },
+    boderCheckBox: {
+      borderRight: `solid 2px ${theme.palette.primary.main}`
+    },
+    todoContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    todoNumber: {
+      display: 'inline-block',
+      color: theme.palette.primary.main,
+      backgroundColor: 'rgba(255, 25, 67, 0.1)',
+      borderRadius: '50%',
+      width: '30px',
+      height: '30px',
+      textAlign: 'center',
+      fontSize: '20px',
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    todoDescr: {
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    todoNumberGrid: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    actions: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: theme.palette.primary.main,
+      cursor: 'pointer'
+    },
+    cardContent: {
+      color: 'rgb(34, 51, 84)',
+      backgroundColor: '#f5f8fc'
+    },
+    cardContentCompleted: {
+      color: 'rgb(34, 51, 84)',
+      backgroundColor: 'rgb(201, 248, 222)'
+    },
+    test: {
+      padding: 0
+    },
+    planVerified: {
+      cursor: 'poiter'
+    }
+  })
+)
 
 const CardContentStyled = withStyles({
   root: {
@@ -109,7 +110,7 @@ const CardContentStyled = withStyles({
   }
 })(CardContent)
 
-const ListItemIconStyled = withStyles((theme) => ({
+const ListItemIconStyled = withStyles(() => ({
   root: {
     minWidth: '30px'
   }

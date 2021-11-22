@@ -5,7 +5,12 @@ import CardHeader from '@material-ui/core/CardHeader'
 import { grey, red } from '@material-ui/core/colors'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import {
+  makeStyles,
+  withStyles,
+  createStyles,
+  Theme
+} from '@material-ui/core/styles'
 import {
   deleteProjectAsync,
   getProjectAsync,
@@ -27,65 +32,69 @@ import Filter1TwoToneIcon from '@material-ui/icons/Filter1TwoTone'
 import DateRangeTwoToneIcon from '@material-ui/icons/DateRangeTwoTone'
 import AssignmentTwoToneIcon from '@material-ui/icons/AssignmentTwoTone'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  },
-  newProjectBtn: {
-    marginBottom: '10px'
-  },
-  avatar: {
-    backgroundColor: red[500]
-  },
-  projectName: {
-    fontWeight: theme.typography.fontWeightBold
-  },
-  cardAction: {
-    justifyContent: 'space-between'
-  },
-  cardHeader: {
-    cursor: 'pointer',
-    padding: '16px 30px'
-  },
-  startDate: {
-    color: theme.palette.text.primary,
-    fontWeight: 700
-  },
-  propTitle: {
-    color: theme.palette.text.primary,
-    fontWeight: 700
-  },
-  propContent: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  propContentText: {
-    marginLeft: '10px'
-  }
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary
+    },
+    bullet: {
+      display: 'inline-block',
+      margin: '0 2px',
+      transform: 'scale(0.8)'
+    },
+    title: {
+      fontSize: 14
+    },
+    pos: {
+      marginBottom: 12
+    },
+    newProjectBtn: {
+      marginBottom: '10px'
+    },
+    avatar: {
+      backgroundColor: red[500]
+    },
+    projectName: {
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    cardAction: {
+      justifyContent: 'space-between'
+    },
+    cardHeader: {
+      cursor: 'pointer',
+      padding: '16px 30px'
+    },
+    startDate: {
+      color: theme.palette.text.primary,
+      fontWeight: 700
+    },
+    propTitle: {
+      color: theme.palette.text.primary,
+      fontWeight: 700
+    },
+    propContent: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    propContentText: {
+      marginLeft: '10px'
+    }
+  })
+)
 
-const ListItemIconStyled = withStyles((theme) => ({
-  root: {
-    minWidth: '30px'
-  }
-}))(ListItemIcon)
+const ListItemIconStyled = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      minWidth: '30px'
+    }
+  })
+)(ListItemIcon)
 
 const CardContentStyled = withStyles({
   root: {

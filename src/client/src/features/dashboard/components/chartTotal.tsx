@@ -1,23 +1,31 @@
 import React, { FC } from 'react'
-import { Avatar, makeStyles, Theme, Typography } from '@material-ui/core'
+import {
+  Avatar,
+  makeStyles,
+  Typography,
+  Theme,
+  createStyles
+} from '@material-ui/core'
 
-const useStyles = makeStyles<Theme, ChartTotalThemeProps>((theme) => ({
-  welcome: {
-    fontSize: '2rem',
-    lineHeight: 1.25
-  },
-  icon: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    marginRight: 5,
-    color: ({ iconColor }) => iconColor,
-    backgroundColor: ({ iconBackgroundColor }) => iconBackgroundColor
-  }
-}))
+const useStyles = makeStyles<Theme, ChartTotalThemeProps>((theme: Theme) =>
+  createStyles({
+    welcome: {
+      fontSize: '2rem',
+      lineHeight: 1.25
+    },
+    icon: {
+      display: 'flex',
+      alignItems: 'center'
+    },
+    avatar: {
+      width: 50,
+      height: 50,
+      marginRight: 5,
+      color: ({ iconColor }) => iconColor,
+      backgroundColor: ({ iconBackgroundColor }) => iconBackgroundColor
+    }
+  })
+)
 
 interface ChartTotalProps {
   total: string

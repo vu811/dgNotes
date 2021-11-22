@@ -30,6 +30,7 @@ let theme = createTheme({
       '"Segoe UI Symbol"'
     ].join(','),
     fontWeightLight: 400,
+    fontWeightMedium: 500,
     fontWeightBold: 700,
     subtitle1: {
       fontWeight: 700

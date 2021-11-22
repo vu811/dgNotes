@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react'
 import {
   Grid,
   makeStyles,
+  createStyles,
   Theme,
   withStyles,
   Typography,
@@ -27,91 +28,95 @@ import {
 import { FlashType } from '../../../enums'
 import { flashAlert } from '../../../app/appSlice'
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    marginBottom: '0.5em'
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  },
-  newProjectBtn: {
-    marginBottom: '10px'
-  },
-  boderCheckBox: {
-    borderRight: `solid 2px ${theme.palette.primary.main}`
-  },
-  todoContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  todoNumber: {
-    display: 'inline-block',
-    color: theme.palette.primary.main,
-    backgroundColor: 'rgba(255, 25, 67, 0.1)',
-    borderRadius: '50%',
-    width: '30px',
-    height: '30px',
-    textAlign: 'center',
-    fontSize: '20px',
-    fontWeight: theme.typography.fontWeightBold
-  },
-  todoDescr: {
-    fontWeight: theme.typography.fontWeightBold
-  },
-  todoNumberGrid: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  actions: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: theme.palette.primary.main,
-    cursor: 'pointer'
-  },
-  cardContent: {
-    color: 'rgb(34, 51, 84)'
-  },
-  cardContentCompleted: {
-    color: 'rgb(34, 51, 84)',
-    backgroundColor: 'rgb(201, 248, 222)'
-  },
-  test: {
-    padding: 0
-  },
-  planVerified: {
-    cursor: 'poiter'
-  },
-  navigator: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: '10px'
-  }
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      marginBottom: '0.5em'
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary
+    },
+    bullet: {
+      display: 'inline-block',
+      margin: '0 2px',
+      transform: 'scale(0.8)'
+    },
+    title: {
+      fontSize: 14
+    },
+    pos: {
+      marginBottom: 12
+    },
+    newProjectBtn: {
+      marginBottom: '10px'
+    },
+    boderCheckBox: {
+      borderRight: `solid 2px ${theme.palette.primary.main}`
+    },
+    todoContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    todoNumber: {
+      display: 'inline-block',
+      color: theme.palette.primary.main,
+      backgroundColor: 'rgba(255, 25, 67, 0.1)',
+      borderRadius: '50%',
+      width: '30px',
+      height: '30px',
+      textAlign: 'center',
+      fontSize: '20px',
+      fontWeight: theme.typography.fontWeightBold as number
+    },
+    todoDescr: {
+      fontWeight: 500
+    },
+    todoNumberGrid: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    actions: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: theme.palette.primary.main,
+      cursor: 'pointer'
+    },
+    cardContent: {
+      color: 'rgb(34, 51, 84)'
+    },
+    cardContentCompleted: {
+      color: 'rgb(34, 51, 84)',
+      backgroundColor: 'rgb(201, 248, 222)'
+    },
+    test: {
+      padding: 0
+    },
+    planVerified: {
+      cursor: 'poiter'
+    },
+    navigator: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginBottom: '10px'
+    }
+  })
+)
 
-const ListItemIconStyled = withStyles((theme) => ({
-  root: {
-    minWidth: '30px'
-  }
-}))(ListItemIcon)
+const ListItemIconStyled = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      minWidth: '30px'
+    }
+  })
+)(ListItemIcon)
 
 const CardContentStyled = withStyles({
   root: {

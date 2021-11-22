@@ -2,7 +2,9 @@ import {
   Button,
   FormHelperText,
   makeStyles,
+  createStyles,
   OutlinedInput,
+  Theme,
   Typography
 } from '@material-ui/core'
 import * as yup from 'yup'
@@ -14,15 +16,17 @@ import { useHistory, useLocation } from 'react-router'
 import { FlashType } from '../../enums'
 import { flashAlert } from '../../app/appSlice'
 
-const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    padding: '1%'
-  },
-  formControl: {
-    width: '100%',
-    marginBottom: '5%'
-  }
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    wrapper: {
+      padding: '1%'
+    },
+    formControl: {
+      width: '100%',
+      marginBottom: '5%'
+    }
+  })
+)
 
 const validationProjectSchema = yup.object({
   email: yup

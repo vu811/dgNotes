@@ -1,21 +1,29 @@
-import { Avatar, makeStyles, Typography } from '@material-ui/core'
+import {
+  Avatar,
+  makeStyles,
+  Typography,
+  Theme,
+  createStyles
+} from '@material-ui/core'
 import avatar from '../../../assets/images/avatar.png'
 import DateRangeTwoToneIcon from '@material-ui/icons/DateRangeTwoTone'
 import { useAppSelector } from '../../../app/hooks'
 import { getDate } from '../../../utils/dateTimeHelper'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  date: {
-    display: 'flex',
-    alignItems: 'center'
-  }
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    date: {
+      display: 'flex',
+      alignItems: 'center'
+    }
+  })
+)
 
 const TodoSharingHeader = () => {
   const classes = useStyles()
