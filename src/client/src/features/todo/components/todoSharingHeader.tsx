@@ -19,11 +19,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     helperText: {
       color: theme.palette.text.secondary,
-      fontWeight: theme.typography.fontWeightMedium
+      fontWeight: theme.typography.fontWeightMedium as number
     },
     username: {
       color: theme.palette.text.primary,
-      fontWeight: theme.typography.fontWeightBold,
+      fontWeight: theme.typography.fontWeightBold as number,
       fontSize: 16
     }
   })
