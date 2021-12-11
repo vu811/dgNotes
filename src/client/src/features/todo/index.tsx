@@ -32,7 +32,8 @@ import {
   getSharingTodosAsync,
   shareTodosAsync,
   openSharingModal,
-  closeSharingModal
+  closeSharingModal,
+  setLoading
 } from './todoSlice'
 import { getDate } from '../../utils/dateTimeHelper'
 import TodoItem from './components/todoItem'
@@ -138,8 +139,11 @@ const Todo: FC<TodoTypeProps> = ({ sharingView, currentUser }) => {
   const isOpenSharingModal = useAppSelector(
     (state) => state.todo.isOpenSharingModal
   )
+  const loading = useAppSelector((state) => state.todo.loading)
   let { sharingId } = useParams<ParamTypes>()
   const dispatch = useAppDispatch()
+
+  console.log(todos)
 
   useEffect(() => {
     getTodos(sharingId, currentUser?._id, todoDate)
@@ -150,6 +154,7 @@ const Todo: FC<TodoTypeProps> = ({ sharingView, currentUser }) => {
     userId?: string,
     todoDate?: string
   ) => {
+    dispatch(setLoading(true))
     if (sharingId) {
       dispatch(getSharingTodosAsync(sharingId))
     } else {
@@ -264,18 +269,23 @@ const Todo: FC<TodoTypeProps> = ({ sharingView, currentUser }) => {
     }
   }
 
+  const renderTodoItem = () => {
+    if (loading) return null
+    return todos && todos.length > 0 ? (
+      todos.map((todo: TodoProps, index: number) => (
+        <TodoItem index={index} data={todo} sharingView={sharingView} />
+      ))
+    ) : (
+      <NoItemPage text='Chưa có todo nào!' />
+    )
+  }
+
   return (
     <Container maxWidth='md'>
       <Grid>
         {renderTodoHeader()}
         <Grid container spacing={2} className={classes.todoList}>
-          {todos && todos.length > 0 ? (
-            todos.map((todo: TodoProps, index: number) => (
-              <TodoItem index={index} data={todo} sharingView={sharingView} />
-            ))
-          ) : (
-            <NoItemPage text='Chưa có todo nào!' />
-          )}
+          {renderTodoItem()}
         </Grid>
       </Grid>
       {isOpenTodoModal && (

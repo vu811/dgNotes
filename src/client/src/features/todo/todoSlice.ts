@@ -21,6 +21,7 @@ export interface TodoState {
   todo: TodoProps | null
   sharingId: string | null
   shareInfo: SharingInfoProps | null
+  loading: boolean
 }
 export interface TodoProps {
   _id?: string
@@ -54,7 +55,8 @@ const initialState: TodoState = {
   todos: [],
   todo: null,
   sharingId: null,
-  shareInfo: null
+  shareInfo: null,
+  loading: false
 }
 
 export const getTodoByIdAsync = createAsyncThunk(
@@ -167,12 +169,16 @@ export const projectSlice = createSlice({
     },
     closeSharingModal: (state) => {
       state.isOpenSharingModal = false
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(getTodosAsync.fulfilled, (state, action) => {
         state.todos = action.payload
+        state.loading = false
       })
       .addCase(addTodoAsync.fulfilled, (state, action) => {
         state.todos.push(action.payload)
@@ -220,6 +226,7 @@ export const projectSlice = createSlice({
           date: action.payload.data.date,
           sharedUsername: action.payload.data.userInfo.name
         }
+        state.loading = false
       })
   }
 })
@@ -232,6 +239,7 @@ export const {
   openClearTodoConfirmModal,
   closeClearTodoConfirmModal,
   openSharingModal,
-  closeSharingModal
+  closeSharingModal,
+  setLoading
 } = projectSlice.actions
 export default projectSlice.reducer

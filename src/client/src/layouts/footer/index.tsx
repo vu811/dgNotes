@@ -16,7 +16,11 @@ const BoxStyled = withStyles({
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     footerText: {
-      fontWeight: theme.typography.fontWeightBold as number
+      fontWeight: 900
+    },
+    link: {
+      textDecoration: 'none',
+      color: theme.palette.text.primary
     }
   })
 )
@@ -25,12 +29,21 @@ const Footer = () => {
   const classes = useStyles()
   return (
     <BoxStyled pt={4}>
-      <Typography variant='body2' align='center' className={classes.footerText}>
-        Made with{' '}
+      <Typography variant='body2' align='center'>
+        <span className={classes.footerText}>Made with </span>
         <span role='img' aria-label='heart' aria-hidden='false'>
           ❤️
         </span>{' '}
-        by 811
+        <span className={classes.footerText}>
+          by{' '}
+          <a
+            className={classes.link}
+            href='https://vu811.netlify.app'
+            target='_blank'
+          >
+            811
+          </a>{' '}
+        </span>
       </Typography>
     </BoxStyled>
   )
