@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import FlashAlert from '../common/components/flashAlert'
+import ButtomNavigator from './navigator'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,10 +22,16 @@ const useStyles = makeStyles((theme: Theme) =>
     content: {
       flexGrow: 1,
       height: '100vh',
-      overflow: 'auto'
+      overflowY: 'auto',
+      [theme.breakpoints.down('sm')]: {
+        overflowY: 'unset'
+      }
     },
     container: {
       paddingTop: theme.spacing(4),
+      [theme.breakpoints.down('sm')]: {
+        paddingTop: theme.spacing(2)
+      },
       paddingBottom: theme.spacing(4)
     }
   })
@@ -56,6 +63,7 @@ const DefaultLayout: FC = (props) => {
             {props.children}
             <Footer />
           </ContainerStyled>
+          <ButtomNavigator />
         </main>
       </div>
     </>

@@ -97,6 +97,10 @@ const useStyles = makeStyles<Theme, TodoStyleProps>((theme: Theme) =>
     },
     copyBtn: {
       marginRight: '5%'
+    },
+    todoContainer: {
+      paddingLeft: 6,
+      paddingRight: 6
     }
   })
 )
@@ -281,7 +285,7 @@ const Todo: FC<TodoTypeProps> = ({ sharingView, currentUser }) => {
   }
 
   return (
-    <Container maxWidth='md'>
+    <Container maxWidth='md' className={classes.todoContainer}>
       <Grid>
         {renderTodoHeader()}
         <Grid container spacing={2} className={classes.todoList}>

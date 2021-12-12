@@ -9,7 +9,7 @@ import {
   createStyles
 } from '@material-ui/core'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import ListItems from '../../common/constants/listItems'
+import ListItems from './items'
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
@@ -25,7 +25,10 @@ const useStyles = makeStyles((theme: Theme) =>
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
-      })
+      }),
+      [theme.breakpoints.down('sm')]: {
+        display: 'none'
+      }
     },
     drawerPaperClose: {
       overflowX: 'hidden',

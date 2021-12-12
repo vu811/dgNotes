@@ -7,11 +7,16 @@ import {
   createStyles
 } from '@material-ui/core'
 
-const BoxStyled = withStyles({
-  root: {
-    marginTop: 'auto'
-  }
-})(Box)
+const BoxStyled = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      marginTop: 'auto',
+      [theme.breakpoints.down('sm')]: {
+        paddingTop: 10
+      }
+    }
+  })
+)(Box)
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,6 +26,11 @@ const useStyles = makeStyles((theme: Theme) =>
     link: {
       textDecoration: 'none',
       color: theme.palette.text.primary
+    },
+    footerBox: {
+      [theme.breakpoints.down('sm')]: {
+        marginBottom: 30
+      }
     }
   })
 )
@@ -28,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Footer = () => {
   const classes = useStyles()
   return (
-    <BoxStyled pt={4}>
+    <BoxStyled className={classes.footerBox} pt={4}>
       <Typography variant='body2' align='center'>
         <span className={classes.footerText}>Made with </span>
         <span role='img' aria-label='heart' aria-hidden='false'>

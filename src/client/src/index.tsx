@@ -98,6 +98,18 @@ let theme = createTheme({
         },
         fontWeight: 700
       }
+    },
+    MuiBottomNavigationAction: {
+      label: {
+        '&$selected': {
+          fontSize: '0.77rem'
+        }
+      }
+    },
+    MuiListItemIcon: {
+      root: {
+        minWidth: 30
+      }
     }
   },
   props: {

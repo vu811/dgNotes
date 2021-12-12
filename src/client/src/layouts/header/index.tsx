@@ -49,16 +49,16 @@ const useStyles = makeStyles((theme: Theme) =>
       })
     },
     menuButton: {
-      marginRight: 36
+      marginRight: 36,
+      [theme.breakpoints.down('sm')]: {
+        display: 'none'
+      }
     },
     menuButtonHidden: {
       display: 'none'
     },
     title: {
-      flexGrow: 1,
-      [theme.breakpoints.down('xs')]: {
-        textAlign: 'center'
-      }
+      flexGrow: 1
     },
     logoText: {
       cursor: 'pointer',
@@ -66,6 +66,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     profileIcon: {
       color: theme.palette.primary.main
+    },
+    avatar: {
+      [theme.breakpoints.down('sm')]: {
+        width: 25,
+        height: 25
+      }
     }
   })
 )
@@ -148,7 +154,7 @@ const Header: FC<HeaderProps> = ({ sharingView }) => {
           {!sharingView && (
             <>
               <IconButton onClick={handleClick}>
-                <Avatar src={avatar} />
+                <Avatar src={avatar} className={classes.avatar} />
               </IconButton>
               <Popover
                 id={id}

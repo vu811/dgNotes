@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { FlashType } from '../enums'
+import { MenuEnum } from '../enums/menuEnum'
 
 export interface AppState {
   flashAlert: FlashAlertType
   loading: boolean
   moreButtonAnchorEl: HTMLElement | null
+  navigator: number
 }
 
 interface FlashAlertType {
@@ -20,7 +22,8 @@ const initialState: AppState = {
     type: FlashType.Info
   },
   loading: true,
-  moreButtonAnchorEl: null
+  moreButtonAnchorEl: null,
+  navigator: MenuEnum.Dashboard
 }
 
 export const appSlice = createSlice({
@@ -42,11 +45,18 @@ export const appSlice = createSlice({
     },
     setMoreButtonAnchorEl: (state, action) => {
       state.moreButtonAnchorEl = action.payload
+    },
+    setNavigator: (state, action) => {
+      state.navigator = action.payload
     }
   },
   extraReducers: (builder) => {}
 })
 
-export const { flashAlert, closeFlashAlert, setMoreButtonAnchorEl } =
-  appSlice.actions
+export const {
+  flashAlert,
+  closeFlashAlert,
+  setMoreButtonAnchorEl,
+  setNavigator
+} = appSlice.actions
 export default appSlice.reducer
