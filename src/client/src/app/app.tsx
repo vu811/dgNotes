@@ -17,6 +17,7 @@ import Login from '../auth/login'
 import Register from '../auth/register'
 import { useAppDispatch, useAppSelector } from './hooks'
 import { getMeAsync } from '../auth/authSlice'
+import Scheduler from '../features/scheduler'
 
 interface CustomRouteProps extends RouteProps {
   isPrivate?: boolean
@@ -39,6 +40,12 @@ const App = () => {
         key: 'dashboard',
         path: '/app/dashboard',
         children: <DashBoard />
+      },
+      {
+        isPrivate: true,
+        key: 'scheduler',
+        path: '/app/scheduler',
+        children: <Scheduler />
       },
       { isPrivate: true, key: 'todo', path: '/app/todo', children: <Todo /> },
       {

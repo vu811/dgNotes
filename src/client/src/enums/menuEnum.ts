@@ -4,5 +4,6 @@ export enum MenuEnum {
   Project = 2,
   Goal = 3,
   BucketList = 4,
-  Setting = 6
+  Setting = 6,
+  Scheduler = 7
 }

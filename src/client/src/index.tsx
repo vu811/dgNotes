@@ -105,12 +105,12 @@ let theme = createTheme({
           fontSize: '0.77rem'
         }
       }
-    },
-    MuiListItemIcon: {
-      root: {
-        minWidth: 30
-      }
     }
+    // MuiListItemIcon: {
+    //   root: {
+    //     minWidth: 30
+    //   }
+    // }
   },
   props: {
     MuiButton: {

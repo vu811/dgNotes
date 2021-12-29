@@ -62,9 +62,7 @@ const Dashboard: FC<DashboardProps> = ({ currentUser }) => {
 
   const getDashboardData = async (payload: DashboardPayload) => {
     const result = await dispatch(getDashboardAsync(payload)).unwrap()
-    console.log(result)
     const dashBoard = setDashboardData(result)
-    console.log(dashBoard)
     setData(dashBoard)
   }
 

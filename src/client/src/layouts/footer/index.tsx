@@ -1,11 +1,11 @@
 import {
   Box,
   makeStyles,
-  Typography,
   withStyles,
   Theme,
   createStyles
 } from '@material-ui/core'
+import logo from '../../assets/images/logo.png'
 
 const BoxStyled = withStyles((theme: Theme) =>
   createStyles({
@@ -31,6 +31,12 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.down('sm')]: {
         marginBottom: 30
       }
+    },
+    root: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center'
     }
   })
 )
@@ -39,22 +45,24 @@ const Footer = () => {
   const classes = useStyles()
   return (
     <BoxStyled className={classes.footerBox} pt={4}>
-      <Typography variant='body2' align='center'>
-        <span className={classes.footerText}>Made with </span>
-        <span role='img' aria-label='heart' aria-hidden='false'>
-          ❤️
-        </span>{' '}
-        <span className={classes.footerText}>
-          by{' '}
+      <div className={classes.root}>
+        <div>
+          <span className={classes.footerText}>Made with </span>
+          <span role='img' aria-label='heart' aria-hidden='false'>
+            ❤️
+          </span>
+          <span className={classes.footerText}>{' by '}</span>
+        </div>
+        <div>
           <a
             className={classes.link}
-            href='https://vu811.netlify.app'
+            href='https://www.vu811.com'
             target='_blank'
           >
-            811
-          </a>{' '}
-        </span>
-      </Typography>
+            <img src={logo} alt='logo' />
+          </a>
+        </div>
+      </div>
     </BoxStyled>
   )
 }

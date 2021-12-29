@@ -62,7 +62,7 @@ const ListItems = () => {
           onClick={item.onClick}
         >
           <ListItemIcon>{item.icon}</ListItemIcon>
-          <ListItemText primary={item.name} />
+          <ListItemText style={{ fontWeight: 900 }} primary={item.name} />
         </ListItemStyle>
       ))}
     </>

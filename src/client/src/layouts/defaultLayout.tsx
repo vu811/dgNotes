@@ -30,9 +30,9 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       paddingTop: theme.spacing(4),
       [theme.breakpoints.down('sm')]: {
-        paddingTop: theme.spacing(2)
-      },
-      paddingBottom: theme.spacing(4)
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(4)
+      }
     }
   })
 )
@@ -47,9 +47,6 @@ const ContainerStyled = withStyles({
 
 const DefaultLayout: FC = (props) => {
   const classes = useStyles()
-
-  console.log('DefaultLayout')
-
   return (
     <>
       <CssBaseline />

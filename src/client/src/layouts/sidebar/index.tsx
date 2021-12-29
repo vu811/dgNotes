@@ -15,6 +15,8 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
 import { selectIsOpenSideBar, updateSidebar } from '../layoutSlice'
 
+import logo from '../../assets/images/logo.png'
+
 const drawerWidth = 240
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,6 +52,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     sidebarList: {
       paddingTop: '0'
+    },
+    logo: {
+      marginRight: 35
     }
   })
 )
@@ -71,6 +76,7 @@ const SideBar = () => {
       open={isOpenSidebar}
     >
       <div className={classes.toolbarIcon}>
+        <img className={classes.logo} src={logo} alt='logo' />
         <IconButton onClick={() => dispatch(updateSidebar(false))}>
           <ChevronLeftIcon />
         </IconButton>

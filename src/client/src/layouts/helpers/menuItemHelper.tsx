@@ -4,6 +4,7 @@ import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded'
 import TrackChangesRoundedIcon from '@material-ui/icons/TrackChangesRounded'
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered'
 import PlaylistAddCheckTwoToneIcon from '@material-ui/icons/PlaylistAddCheckTwoTone'
+import EventNoteRoundedIcon from '@material-ui/icons/EventNoteRounded'
 import { MenuEnum } from '../../enums/menuEnum'
 
 interface MenuItemProps {
@@ -26,6 +27,14 @@ export const menuItems = (history: any): MenuItemProps[] => {
       showNavigator: true
     },
     {
+      name: 'Scheduler',
+      value: MenuEnum.Scheduler,
+      path: ['/app/scheduler'],
+      onClick: () => history.push('/app/scheduler'),
+      icon: <EventNoteRoundedIcon />,
+      showNavigator: true
+    },
+    {
       name: 'Todo',
       value: MenuEnum.Todo,
       path: ['/app/todo'],
@@ -39,7 +48,7 @@ export const menuItems = (history: any): MenuItemProps[] => {
       path: ['/app/project'],
       onClick: () => history.push('/app/project'),
       icon: <CodeRoundedIcon />,
-      showNavigator: true
+      showNavigator: false
     },
     {
       name: 'Goal',
