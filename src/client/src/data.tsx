@@ -62,3 +62,321 @@ export const objectiveTypes: objectTypeProps[] = [
     type: ObjectiveType.Personal
   }
 ]
+
+export const schedulers = [
+  {
+    name: 'Mon',
+    works: [
+      {
+        time: '05:00 - 06:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '06:00 - 07:00',
+        descr: 'Học về đầu tư CK/Đọc sách'
+      },
+      {
+        time: '07:00 - 08:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '08:00 - 09:00',
+        descr: 'Coding excercise'
+      },
+      {
+        time: '09:00 - 17:30',
+        descr: 'Làm việc'
+      },
+      {
+        time: '17:00 - 18:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '18:00 - 19:00',
+        descr: 'Nghỉ ngơi'
+      },
+      {
+        time: '19:00 - 20:30',
+        descr: 'Coding'
+      },
+      {
+        time: '21:00 - 22:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '22:00',
+        descr: 'Ngủ'
+      }
+    ]
+  },
+  {
+    name: 'Tue',
+    works: [
+      {
+        time: '05:00 - 06:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '06:00 - 07:00',
+        descr: 'Học về đầu tư CK/Đọc sách'
+      },
+      {
+        time: '07:00 - 08:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '08:00 - 09:00',
+        descr: 'Coding excercise'
+      },
+      {
+        time: '09:00 - 17:30',
+        descr: 'Làm việc'
+      },
+      {
+        time: '17:00 - 18:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '18:00 - 19:00',
+        descr: 'Nghỉ ngơi'
+      },
+      {
+        time: '19:00 - 20:30',
+        descr: 'Coding'
+      },
+      {
+        time: '21:00 - 22:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '22:00',
+        descr: 'Ngủ'
+      }
+    ]
+  },
+  {
+    name: 'Wed',
+    works: [
+      {
+        time: '05:00 - 06:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '06:00 - 07:00',
+        descr: 'Học về đầu tư CK/Đọc sách'
+      },
+      {
+        time: '07:00 - 08:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '08:00 - 09:00',
+        descr: 'Coding excercise'
+      },
+      {
+        time: '09:00 - 17:30',
+        descr: 'Làm việc'
+      },
+      {
+        time: '17:00 - 18:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '18:00 - 19:00',
+        descr: 'Nghỉ ngơi'
+      },
+      {
+        time: '19:00 - 20:30',
+        descr: 'Coding'
+      },
+      {
+        time: '21:00 - 22:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '22:00',
+        descr: 'Ngủ'
+      }
+    ]
+  },
+  {
+    name: 'Thu',
+    works: [
+      {
+        time: '05:00 - 06:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '06:00 - 07:00',
+        descr: 'Học về đầu tư CK/Đọc sách'
+      },
+      {
+        time: '07:00 - 08:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '08:00 - 09:00',
+        descr: 'Coding excercise'
+      },
+      {
+        time: '09:00 - 17:30',
+        descr: 'Làm việc'
+      },
+      {
+        time: '17:00 - 18:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '18:00 - 19:00',
+        descr: 'Nghỉ ngơi'
+      },
+      {
+        time: '19:00 - 20:30',
+        descr: 'Coding'
+      },
+      {
+        time: '21:00 - 22:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '22:00',
+        descr: 'Ngủ'
+      }
+    ]
+  },
+  {
+    name: 'Fri',
+    works: [
+      {
+        time: '05:00 - 06:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '06:00 - 07:00',
+        descr: 'Học về đầu tư CK/Đọc sách'
+      },
+      {
+        time: '07:00 - 08:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '08:00 - 09:00',
+        descr: 'Coding excercise'
+      },
+      {
+        time: '09:00 - 17:30',
+        descr: 'Làm việc'
+      },
+      {
+        time: '17:00 - 18:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '18:00 - 19:00',
+        descr: 'Nghỉ ngơi'
+      },
+      {
+        time: '19:00 - 20:30',
+        descr: 'Coding'
+      },
+      {
+        time: '21:00 - 22:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '22:00',
+        descr: 'Ngủ'
+      }
+    ]
+  },
+  {
+    name: 'Sat',
+    works: [
+      {
+        time: '05:00 - 06:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '06:00 - 07:00',
+        descr: 'Học về đầu tư CK/Đọc sách'
+      },
+      {
+        time: '07:00 - 08:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '08:00 - 09:00',
+        descr: 'Coding excercise'
+      },
+      {
+        time: '09:00 - 17:30',
+        descr: 'Nghiên cứu/Làm dự án cá nhân'
+      },
+      {
+        time: '17:00 - 18:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '18:00 - 19:00',
+        descr: 'Nghỉ ngơi'
+      },
+      {
+        time: '19:00 - 20:30',
+        descr: 'Coding'
+      },
+      {
+        time: '21:00 - 22:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '22:00',
+        descr: 'Ngủ'
+      }
+    ]
+  },
+  {
+    name: 'Sun',
+    works: [
+      {
+        time: '05:00 - 06:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '06:00 - 07:00',
+        descr: 'Học về đầu tư CK/Đọc sách'
+      },
+      {
+        time: '07:00 - 08:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '08:00 - 09:00',
+        descr: 'Coding excercise'
+      },
+      {
+        time: '09:00 - 17:30',
+        descr: 'Nghiên cứu/Làm dự án cá nhân'
+      },
+      {
+        time: '17:00 - 18:00',
+        descr: 'Tập thể dục'
+      },
+      {
+        time: '18:00 - 19:00',
+        descr: 'Nghỉ ngơi'
+      },
+      {
+        time: '19:00 - 20:30',
+        descr: 'Coding'
+      },
+      {
+        time: '21:00 - 22:00',
+        descr: 'Học tiếng Anh'
+      },
+      {
+        time: '22:00',
+        descr: 'Ngủ'
+      }
+    ]
+  }
+]
