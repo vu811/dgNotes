@@ -136,7 +136,7 @@ const Dashboard: FC<DashboardProps> = ({ currentUser }) => {
           </Typography>
 
           <Typography variant='body2' component='span' color='textSecondary'>
-            Chúc bạn nhiều năng lượng để hoàn thành tốt công việc hôm nay nhé!
+            Chúc bạn thật nhiều năng lượng và hoàn thành tốt công việc hôm nay nhé!
           </Typography>
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
