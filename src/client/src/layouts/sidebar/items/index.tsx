@@ -53,12 +53,19 @@ const ListItems = () => {
   const history = useHistory()
   const location = useLocation()
 
+  const isItemSelected = (paths: string[], currentPath: string) => {
+    if (paths.includes(currentPath)) return true
+    if (paths.length > 1) return false
+    if (currentPath.includes(paths[0])) return true
+    return false
+  }
+
   return (
     <>
       {menuItems(history)?.map((item) => (
         <ListItemStyle
           button
-          selected={item.path.includes(location.pathname)}
+          selected={isItemSelected(item.path, location.pathname)}
           onClick={item.onClick}
         >
           <ListItemIcon>{item.icon}</ListItemIcon>

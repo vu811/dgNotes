@@ -17,7 +17,7 @@ const validationSchema = yup.object({
   description: yup
     .string()
     .required('Vui lòng nhập mô tả')
-    .max(100, 'Tối đa 100 kí tự')
+    .max(500, 'Tối đa 500 kí tự')
 })
 
 interface BucketModalProps extends CurrentUserProps {

@@ -68,43 +68,35 @@ export const schedulers = [
     name: 'Mon',
     works: [
       {
-        time: '05:00 - 06:00',
-        descr: 'Tập thể dục'
+        time: '05:45 - 07:45',
+        descr: 'DSA (30m) - Review knowledge'
       },
       {
-        time: '06:00 - 07:00',
-        descr: 'Học về đầu tư CK/Đọc sách'
+        time: '08:00 - 18:00',
+        descr: 'At work'
       },
       {
-        time: '07:00 - 08:00',
-        descr: 'Học tiếng Anh'
+        time: '18:00 - 18:30',
+        descr: 'Relax'
       },
       {
-        time: '08:00 - 09:00',
-        descr: 'Coding excercise'
+        time: '18:30 - 19:00',
+        descr: 'Learning investment'
       },
       {
-        time: '09:00 - 17:30',
-        descr: 'Làm việc'
+        time: '19:00 - 19:45',
+        descr: 'Learning English in apps, watch videos'
       },
       {
-        time: '17:00 - 18:00',
-        descr: 'Tập thể dục'
+        time: '20:00 - 21:45',
+        descr: 'Build vContractors'
       },
       {
-        time: '18:00 - 19:00',
-        descr: 'Nghỉ ngơi'
+        time: '22:00 - 23:00',
+        descr: 'IELTS'
       },
       {
-        time: '19:00 - 20:30',
-        descr: 'Coding'
-      },
-      {
-        time: '21:00 - 22:00',
-        descr: 'Học tiếng Anh'
-      },
-      {
-        time: '22:00',
+        time: '23:00',
         descr: 'Ngủ'
       }
     ]
@@ -113,43 +105,35 @@ export const schedulers = [
     name: 'Tue',
     works: [
       {
-        time: '05:00 - 06:00',
-        descr: 'Tập thể dục'
+        time: '05:45 - 07:45',
+        descr: 'DSA (30m) - Review knowledge'
       },
       {
-        time: '06:00 - 07:00',
-        descr: 'Học về đầu tư CK/Đọc sách'
+        time: '08:00 - 18:00',
+        descr: 'At work'
       },
       {
-        time: '07:00 - 08:00',
-        descr: 'Học tiếng Anh'
+        time: '18:00 - 18:30',
+        descr: 'Relax'
       },
       {
-        time: '08:00 - 09:00',
-        descr: 'Coding excercise'
+        time: '18:30 - 19:00',
+        descr: 'Learning investment'
       },
       {
-        time: '09:00 - 17:30',
-        descr: 'Làm việc'
+        time: '19:00 - 19:45',
+        descr: 'Learning English in apps, watch videos'
       },
       {
-        time: '17:00 - 18:00',
-        descr: 'Tập thể dục'
+        time: '20:00 - 21:45',
+        descr: 'Build vContractors'
       },
       {
-        time: '18:00 - 19:00',
-        descr: 'Nghỉ ngơi'
+        time: '22:00 - 23:00',
+        descr: 'IELTS'
       },
       {
-        time: '19:00 - 20:30',
-        descr: 'Coding'
-      },
-      {
-        time: '21:00 - 22:00',
-        descr: 'Học tiếng Anh'
-      },
-      {
-        time: '22:00',
+        time: '23:00',
         descr: 'Ngủ'
       }
     ]
@@ -158,43 +142,35 @@ export const schedulers = [
     name: 'Wed',
     works: [
       {
-        time: '05:00 - 06:00',
-        descr: 'Tập thể dục'
+        time: '05:45 - 07:45',
+        descr: 'DSA (30m) - Review knowledge'
       },
       {
-        time: '06:00 - 07:00',
-        descr: 'Học về đầu tư CK/Đọc sách'
+        time: '08:00 - 18:00',
+        descr: 'At work'
       },
       {
-        time: '07:00 - 08:00',
-        descr: 'Học tiếng Anh'
+        time: '18:00 - 18:30',
+        descr: 'Relax'
       },
       {
-        time: '08:00 - 09:00',
-        descr: 'Coding excercise'
+        time: '18:30 - 19:00',
+        descr: 'Learning investment'
       },
       {
-        time: '09:00 - 17:30',
-        descr: 'Làm việc'
+        time: '19:00 - 19:45',
+        descr: 'Learning English in apps, watch videos'
       },
       {
-        time: '17:00 - 18:00',
-        descr: 'Tập thể dục'
+        time: '20:00 - 21:45',
+        descr: 'Build vContractors'
       },
       {
-        time: '18:00 - 19:00',
-        descr: 'Nghỉ ngơi'
+        time: '22:00 - 23:00',
+        descr: 'IELTS'
       },
       {
-        time: '19:00 - 20:30',
-        descr: 'Coding'
-      },
-      {
-        time: '21:00 - 22:00',
-        descr: 'Học tiếng Anh'
-      },
-      {
-        time: '22:00',
+        time: '23:00',
         descr: 'Ngủ'
       }
     ]
@@ -203,43 +179,35 @@ export const schedulers = [
     name: 'Thu',
     works: [
       {
-        time: '05:00 - 06:00',
-        descr: 'Tập thể dục'
+        time: '05:45 - 07:45',
+        descr: 'DSA (30m) - Review knowledge'
       },
       {
-        time: '06:00 - 07:00',
-        descr: 'Học về đầu tư CK/Đọc sách'
+        time: '08:00 - 18:00',
+        descr: 'At work'
       },
       {
-        time: '07:00 - 08:00',
-        descr: 'Học tiếng Anh'
+        time: '18:00 - 18:30',
+        descr: 'Relax'
       },
       {
-        time: '08:00 - 09:00',
-        descr: 'Coding excercise'
+        time: '18:30 - 19:00',
+        descr: 'Learning investment'
       },
       {
-        time: '09:00 - 17:30',
-        descr: 'Làm việc'
+        time: '19:00 - 19:45',
+        descr: 'Learning English in apps, watch videos'
       },
       {
-        time: '17:00 - 18:00',
-        descr: 'Tập thể dục'
+        time: '20:00 - 21:45',
+        descr: 'Build vContractors'
       },
       {
-        time: '18:00 - 19:00',
-        descr: 'Nghỉ ngơi'
+        time: '22:00 - 23:00',
+        descr: 'IELTS'
       },
       {
-        time: '19:00 - 20:30',
-        descr: 'Coding'
-      },
-      {
-        time: '21:00 - 22:00',
-        descr: 'Học tiếng Anh'
-      },
-      {
-        time: '22:00',
+        time: '23:00',
         descr: 'Ngủ'
       }
     ]
@@ -248,43 +216,35 @@ export const schedulers = [
     name: 'Fri',
     works: [
       {
-        time: '05:00 - 06:00',
-        descr: 'Tập thể dục'
+        time: '05:45 - 07:45',
+        descr: 'DSA (30m) - Review knowledge'
       },
       {
-        time: '06:00 - 07:00',
-        descr: 'Học về đầu tư CK/Đọc sách'
+        time: '08:00 - 18:00',
+        descr: 'At work'
       },
       {
-        time: '07:00 - 08:00',
-        descr: 'Học tiếng Anh'
+        time: '18:00 - 18:30',
+        descr: 'Relax'
       },
       {
-        time: '08:00 - 09:00',
-        descr: 'Coding excercise'
+        time: '18:30 - 19:00',
+        descr: 'Learning investment'
       },
       {
-        time: '09:00 - 17:30',
-        descr: 'Làm việc'
+        time: '19:00 - 19:45',
+        descr: 'Learning English in apps, watch videos'
       },
       {
-        time: '17:00 - 18:00',
-        descr: 'Tập thể dục'
+        time: '20:00 - 21:45',
+        descr: 'Build vContractors'
       },
       {
-        time: '18:00 - 19:00',
-        descr: 'Nghỉ ngơi'
+        time: '22:00 - 23:00',
+        descr: 'IELTS'
       },
       {
-        time: '19:00 - 20:30',
-        descr: 'Coding'
-      },
-      {
-        time: '21:00 - 22:00',
-        descr: 'Học tiếng Anh'
-      },
-      {
-        time: '22:00',
+        time: '23:00',
         descr: 'Ngủ'
       }
     ]
@@ -293,43 +253,43 @@ export const schedulers = [
     name: 'Sat',
     works: [
       {
-        time: '05:00 - 06:00',
-        descr: 'Tập thể dục'
+        time: '05:45 - 07:45',
+        descr: 'DSA (30m) - Review knowledge'
       },
       {
-        time: '06:00 - 07:00',
-        descr: 'Học về đầu tư CK/Đọc sách'
+        time: '08:00 - 12:00',
+        descr: 'Build vContractors'
       },
       {
-        time: '07:00 - 08:00',
-        descr: 'Học tiếng Anh'
+        time: '13:30 - 14:45',
+        descr: 'Interview prepare'
       },
       {
-        time: '08:00 - 09:00',
-        descr: 'Coding excercise'
+        time: '15:00 - 18:00',
+        descr: 'IELTS, movie English...'
       },
       {
-        time: '09:00 - 17:30',
-        descr: 'Nghiên cứu/Làm dự án cá nhân'
+        time: '18:00 - 18:30',
+        descr: 'Relax'
       },
       {
-        time: '17:00 - 18:00',
-        descr: 'Tập thể dục'
+        time: '18:30 - 19:00',
+        descr: 'Learning investment'
       },
       {
-        time: '18:00 - 19:00',
-        descr: 'Nghỉ ngơi'
+        time: '19:00 - 19:45',
+        descr: 'Learning English in apps, watch videos'
       },
       {
-        time: '19:00 - 20:30',
-        descr: 'Coding'
+        time: '20:00 - 21:45',
+        descr: 'Build vContractors'
       },
       {
-        time: '21:00 - 22:00',
-        descr: 'Học tiếng Anh'
+        time: '22:00 - 23:00',
+        descr: 'IELTS'
       },
       {
-        time: '22:00',
+        time: '23:00',
         descr: 'Ngủ'
       }
     ]
@@ -338,43 +298,43 @@ export const schedulers = [
     name: 'Sun',
     works: [
       {
-        time: '05:00 - 06:00',
-        descr: 'Tập thể dục'
+        time: '05:45 - 07:45',
+        descr: 'DSA (30m) - Review knowledge'
       },
       {
-        time: '06:00 - 07:00',
-        descr: 'Học về đầu tư CK/Đọc sách'
+        time: '08:00 - 12:00',
+        descr: 'Build vContractors'
       },
       {
-        time: '07:00 - 08:00',
-        descr: 'Học tiếng Anh'
+        time: '13:30 - 14:45',
+        descr: 'Interview prepare'
       },
       {
-        time: '08:00 - 09:00',
-        descr: 'Coding excercise'
+        time: '15:00 - 18:00',
+        descr: 'IELTS, movie English...'
       },
       {
-        time: '09:00 - 17:30',
-        descr: 'Nghiên cứu/Làm dự án cá nhân'
+        time: '18:00 - 18:30',
+        descr: 'Relax'
       },
       {
-        time: '17:00 - 18:00',
-        descr: 'Tập thể dục'
+        time: '18:30 - 19:00',
+        descr: 'Learning investment'
       },
       {
-        time: '18:00 - 19:00',
-        descr: 'Nghỉ ngơi'
+        time: '19:00 - 19:45',
+        descr: 'Learning English in apps, watch videos'
       },
       {
-        time: '19:00 - 20:30',
-        descr: 'Coding'
+        time: '20:00 - 21:45',
+        descr: 'Build vContractors'
       },
       {
-        time: '21:00 - 22:00',
-        descr: 'Học tiếng Anh'
+        time: '22:00 - 23:00',
+        descr: 'IELTS'
       },
       {
-        time: '22:00',
+        time: '23:00',
         descr: 'Ngủ'
       }
     ]

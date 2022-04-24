@@ -54,7 +54,8 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      fontWeight: theme.typography.fontWeightMedium as number
     },
     todoNumber: {
       display: 'inline-block',
