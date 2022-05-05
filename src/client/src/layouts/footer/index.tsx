@@ -5,7 +5,7 @@ import {
   Theme,
   createStyles
 } from '@material-ui/core'
-import logo from '../../assets/images/logo.png'
+import logo from '../../assets/images/logo-dark.png'
 
 const BoxStyled = withStyles((theme: Theme) =>
   createStyles({

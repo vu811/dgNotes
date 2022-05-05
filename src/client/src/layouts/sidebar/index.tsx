@@ -15,7 +15,7 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks'
 
 import { selectIsOpenSideBar, updateSidebar } from '../layoutSlice'
 
-import logo from '../../assets/images/logo.png'
+import logo from '../../assets/images/logo-dark.png'
 
 const drawerWidth = 240
 const useStyles = makeStyles((theme: Theme) =>
